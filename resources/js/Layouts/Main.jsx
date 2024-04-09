@@ -1,4 +1,4 @@
-import Header from "../Components/Footer.jsx";
+import Header from "../Components/Header.jsx";
 import Footer from "../Components/Footer.jsx";
 
 export default function Main({ children }) {
