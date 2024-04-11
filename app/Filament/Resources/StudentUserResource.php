@@ -33,6 +33,7 @@ class StudentUserResource extends Resource
                 Forms\Components\TextInput::make('email')
                     ->required(),
                 Forms\Components\Select::make('school_id')
+                    ->label('School')
                     ->required()
                     ->options(School::pluck('name', 'id'))
                     ->searchable(),
