@@ -22,6 +22,8 @@ class InstructorsRelationManager extends RelationManager
         return $form
             ->schema([
                 Forms\Components\Select::make('user_id')
+                    ->label('Select instructor')
+                    ->columnSpanFull()
                     ->required()
                     ->multiple()
                     ->searchable()
@@ -51,6 +53,7 @@ class InstructorsRelationManager extends RelationManager
                     ->label('Add new instructor')
                     ->createAnother(false)
                     ->modalSubmitActionLabel('Add instructor')
+                    ->modalHeading('Add new instructor')
                     ->using(function (array $data): Model {
 
                         $schoolID = $this->getOwnerRecord()->id;

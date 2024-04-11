@@ -14,6 +14,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AdminUserResource extends Resource
@@ -60,11 +61,13 @@ class AdminUserResource extends Resource
 
             ])
             ->filters([
-                //
+                Tables\Filters\TrashedFilter::make()
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->visible(fn($record) => Auth::id() !== $record->id)
+                    ->modalHeading('Delete administrator'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

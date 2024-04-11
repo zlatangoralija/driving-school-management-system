@@ -52,6 +52,7 @@ class StudentsRelationManager extends RelationManager
             ->headerActions([
                 Tables\Actions\CreateAction::make('associate_user')
                     ->label('Add new student')
+                    ->modalHeading('Add new student')
                     ->createAnother(false)
                     ->modalSubmitActionLabel('Add student')
                     ->using(function (array $data): Model {
