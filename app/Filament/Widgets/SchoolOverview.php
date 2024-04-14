@@ -11,6 +11,8 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class SchoolOverview extends BaseWidget
 {
+    protected static bool $isDiscovered = false;
+
     public $record;
     public function mount($record)
     {
