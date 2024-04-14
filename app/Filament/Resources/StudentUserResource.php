@@ -16,6 +16,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Hash;
+use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 
 class StudentUserResource extends Resource
 {
@@ -68,6 +69,7 @@ class StudentUserResource extends Resource
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
+                DateRangeFilter::make('created_at'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
