@@ -1,4 +1,4 @@
-import Logo from '../../images/logo.svg'
+import Logo from '../../images/logo.jpg'
 
 export default function Header(props) {
     return (

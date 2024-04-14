@@ -1,4 +1,4 @@
-import Logo from '../../images/logo.svg'
+import Logo from '../../images/logo.jpg'
 import moment from "moment";
 export default function Footer(props) {
     return (

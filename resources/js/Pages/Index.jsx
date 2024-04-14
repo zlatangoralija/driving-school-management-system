@@ -1,4 +1,4 @@
-import Hero from '../../images/hero.png'
+import Logo from '../../images/logo.jpg'
 import Feature1 from '../../images/feature-1.png'
 import Feature2 from '../../images/feature-2.png'
 import {Head} from "@inertiajs/react";
@@ -23,7 +23,7 @@ export default function Index(props) {
                         </div>
                     </div>
                     <div className="hidden lg:mt-0 lg:col-span-5 lg:flex">
-                        <img src={Hero} alt="hero image"/>
+                        <img src={Logo} alt="logo image"/>
                     </div>
                 </div>
             </section>
