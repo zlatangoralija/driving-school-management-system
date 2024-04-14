@@ -9,6 +9,8 @@ use App\Models\User;
 use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -23,6 +25,17 @@ class SchoolResource extends Resource
     protected static ?string $model = School::class;
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
     protected static ?string $navigationGroup = 'Administration';
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                TextEntry::make('name'),
+                TextEntry::make('address'),
+                TextEntry::make('phone_number'),
+                TextEntry::make('kvk_number'),
+            ]);
+    }
 
     public static function form(Form $form): Form
     {
@@ -84,6 +97,7 @@ class SchoolResource extends Resource
                 DateRangeFilter::make('deleted_at'),
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make()
                     ->modalHeading('Delete school')
@@ -123,6 +137,7 @@ class SchoolResource extends Resource
             'index' => Pages\ListSchools::route('/'),
             'create' => Pages\CreateSchool::route('/create'),
             'edit' => Pages\EditSchool::route('/{record}/edit'),
+            'view' => Pages\ViewSchool::route('/{record}'),
         ];
     }
 }

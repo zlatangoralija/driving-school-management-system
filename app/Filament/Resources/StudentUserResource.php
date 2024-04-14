@@ -10,6 +10,8 @@ use App\Models\StudentUser;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -24,6 +26,16 @@ class StudentUserResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-users';
     protected static ?string $label = 'Students';
     protected static ?string $navigationGroup = 'Users';
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                TextEntry::make('name'),
+                TextEntry::make('email'),
+                TextEntry::make('school.name')
+            ]);
+    }
 
     public static function form(Form $form): Form
     {
@@ -77,6 +89,7 @@ class StudentUserResource extends Resource
                 DateRangeFilter::make('deleted_at'),
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make()
                     ->modalHeading('Delete student'),
@@ -105,6 +118,7 @@ class StudentUserResource extends Resource
             'index' => Pages\ListStudentUsers::route('/'),
             'create' => Pages\CreateStudentUser::route('/create'),
             'edit' => Pages\EditStudentUser::route('/{record}/edit'),
+            'view' => Pages\ViewStudent::route('/{record}'),
         ];
     }
 }
