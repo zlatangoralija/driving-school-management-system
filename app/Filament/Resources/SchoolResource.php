@@ -73,10 +73,15 @@ class SchoolResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('deleted_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
                 DateRangeFilter::make('created_at'),
+                DateRangeFilter::make('deleted_at'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
