@@ -1,42 +1,42 @@
 import Logo from '../../images/logo.svg'
+import moment from "moment";
 export default function Footer(props) {
     return (
         <>
             <footer className="bg-white">
                 <div className="max-w-screen-xl p-4 py-6 mx-auto lg:py-16 md:p-8 lg:p-10">
-                    <div className="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-5">
+                    <div className="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-4">
                         <div>
-                            <h3 className="mb-6 text-sm font-semibold text-gray-900 uppercase">Company</h3>
+                            <h3 className="mb-6 text-sm font-semibold text-gray-900 uppercase">Link 1</h3>
                             <ul className="text-gray-500">
                                 <li className="mb-4">
-                                    <a href="#" className=" hover:underline">About</a>
+                                    <a href="#" className=" hover:underline">Sublink 1</a>
                                 </li>
                                 <li className="mb-4">
-                                    <a href="#" className="hover:underline">Careers</a>
+                                    <a href="#" className="hover:underline">Sublink 2</a>
                                 </li>
                                 <li className="mb-4">
-                                    <a href="#" className="hover:underline">Brand Center</a>
+                                    <a href="#" className="hover:underline">Sublink 3</a>
                                 </li>
                                 <li className="mb-4">
-                                    <a href="#" className="hover:underline">Blog</a>
+                                    <a href="#" className="hover:underline">Sublink 4</a>
                                 </li>
                             </ul>
                         </div>
                         <div>
-                            <h3 className="mb-6 text-sm font-semibold text-gray-900 uppercase">Help
-                                center</h3>
+                            <h3 className="mb-6 text-sm font-semibold text-gray-900 uppercase">Link 2</h3>
                             <ul className="text-gray-500">
                                 <li className="mb-4">
-                                    <a href="#" className="hover:underline">Discord Server</a>
+                                    <a href="#" className="hover:underline">Sublink 1</a>
                                 </li>
                                 <li className="mb-4">
-                                    <a href="#" className="hover:underline">Twitter</a>
+                                    <a href="#" className="hover:underline">Sublink 2</a>
                                 </li>
                                 <li className="mb-4">
-                                    <a href="#" className="hover:underline">Facebook</a>
+                                    <a href="#" className="hover:underline">Sublink 3</a>
                                 </li>
                                 <li className="mb-4">
-                                    <a href="#" className="hover:underline">Contact Us</a>
+                                    <a href="#" className="hover:underline">Sublink 4</a>
                                 </li>
                             </ul>
                         </div>
@@ -55,36 +55,19 @@ export default function Footer(props) {
                             </ul>
                         </div>
                         <div>
-                            <h3 className="mb-6 text-sm font-semibold text-gray-900 uppercase">Company</h3>
+                            <h3 className="mb-6 text-sm font-semibold text-gray-900 uppercase">Link 3</h3>
                             <ul className="text-gray-500">
                                 <li className="mb-4">
-                                    <a href="#" className=" hover:underline">About</a>
+                                    <a href="#" className=" hover:underline">Sublink 1</a>
                                 </li>
                                 <li className="mb-4">
-                                    <a href="#" className="hover:underline">Careers</a>
+                                    <a href="#" className="hover:underline">Sublink 2</a>
                                 </li>
                                 <li className="mb-4">
-                                    <a href="#" className="hover:underline">Brand Center</a>
+                                    <a href="#" className="hover:underline">Sublink 3</a>
                                 </li>
                                 <li className="mb-4">
-                                    <a href="#" className="hover:underline">Blog</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h3 className="mb-6 text-sm font-semibold text-gray-900 uppercase">Download</h3>
-                            <ul className="text-gray-500">
-                                <li className="mb-4">
-                                    <a href="#" className="hover:underline">iOS</a>
-                                </li>
-                                <li className="mb-4">
-                                    <a href="#" className="hover:underline">Android</a>
-                                </li>
-                                <li className="mb-4">
-                                    <a href="#" className="hover:underline">Windows</a>
-                                </li>
-                                <li className="mb-4">
-                                    <a href="#" className="hover:underline">MacOS</a>
+                                    <a href="#" className="hover:underline">Sublink 4</a>
                                 </li>
                             </ul>
                         </div>
@@ -94,14 +77,9 @@ export default function Footer(props) {
                             <a href="#"
                                className="flex items-center justify-center mb-5 text-2xl font-semibold text-gray-900">
                                 <img src={Logo} className="h-6 mr-3 sm:h-9" alt="Landwind Logo"/>
-                                Landwind
+                                Logo
                             </a>
-                            <span className="block text-sm text-center text-gray-500">© 2021-2022 Landwind™. All Rights Reserved. Built with <a
-                                href="https://flowbite.com"
-                                className="text-purple-600 hover:underline">Flowbite</a> and <a
-                                href="https://tailwindcss.com"
-                                className="text-purple-600 hover:underline">Tailwind CSS</a>.
-                            </span>
+                            <span className="block text-sm text-center text-gray-500">© {moment().format('Y')} LOGO™. All Rights Reserved.</span>
                             <ul className="flex justify-center mt-5 space-x-5">
                                 <li>
                                     <a href="#"

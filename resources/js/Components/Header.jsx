@@ -8,12 +8,11 @@ export default function Header(props) {
                     <div className="flex flex-wrap items-center justify-between max-w-screen-xl px-4 mx-auto">
                         <a href="#" className="flex items-center">
                             <img src={Logo} className="h-6 mr-3 sm:h-9" alt="Landwind Logo"/>
-                            <span
-                                className="self-center text-xl font-semibold whitespace-nowrap">Landwind</span>
+                            <span className="self-center text-xl font-semibold whitespace-nowrap">LOGO</span>
                         </a>
                         <div className="flex items-center lg:order-2">
                             <a href="https://themesberg.com/product/tailwind-css/landing-page"
-                               className="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 focus:outline-none">Download</a>
+                               className="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 focus:outline-none">Request a demo</a>
                             <button data-collapse-toggle="mobile-menu-2" type="button"
                                     className="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
                                     aria-controls="mobile-menu-2" aria-expanded="false">
@@ -42,19 +41,19 @@ export default function Header(props) {
                                 </li>
                                 <li>
                                     <a href="#"
-                                       className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0">Company</a>
+                                       className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0">Link 1</a>
                                 </li>
                                 <li>
                                     <a href="#"
-                                       className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0">Marketplace</a>
+                                       className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0">Link 2</a>
                                 </li>
                                 <li>
                                     <a href="#"
-                                       className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0">Features</a>
+                                       className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0">Link 3</a>
                                 </li>
                                 <li>
                                     <a href="#"
-                                       className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0">Team</a>
+                                       className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0">Link 4</a>
                                 </li>
                                 <li>
                                     <a href="#"
