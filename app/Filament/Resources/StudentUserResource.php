@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\UserStatus;
 use App\Enums\UserType;
 use App\Filament\Resources\StudentUserResource\Pages;
 use App\Filament\Resources\StudentUserResource\RelationManagers;
@@ -33,6 +34,7 @@ class StudentUserResource extends Resource
             ->schema([
                 TextEntry::make('name'),
                 TextEntry::make('email'),
+                TextEntry::make('status'),
                 TextEntry::make('school.name')
             ]);
     }
@@ -44,6 +46,10 @@ class StudentUserResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required(),
                 Forms\Components\TextInput::make('email')
+                    ->required(),
+                Forms\Components\Select::make('status')
+                    ->label('Account status')
+                    ->options(UserStatus::class)
                     ->required(),
                 Forms\Components\Select::make('school_id')
                     ->label('School')
@@ -68,6 +74,8 @@ class StudentUserResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('status')
+                    ->label('Account status'),
                 Tables\Columns\TextColumn::make('school.name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -84,9 +92,11 @@ class StudentUserResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
+                Tables\Filters\SelectFilter::make('status')
+                    ->options(UserStatus::class),
                 DateRangeFilter::make('created_at'),
                 DateRangeFilter::make('deleted_at'),
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
