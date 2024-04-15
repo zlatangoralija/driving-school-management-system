@@ -54,6 +54,7 @@ class SchoolResource extends Resource
                 Forms\Components\TextInput::make('kvk_number')
                     ->maxLength(255),
                 Forms\Components\FileUpload::make('logo')
+                    ->required()
                     ->directory('logos')
                     ->image()
                     ->downloadable()
