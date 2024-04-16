@@ -28,4 +28,9 @@ class School extends Model
         return $this->hasMany(User::class)
             ->where('type', UserType::Instructor);
     }
+
+    public function administrators(){
+        return $this->hasMany(User::class)
+            ->where('type', UserType::SchoolAdmin);
+    }
 }
