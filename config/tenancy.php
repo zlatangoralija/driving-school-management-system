@@ -19,7 +19,6 @@ return [
     'central_domains' => [
         'driving-school-management-system.test',
         'driveplanx.nl',
-        'driveplanx.com'
     ],
 
     /**
