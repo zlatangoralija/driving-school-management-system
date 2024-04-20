@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\SchoolResource\Pages;
 use App\Filament\Resources\SchoolResource\RelationManagers;
 use App\Models\School;
+use App\Models\Tenant;
 use App\Models\User;
 use Carbon\Carbon;
 use Filament\Forms;
@@ -12,6 +13,7 @@ use Filament\Forms\Form;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\IconPosition;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -19,18 +21,27 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
+use Stancl\Tenancy\Database\Models\Domain;
 
 class SchoolResource extends Resource
 {
-    protected static ?string $model = School::class;
+    protected static ?string $model = Tenant::class;
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
     protected static ?string $navigationGroup = 'Administration';
+    protected static ?string $label = 'School';
 
     public static function infolist(Infolist $infolist): Infolist
     {
         return $infolist
             ->schema([
                 TextEntry::make('name'),
+                TextEntry::make('domain_prefix')
+                    ->formatStateUsing(fn ($state) => $state . '.' . str_replace('https://', '', config('app.url')))
+                    ->copyable()
+                    ->copyMessage('School domain copied')
+                    ->copyMessageDuration(1500)
+                    ->icon('heroicon-m-clipboard')
+                    ->iconPosition(IconPosition::After),
                 TextEntry::make('address'),
                 TextEntry::make('phone_number'),
                 TextEntry::make('kvk_number'),
@@ -44,6 +55,9 @@ class SchoolResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('domain_prefix')
+                    ->required()
+                    ->maxLength(255),
                 Forms\Components\TextInput::make('address')
                     ->required()
                     ->maxLength(255),
@@ -54,7 +68,6 @@ class SchoolResource extends Resource
                 Forms\Components\TextInput::make('kvk_number')
                     ->maxLength(255),
                 Forms\Components\FileUpload::make('logo')
-                    ->required()
                     ->directory('logos')
                     ->image()
                     ->downloadable()
@@ -70,6 +83,14 @@ class SchoolResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('domain_prefix')
+                    ->formatStateUsing(fn ($state) => $state . '.' . str_replace('https://', '', config('app.url')))
+                    ->copyable()
+                    ->copyMessage('School domain copied')
+                    ->copyMessageDuration(1500)
+                    ->icon('heroicon-m-clipboard')
+                    ->iconPosition(IconPosition::After)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('address')
                     ->searchable(),
@@ -103,9 +124,9 @@ class SchoolResource extends Resource
                 Tables\Actions\DeleteAction::make()
                     ->modalHeading('Delete school')
                     ->using(function (array $data, $record): Model {
-                        $users = User::where('school_id', $record->id)->get();
+                        $users = User::where('tenant_id', $record->id)->get();
                         foreach ($users as $user){
-                            $user->school_id = null;
+                            $user->tenant_id = null;
                             $user->save();
                         }
 
@@ -128,8 +149,8 @@ class SchoolResource extends Resource
     {
         return [
             RelationManagers\AdministratorsRelationManager::class,
-            RelationManagers\StudentsRelationManager::class,
-            RelationManagers\InstructorsRelationManager::class,
+//            RelationManagers\StudentsRelationManager::class,
+//            RelationManagers\InstructorsRelationManager::class,
         ];
     }
 

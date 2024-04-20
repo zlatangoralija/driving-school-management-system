@@ -24,8 +24,8 @@ class SchoolOverview extends BaseWidget
         return [
             Stat::make('Invoices', '10'),
             Stat::make('Courses', '10'),
-            Stat::make('Instructors', User::where('type', UserType::Instructor)->where('school_id', $this->record->id)->count()),
-            Stat::make('Students', User::where('type', UserType::Instructor)->where('school_id', $this->record->id)->count()),
+            Stat::make('Instructors', User::where('type', UserType::Instructor)->where('tenant_id', $this->record->id)->count()),
+            Stat::make('Students', User::where('type', UserType::Instructor)->where('tenant_id', $this->record->id)->count()),
         ];
     }
 }

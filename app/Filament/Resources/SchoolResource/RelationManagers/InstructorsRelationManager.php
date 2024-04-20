@@ -28,7 +28,7 @@ class InstructorsRelationManager extends RelationManager
                     ->multiple()
                     ->searchable()
                     ->options(User::where('type', UserType::Instructor)
-                        ->whereNull('school_id')
+                        ->whereNull('tenant_id')
                         ->pluck('name', 'id'))
             ]);
     }
@@ -61,7 +61,7 @@ class InstructorsRelationManager extends RelationManager
 
                         if($users){
                             foreach ($users as $user){
-                                $user->school_id = $schoolID;
+                                $user->tenant_id = $schoolID;
                                 $user->save();
                             }
                         }
@@ -76,7 +76,7 @@ class InstructorsRelationManager extends RelationManager
                     ->modalSubmitActionLabel('Remove instructor')
                     ->modalHeading('Remove instructor')
                     ->using(function (array $data, $record): Model {
-                        $record->school_id = null;
+                        $record->tenant_id = null;
                         $record->save();
 
                         return $this->getOwnerRecord();

@@ -12,6 +12,7 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "malzariey/filament-daterangepicker-filter": "^2.5",
+        "stancl/tenancy": "^3.8",
         "tightenco/ziggy": "^2.0"
     },
     "require-dev": {

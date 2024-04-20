@@ -11,10 +11,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class User extends Authenticatable implements FilamentUser
 {
-    use HasFactory, Notifiable, SoftDeletes;
+    use HasFactory, Notifiable, SoftDeletes, BelongsToTenant;
 
     /**
      * The attributes that are mass assignable.
@@ -26,7 +27,7 @@ class User extends Authenticatable implements FilamentUser
         'email',
         'status',
         'type',
-        'school_id',
+        'tenant_id',
         'password',
     ];
 
@@ -61,6 +62,6 @@ class User extends Authenticatable implements FilamentUser
     }
 
     public function school(){
-        return $this->belongsTo(School::class);
+        return $this->belongsTo(Tenant::class, 'tenant_id', 'id');
     }
 }

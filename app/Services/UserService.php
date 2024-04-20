@@ -7,6 +7,27 @@ use Illuminate\Support\Facades\Auth;
 
 class UserService
 {
+
+    public static function getDashboardUrl(){
+        if(Auth::user()){
+            $domainPrefix = Auth::user()->tenant->domain_prefix . '.';
+            $fullDomain = str_replace('https://', 'https://' . $domainPrefix, config('app.url'));
+
+            switch (Auth::user()->type){
+                case UserType::SchoolAdmin:
+                    return $fullDomain . '/school-administrators/dashboard';
+                case UserType::Instructor:
+                    return $fullDomain . '/instructors/dashboard';
+                case UserType::Student:
+                    return $fullDomain . '/students/dashboard';
+                case UserType::Administrator:
+                    return route('filament.admin.pages.dashboard');
+            }
+        }
+
+        return null;
+    }
+
     public static function getSidebarMenu(){
         if(Auth::user()){
             switch (Auth::user()->type){

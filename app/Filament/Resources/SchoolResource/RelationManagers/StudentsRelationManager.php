@@ -28,7 +28,7 @@ class StudentsRelationManager extends RelationManager
                     ->searchable()
                     ->columnSpanFull()
                     ->options(User::where('type', UserType::Student)
-                        ->whereNull('school_id')
+                        ->whereNull('tenant_id')
                         ->pluck('name', 'id')
                     )
             ]);
@@ -62,7 +62,7 @@ class StudentsRelationManager extends RelationManager
 
                         if($users){
                             foreach ($users as $user){
-                                $user->school_id = $schoolID;
+                                $user->tenant_id = $schoolID;
                                 $user->save();
                             }
                         }
@@ -77,7 +77,7 @@ class StudentsRelationManager extends RelationManager
                     ->modalSubmitActionLabel('Remove student')
                     ->modalHeading('Remove student')
                     ->using(function (array $data, $record): Model {
-                        $record->school_id = null;
+                        $record->tenant_id = null;
                         $record->save();
 
                         return $this->getOwnerRecord();

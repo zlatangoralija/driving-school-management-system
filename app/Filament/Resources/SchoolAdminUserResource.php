@@ -8,6 +8,7 @@ use App\Filament\Resources\SchoolAdminUserResource\Pages;
 use App\Filament\Resources\SchoolAdminUserResource\RelationManagers;
 use App\Models\School;
 use App\Models\SchoolAdminUser;
+use App\Models\Tenant;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -51,10 +52,11 @@ class SchoolAdminUserResource extends Resource
                     ->label('Account status')
                     ->options(UserStatus::class)
                     ->required(),
-                Forms\Components\Select::make('school_id')
+                Forms\Components\Select::make('tenant_id')
+                    ->relationship('school')
                     ->label('School')
                     ->required()
-                    ->options(School::pluck('name', 'id'))
+                    ->options(Tenant::get()->pluck('name', 'id'))
                     ->searchable(),
                 Forms\Components\TextInput::make('password')
                     ->password()

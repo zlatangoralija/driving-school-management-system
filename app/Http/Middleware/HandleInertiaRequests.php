@@ -34,6 +34,7 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'auth' => [
                 'user' => $request->user(),
+                'dashboard_url' => UserService::getDashboardUrl()
             ],
 
             'layout' => [

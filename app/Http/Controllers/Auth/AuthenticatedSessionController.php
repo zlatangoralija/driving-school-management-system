@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Enums\UserType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\Tenant;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,20 +29,23 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
+    public function store(LoginRequest $request)
     {
+
         $request->authenticate();
 
         $request->session()->regenerate();
 
         if(Auth::user()){
+            $domainPrefix = Auth::user()->tenant->domain_prefix . '.';
+            $fullDomain = str_replace('https://', 'https://' . $domainPrefix, config('app.url'));
             switch (Auth::user()->type){
                 case UserType::SchoolAdmin:
-                    return redirect()->intended(route('school-administrators.dashboard', absolute: false));
+                    return Inertia::location($fullDomain . '/school-administrators/dashboard');
                 case UserType::Instructor:
-                    return redirect()->intended(route('instructors.dashboard', absolute: false));
+                    return Inertia::location($fullDomain . '/instructors/dashboard');
                 case UserType::Student:
-                    return redirect()->intended(route('students.dashboard', absolute: false));
+                    return Inertia::location($fullDomain . '/students/dashboard');
             }
         }
 

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->integer('type')->default(2); //Student
-            $table->foreignId('school_id')->nullable()->index();
+            $table->string('tenant_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

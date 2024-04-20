@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('schools', function (Blueprint $table) {
-            $table->softDeletes()->after('updated_at');
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreign('tenant_id')->references('id')->on('tenants')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('schools', function (Blueprint $table) {
-            $table->dropSoftDeletes();
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign('users_tenant_id_foreign');
         });
     }
 };

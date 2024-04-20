@@ -8,6 +8,7 @@ use App\Filament\Resources\InstructorUserResource\Pages;
 use App\Filament\Resources\InstructorUserResource\RelationManagers;
 use App\Models\InstructorUser;
 use App\Models\School;
+use App\Models\Tenant;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -51,10 +52,10 @@ class InstructorUserResource extends Resource
                     ->label('Account status')
                     ->options(UserStatus::class)
                     ->required(),
-                Forms\Components\Select::make('school_id')
+                Forms\Components\Select::make('tenant_id')
                     ->label('School')
                     ->required()
-                    ->options(School::pluck('name', 'id'))
+                    ->options(Tenant::get()->pluck('name', 'id'))
                     ->searchable(),
                 Forms\Components\TextInput::make('password')
                     ->password()
