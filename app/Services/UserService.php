@@ -10,8 +10,12 @@ class UserService
 
     public static function getDashboardUrl(){
         if(Auth::user()){
-            $domainPrefix = Auth::user()->tenant->domain_prefix . '.';
-            $fullDomain = str_replace('https://', 'https://' . $domainPrefix, config('app.url'));
+
+            $fullDomain = null;
+            if(Auth::user()->tenant){
+                $domainPrefix = Auth::user()->tenant->domain_prefix . '.';
+                $fullDomain = str_replace('https://', 'https://' . $domainPrefix, config('app.url'));
+            }
 
             switch (Auth::user()->type){
                 case UserType::SchoolAdmin:
