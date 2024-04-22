@@ -7,6 +7,7 @@ use App\Enums\UserStatus;
 use App\Enums\UserType;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -41,6 +42,10 @@ class User extends Authenticatable implements FilamentUser
         'remember_token',
     ];
 
+    protected $appends = [
+        'status_label'
+    ];
+
     /**
      * Get the attributes that should be cast.
      *
@@ -59,6 +64,13 @@ class User extends Authenticatable implements FilamentUser
     public function canAccessPanel(Panel $panel): bool
     {
         return true;
+    }
+
+    protected function statusLabel(): Attribute
+    {
+        return new Attribute(
+            get: fn () => $this->status->name
+        );
     }
 
     public function school(){

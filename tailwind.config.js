@@ -17,12 +17,10 @@ export default {
             },
             colors:{
                 primary:{
-                    DEFAULT:'#199BB5',
-                    light:'#a3d6e1',
-                    lighter:'#F3FAFB'
+                    DEFAULT:'#7e22ce',
                 },
                 secondary:{
-                    DEFAULT:'#F9615A'
+                    DEFAULT:'#50555b'
                 },
                 gray:{
                     DEFAULT:'#ccc',
@@ -39,6 +37,10 @@ export default {
                 purple:{
                     light:'#CBE0FD'
                 }
+            },
+            boxShadow:{
+                'box':'0px 0px 1px rgba(32, 37, 43, 0.1), 0px 4px 8px rgba(51, 91, 130, 0.12);',
+                'box-hover':'0px 0px 1px rgba(32, 37, 43, 0.2), 0px 4px 8px rgba(51, 91, 130, 0.22);'
             },
         },
     },

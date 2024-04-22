@@ -34,7 +34,7 @@ body > .main > #app{
     @apply w-full overflow-hidden
 }
 .mainWrapper .layout .mainContent{
-    @apply px-4 pl-4 lg:pl-8 transition-all ease-in-out max-w-full
+    @apply px-4 pl-4 lg:pl-8 transition-all ease-in-out max-w-full w-full
 }
 .mainWrapper .layout .mainContent.regular{
     @apply w-full lg:w-4/5 pt-6  xl:pl-8
@@ -72,11 +72,11 @@ body > .main > #app{
 }
 ._navigationVertical > ul > li.active > a,
 ._navigationVertical > ul > li.active > .aItem{
-    @apply text-secondary
+    @apply text-primary
 }
 ._navigationVertical > ul > li > ul > li a,
 ._navigationVertical > ul > li > ul > li .aItem{
-    @apply flex justify-start items-center gap-3 text-[#50555b] hover:text-primary text-base normal-case tracking-[.5px] font-bold py-1
+    @apply flex justify-start items-center gap-3 text-[#7e22ce] hover:text-primary text-base normal-case tracking-[.5px] font-bold py-1
 }
 ._navigationVertical > ul > li > a > [class^="icon-"],
 ._navigationVertical > ul > li > .aItem > [class^="icon-"]{
@@ -101,4 +101,179 @@ body > .main > #app{
 }
 ._navigationVertical > ul > li > ul > li > ul.expanded{
     @apply block
+}
+
+.tableWrapper{
+    @apply bg-white shadow-box rounded-md overflow-hidden border border-[#E9ECEF] w-full max-w-full
+}
+.rdt_TableRow{
+    @apply border-[#E9ECEF]
+}
+.rdt_TableCol{
+    @apply !bg-[#FBFBFB]
+}
+.rdt_TableCol_Sortable{
+    @apply !bg-transparent !uppercase !text-sm tracking-[1px] !font-bold !text-[#50555B]
+}
+.rdt_Pagination{
+    @apply !bg-[#FBFBFB] !font-medium !text-[#35353D]
+}
+.rdt_TableCell{
+    @apply !font-medium !text-base !text-[#50555b]
+}
+
+.card{
+    @apply shadow-box hover:shadow-box-hover rounded-md bg-white transition-all ease-in-out duration-200;
+}
+
+/* FORMS MATERIAL */
+.form-group.material input, .form-group.material select, .form-group.material textarea {
+    z-index: 0 !important;
+}
+
+.formGroupMaterial{
+    @apply relative my-4 w-full;
+}
+.formGroupMaterial > label{
+    @apply absolute top-6 left-0 text-base text-gray-800 transition-all ease-in-out z-0
+}
+.formGroupMaterial.filled > label,
+.formGroupMaterial.focused > label{
+    @apply top-0 text-xs
+}
+.formGroupMaterial > div .formControlMaterial{
+    @apply mt-4 w-full border-none text-base min-h-[40px] py-2 text-gray-800 outline-none relative z-[1] font-semibold placeholder:text-gray-800 placeholder:font-semibold placeholder:text-opacity-50 bg-transparent disabled:opacity-70
+}
+
+.formGroupMaterial > div{
+    @apply border-b-[2px] border-b-gray-300
+}
+
+.formGroupMaterial > div:after{
+    content: "";
+    @apply w-0 h-[2px] bg-primary block transition-all ease-in-out duration-200 -mb-[2px]
+}
+.formGroupMaterial.focused > div:after{
+    @apply w-full
+}
+.formGroupMaterial > span.error{
+    @apply text-xs text-red-500 py-2
+}
+.formGroupMaterial.error > label{
+    @apply text-red-500
+}
+.formGroupMaterial.error > div:after{
+    @apply w-full bg-red-500
+}
+
+.formGroupMaterial._select > div{
+    @apply !pt-4 relative block
+}
+.formGroupMaterial._select > div > .react-select__control{
+    @apply !border-0 !h-auto !min-h-[40px] z-[0] !bg-transparent
+}
+.formGroupMaterial._select > div .react-select__value-container{
+    @apply !pl-0 !pr-1
+}
+.formGroupMaterial._select > div .react-select__control--is-focused{
+    @apply !border-0 !shadow-none
+}
+.formGroupMaterial._select > div .react-select__indicator-separator{
+    @apply !hidden
+}
+.formGroupMaterial._select > div .react-select__dropdown-indicator{
+    @apply !pr-0
+}
+.formGroupMaterial._select > div .react-select__menu{
+    @apply !rounded-t-none !border-0 !mt-[2px] !shadow-lg z-[9]
+}
+.formGroupMaterial._select > div .react-select__menu .react-select__option--is-selected{
+    @apply bg-primary
+}
+.formGroupMaterial._select > div .react-select__single-value{
+    @apply text-gray-800 font-semibold text-base
+}
+.formGroupMaterial._select .react-select__multi-value {
+    @apply !shadow-box !bg-white !rounded-full border border-gray-50 !pl-2
+}
+.formGroupMaterial._select .react-select__multi-value .react-select__multi-value__remove{
+    @apply border-l ml-2 pl-1 pr-2 rounded-r-full
+}
+
+.react-select__input {
+    @apply border-none focus:ring-0
+}
+
+
+.formGroupMaterial._checkbox{
+    @apply w-auto
+}
+.formGroupMaterial._checkbox > div{
+    @apply !border-none pl-8 relative
+}
+.formGroupMaterial._checkbox > div > input{
+    @apply absolute top-0 left-0  w-6 h-6 opacity-0 z-[5] cursor-pointer
+}
+.formGroupMaterial._checkbox > div > label{
+    @apply relative text-gray-800 text-base
+}
+.formGroupMaterial._checkbox > div > label:before{
+    content: "";
+    @apply w-5 h-5 absolute -top-[2px] -left-8 border-2 border-gray-300 rounded
+}
+.formGroupMaterial._checkbox > div > input:checked + label:before{
+    @apply border-primary
+}
+.formGroupMaterial._checkbox > div > input:checked + label:after{
+    content: "\e929";
+    @apply text-primary absolute -top-[2px] -left-7 text-[13px]
+}
+.formGroupMaterial._checkbox > div:after{
+    @apply !hidden
+}
+.formGroupMaterial._checkbox > span.error{
+    @apply pl-8
+}
+.formGroupMaterial.error._checkbox > div > label:before{
+    @apply border-red-500
+}
+
+.dropDown{
+    @apply absolute top-4 right-4
+}
+.dropDown > button{
+    @apply py-2 cursor-pointer
+}
+.dropDown > ul{
+    @apply absolute top-8 -right-2 bg-white shadow-2xl rounded-md w-[200px]
+}
+.dropDown > ul:before{
+    content: "";
+    @apply border-transparent border-[8px] border-b-[#ccc] absolute -top-[16px] right-[7px]
+}
+.dropDown > ul > li{
+    @apply w-full
+}
+.dropDown > ul > li > a,
+.dropDown > ul > li > button{
+    @apply appearance-none cursor-pointer py-2 border-b px-4 flex justify-start items-center gap-2
+}
+
+._modal{
+    @apply fixed inset-0 bg-black bg-opacity-70 z-[99999] p-4 overflow-y-auto lg:flex lg:justify-center lg:items-center;
+}
+._modal > div {
+    @apply bg-white rounded-lg relative w-full mx-auto block;
+}
+._modal > div .title{
+    @apply p-6 lg:p-10 !pb-0 !pr-20
+}
+._modal > div .content{
+    @apply p-6 lg:p-10
+}
+._modal > div .footer{
+    @apply bg-gray-50 px-6 lg:px-10 py-4 lg:py-6 flex justify-end items-center gap-2 w-full;
+}
+._modal .icon-close{
+    @apply text-primary absolute top-7 lg:top-12 right-6 lg:right-10
 }

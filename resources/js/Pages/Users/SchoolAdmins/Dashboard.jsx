@@ -1,45 +1,35 @@
 import { Head } from '@inertiajs/react';
 
 export default function Dashboard(props) {
-    console.log(props);
     return (
         <>
             <Head title="Dashboard" />
 
-            <div className="p-6 text-gray-900">You're logged in as school admin!</div>
+            <div className="mx-auto mt-6 mb-10">
+                <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">Hello, {props.auth.user.name}</h1>
+                <p className="mt-2 text-sm">
+                    Lorem ipsum text
+                </p>
+            </div>
 
-            {props.admins &&
-                <>
-                    <p>Admins</p>
-                    <ul className="list-disc pl-5">
-                        {props.admins.map((admin) => {
-                            return <li>{admin.name} - {admin.email}</li>
-                        })}
-                    </ul>
-                </>
-            }
+            <div>
+                <dl className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
+                    <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+                        <dt className="truncate text-sm font-medium">Courses</dt>
+                        <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">{props.admins}</dd>
+                    </div>
 
-            {props.instructors &&
-                <>
-                    <p className="mt-5">Instructors</p>
-                    <ul className="list-disc pl-5">
-                        {props.instructors.map((instructor) => {
-                            return <li>{instructor.name} - {instructor.email}</li>
-                        })}
-                    </ul>
-                </>
-            }
+                    <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+                        <dt className="truncate text-sm font-medium">Students</dt>
+                        <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">{props.students}</dd>
+                    </div>
 
-            {props.students &&
-                <>
-                    <p className="mt-5">Students</p>
-                    <ul className="list-disc pl-5">
-                        {props.students.map((student) => {
-                            return <li>{student.name} - {student.email}</li>
-                        })}
-                    </ul>
-                </>
-            }
+                    <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+                        <dt className="truncate text-sm font-medium">Instructors</dt>
+                        <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">{props.instructors}</dd>
+                    </div>
+                </dl>
+            </div>
 
         </>
     );

@@ -36,7 +36,10 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
                 'dashboard_url' => UserService::getDashboardUrl()
             ],
-
+            'flash' => [
+                'success' => fn () => $request->session()->get('success'),
+                'errors' => fn () => $request->session()->get('error')
+            ],
             'layout' => [
                 'hide_sidebar' => true,
                 'sidebar_menu' => UserService::getSidebarMenu(),

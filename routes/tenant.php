@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\InstructorController;
-use App\Http\Controllers\SchoolAdministratorController;
 use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
@@ -36,6 +35,13 @@ Route::middleware([
     });
 
     Route::prefix('school-administrators')->middleware(['auth', 'dashboard-middleware'])->name('school-administrators.')->group(function () {
-        Route::get('/dashboard', [SchoolAdministratorController::class, 'dashboard'])->name('dashboard');
+        Route::get('/dashboard', [\App\Http\Controllers\SchoolAdministrators\DashboardController::class, 'index'])->name('dashboard');
+        Route::resource('/administrators', App\Http\Controllers\SchoolAdministrators\AdminController::class);
+        Route::resource('/instructors', App\Http\Controllers\SchoolAdministrators\InstructorController::class);
+        Route::resource('/students', App\Http\Controllers\SchoolAdministrators\StudentController::class);
+        Route::resource('/courses', App\Http\Controllers\SchoolAdministrators\CourseController::class);
+
+        //Ajax routes
+        Route::get('/get-administrators', [\App\Http\Controllers\SchoolAdministrators\AdminController::class, 'getAdministrators'])->name('get-school-administrators');
     });
 });

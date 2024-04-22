@@ -7,7 +7,6 @@ import React from "react";
 export default function Main({ children }) {
     const [ expandSidebar, setExpandSidebar ] = React.useState(true)
 
-    console.log(children)
     return (
         <>
             <Header auth={children.props.auth}/>
@@ -20,6 +19,7 @@ export default function Main({ children }) {
                             expanded={expandSidebar}
                             actionExpand={setExpandSidebar}
                             navigation={children.props.layout.sidebar_menu}
+                            active_page={children.props.layout.active_page}
                         />
                     }
 

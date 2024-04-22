@@ -12,7 +12,7 @@ class UserService
         if(Auth::user()){
 
             $fullDomain = null;
-            if(Auth::user()->tenant){
+            if(Auth::user() && Auth::user()->tenant){
                 $domainPrefix = Auth::user()->tenant->domain_prefix . '.';
                 $fullDomain = str_replace('https://', 'https://' . $domainPrefix, config('app.url'));
             }
@@ -53,13 +53,18 @@ class UserService
                 'nested' => null
             ],
             [
-                'name' => 'Link #1',
-                'url' => '#',
+                'name' => 'Administrators',
+                'url' => route('school-administrators.administrators.index'),
                 'nested' => null
             ],
             [
-                'name' => 'Link 2',
-                'url' => '#',
+                'name' => 'Instructors',
+                'url' => route('school-administrators.instructors.index'),
+                'nested' => null
+            ],
+            [
+                'name' => 'Students',
+                'url' => route('school-administrators.students.index'),
                 'nested' => null
             ],
             [

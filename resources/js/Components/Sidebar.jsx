@@ -3,9 +3,8 @@ import { _navItem } from "./Helpers.jsx";
 import {ArrowLeftIcon, ArrowRightIcon} from "@heroicons/react/16/solid/index.js";
 
 const Sidebar = (props) => {
-    const navigation = props.navigation;
-    //
-    //
+    const navigation = props.navigation
+
     return(
         <div className={`sidebar ${props.expanded ? 'expanded' : 'collapsed'}`}>
 
@@ -16,11 +15,10 @@ const Sidebar = (props) => {
             <div className="_navigationVertical">
                 <ul>
                     {navigation && navigation.map((item,index)=>{
-                        return _navItem(item,index)
+                        return _navItem(item, index, props.active_page)
                     })}
                 </ul>
             </div>
-
         </div>
     )
 }
