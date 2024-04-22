@@ -165,7 +165,8 @@ class AdminController extends Controller
             $administrator->delete();
             DB::commit();
 
-            return redirect()->route('school-administrators.administrators.index');
+            return redirect()->route('school-administrators.administrators.index')
+                ->with('success', 'School administrator profile deleted successfully');
         } catch (\Exception $exception){
             DB::rollBack();
             Log::info('School admin delete error');
