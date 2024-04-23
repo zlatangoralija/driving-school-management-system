@@ -2,8 +2,6 @@ import Logo from '../../images/logo.jpg'
 import {Link} from "@inertiajs/react";
 
 export default function Header(props) {
-
-    console.log(props);
     return (
         <>
             <header className="fixed w-full border-b border-r-gray-100 z-[99999]">

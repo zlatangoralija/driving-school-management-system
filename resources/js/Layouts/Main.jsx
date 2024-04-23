@@ -28,7 +28,7 @@ export default function Main({ children }) {
                     </div>
                 </Layout>
             </main>
-            
+
             <Footer/>
         </>
     );
