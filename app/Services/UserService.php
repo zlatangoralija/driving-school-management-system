@@ -33,7 +33,7 @@ class UserService
     }
 
     public static function getHeaderLogo(){
-        $logo = public_path('/images/logo.jpg');
+        $logo = null;
         if(Auth::user() && Auth::user()->tenant && Auth::user()->tenant->logo){
             $logo = Auth::user()->tenant->logo_url;
         }

@@ -29,7 +29,7 @@ export default function Main({ children }) {
                 </Layout>
             </main>
 
-            <Footer/>
+            <Footer layout={children.props.layout}/>
         </>
     );
 }

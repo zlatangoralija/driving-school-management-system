@@ -8,7 +8,7 @@ export default function Header(props) {
                 <nav className="bg-white border-gray-200 py-2.5">
                     <div className="flex flex-wrap items-center justify-between max-w-screen-xl px-4 mx-auto">
                         <a href={route('home')} className="flex items-center">
-                            <img src={props.layout.logo} className="h-6 mr-3 sm:h-9" alt="DrivePlanX Logo"/>
+                            <img src={props.layout.logo ? props.layout.logo : Logo} className="h-6 mr-3 sm:h-9" alt="DrivePlanX Logo"/>
                             <span className="self-center text-xl font-semibold whitespace-nowrap">DrivePlanX</span>
                         </a>
                         <div className="flex items-center lg:order-2">
