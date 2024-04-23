@@ -15,6 +15,7 @@ use Filament\Forms\Form;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\IconPosition;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -34,7 +35,12 @@ class InstructorUserResource extends Resource
         return $infolist
             ->schema([
                 TextEntry::make('name'),
-                TextEntry::make('email'),
+                TextEntry::make('email')
+                    ->copyable()
+                    ->copyMessage('Email copied')
+                    ->copyMessageDuration(1500)
+                    ->icon('heroicon-m-clipboard')
+                    ->iconPosition(IconPosition::After),
                 TextEntry::make('status'),
                 TextEntry::make('school.name')
             ]);
@@ -74,6 +80,11 @@ class InstructorUserResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
+                    ->copyable()
+                    ->copyMessage('Email copied')
+                    ->copyMessageDuration(1500)
+                    ->icon('heroicon-m-clipboard')
+                    ->iconPosition(IconPosition::After)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Account status'),

@@ -36,8 +36,10 @@ class SchoolResource extends Resource
             ->schema([
                 TextEntry::make('name'),
                 TextEntry::make('domain_prefix')
-                    ->formatStateUsing(fn ($state) => $state . '.' . str_replace('https://', '', config('app.url')))
+                    ->label('School domain')
+                    ->formatStateUsing(fn ($state) => 'https://' . $state . '.' . str_replace('https://', '', config('app.url')))
                     ->copyable()
+                    ->copyableState(fn ($state) => 'https://' . $state . '.' . str_replace('https://', '', config('app.url')))
                     ->copyMessage('School domain copied')
                     ->copyMessageDuration(1500)
                     ->icon('heroicon-m-clipboard')
@@ -56,6 +58,7 @@ class SchoolResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('domain_prefix')
+                    ->label('School domain')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('address')
@@ -85,8 +88,10 @@ class SchoolResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('domain_prefix')
-                    ->formatStateUsing(fn ($state) => $state . '.' . str_replace('https://', '', config('app.url')))
+                    ->label('School domain')
+                    ->formatStateUsing(fn ($state) => 'https://' . $state . '.' . str_replace('https://', '', config('app.url')))
                     ->copyable()
+                    ->copyableState(fn ($state) => 'https://' . $state . '.' . str_replace('https://', '', config('app.url')))
                     ->copyMessage('School domain copied')
                     ->copyMessageDuration(1500)
                     ->icon('heroicon-m-clipboard')

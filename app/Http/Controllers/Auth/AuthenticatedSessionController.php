@@ -36,7 +36,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        if(Auth::user()){
+        if(Auth::user() && Auth::user()->tenant){
             $domainPrefix = Auth::user()->tenant->domain_prefix . '.';
             $fullDomain = str_replace('https://', 'https://' . $domainPrefix, config('app.url'));
             switch (Auth::user()->type){
