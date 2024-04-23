@@ -26,6 +26,12 @@ Route::middleware([
     InitializeTenancyByDomain::class,
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
+
+    Route::get('/', function (){
+        $dashboardUrl = \App\Services\UserService::getDashboardUrl();
+        return redirect($dashboardUrl);
+    })->middleware(['dashboard-middleware', 'auth']);
+
     Route::prefix('students')->middleware(['auth', 'dashboard-middleware'])->name('students.')->group(function () {
         Route::get('/dashboard', [StudentController::class, 'dashboard'])->name('dashboard');
     });
