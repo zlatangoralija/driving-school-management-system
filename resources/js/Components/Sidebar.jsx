@@ -1,6 +1,7 @@
 import React from "react";
 import { _navItem } from "./Helpers.jsx";
 import {ArrowLeftIcon, ArrowRightIcon} from "@heroicons/react/16/solid/index.js";
+import {Link} from "@inertiajs/react";
 
 const Sidebar = (props) => {
     const navigation = props.navigation
@@ -17,6 +18,12 @@ const Sidebar = (props) => {
                     {navigation && navigation.map((item,index)=>{
                         return _navItem(item, index, props.active_page)
                     })}
+
+                    <li>
+                        <a href={route('logout')}>
+                            <span>Logout</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>

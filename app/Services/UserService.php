@@ -72,11 +72,6 @@ class UserService
                 'url' => route('school-administrators.students.index'),
                 'nested' => null
             ],
-            [
-                'name' => 'Logout',
-                'url' => route('logout'),
-                'nested' => null
-            ],
         ];
     }
 
@@ -97,11 +92,6 @@ class UserService
                 'url' => '#',
                 'nested' => null
             ],
-            [
-                'name' => 'Logout',
-                'url' => route('logout'),
-                'nested' => null
-            ],
         ];
     }
 
@@ -120,11 +110,6 @@ class UserService
             [
                 'name' => 'Link 2',
                 'url' => '#',
-                'nested' => null
-            ],
-            [
-                'name' => 'Logout',
-                'url' => route('logout'),
                 'nested' => null
             ],
         ];
