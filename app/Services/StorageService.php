@@ -52,7 +52,7 @@ class StorageService
         $file = json_decode($input, true);
         $fileName = str_replace('temp/', '', $file['path']);
         $fileTempPath = $file['path'];
-        $filePath = $spacesDir.$fileName;
+        $filePath = 'public/' . $spacesDir . $fileName;
 
         $existsInTmp = Storage::exists($fileTempPath);
         if ($existsInTmp) {
@@ -60,7 +60,7 @@ class StorageService
             $img = Image::make($fileContent)
                 ->resize(640, null, function ($constraint) {
                     $constraint->aspectRatio();
-                })->save(storage_path('app/').$fileTempPath);
+                })->save(storage_path('app/') . $fileTempPath);
 
             $this->putFile($filePath, $fileContent);
             return $filePath;
