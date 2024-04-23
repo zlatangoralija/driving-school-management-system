@@ -65,8 +65,6 @@ export default function CreateForm(props) {
 
     }
 
-    console.log(route('upload-file'))
-
     const _removeTempFile = async(file) => {
         const formData = new FormData()
         formData.append('file', file[0])
