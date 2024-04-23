@@ -146,7 +146,8 @@ class AdminController extends Controller
                 }
             }
 
-            return redirect()->route('school-administrators.administrators.index');
+            return redirect()->route('school-administrators.administrators.index')
+                ->with('success', 'School administrator profile updated successfully');
         } catch (\Exception $exception){
             DB::rollBack();
             Log::info('School admin update error');

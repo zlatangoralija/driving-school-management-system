@@ -43,5 +43,6 @@ Route::middleware([
 
         //Ajax routes
         Route::get('/get-administrators', [\App\Http\Controllers\SchoolAdministrators\AdminController::class, 'getAdministrators'])->name('get-school-administrators');
+        Route::get('/get-instructors', [\App\Http\Controllers\SchoolAdministrators\InstructorController::class, 'getInstructors'])->name('get-school-instructors');
     });
 });

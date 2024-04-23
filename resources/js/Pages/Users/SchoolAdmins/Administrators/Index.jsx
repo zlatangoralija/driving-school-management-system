@@ -15,7 +15,6 @@ export default function Index(props) {
     const [ successNotice, setSuccessNotice ] = React.useState(null)
     const [ errorNotice, setErrorNotice ] = React.useState(null)
 
-    console.log(flash);
     React.useEffect(()=>{
         if(flash && Object.keys(flash).length){
             if(flash.success){

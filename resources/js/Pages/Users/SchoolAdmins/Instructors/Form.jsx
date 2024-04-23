@@ -25,7 +25,7 @@ export default function CreateForm(props) {
             const schema = Yup.object().shape({
                 name: Yup.string().required('Name is required.'),
                 email: Yup.string().email('Email has to be a valid address.').required('Email is required.'),
-                password: !props.administrator ? Yup.string().required('Password is required.') : null,
+                password: !props.instructor ? Yup.string().required('Password is required.') : null,
                 status: Yup.array().required('Please select status.'),
             });
 
@@ -38,14 +38,14 @@ export default function CreateForm(props) {
                 status: formData.status.length>0 ? formData.status[0].value : null,
             }
 
-            if(props.administrator){
-                router.put(route('school-administrators.administrators.update', {administrator:props.administrator}), finalData, {
+            if(props.instructor){
+                router.put(route('school-administrators.instructors.update', {instructor:props.instructor}), finalData, {
                     onError: (errors) => {
                         formRef.current.setErrors(errors);
                     }
                 })
             }else{
-                router.post(route('school-administrators.administrators.store'), finalData, {
+                router.post(route('school-administrators.instructors.store'), finalData, {
                     onError: (errors) => {
                         formRef.current.setErrors(errors);
                     }
@@ -70,11 +70,11 @@ export default function CreateForm(props) {
     }
 
     React.useEffect(()=>{
-        if (formRef.current && props.administrator) {
-            formRef.current.setFieldValue('name', props.administrator.name);
-            formRef.current.setFieldValue('email', props.administrator.email);
+        if (formRef.current && props.instructor) {
+            formRef.current.setFieldValue('name', props.instructor.name);
+            formRef.current.setFieldValue('email', props.instructor.email);
         }
-    },[props.administrator])
+    },[props.instructor])
 
     React.useEffect(()=>{
         if(flash && Object.keys(flash).length){
@@ -91,10 +91,10 @@ export default function CreateForm(props) {
 
     return (
         <>
-            <Head title={props.administrator ? 'Edit administrator' : 'Create administrator'} />
+            <Head title={props.instructor ? 'Edit instructor' : 'Create instructor'} />
 
             <div className="mx-auto mt-6 mb-10" ref={wrapperRef}>
-                <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">${props.administrator ? 'Edit administrator' : 'Create administrator'}</h1>
+                <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{props.instructor ? 'Edit instructor' : 'Create instructor'}</h1>
                 <p className="mt-2 text-sm">
                     Lorem ipsum text
                 </p>
@@ -123,7 +123,7 @@ export default function CreateForm(props) {
                     <InputText name="email" label="Email*"/>
                     <SelectDefault
                         options={props.statuses}
-                        defaultValue={(props.statuses && props.administrator) ? props.statuses.find(x => x.value===props.administrator.status) : null}
+                        defaultValue={(props.statuses && props.instructor) ? props.statuses.find(x => x.value===props.instructor.status) : null}
                         label="Account status"
                         name="status"
                     />
