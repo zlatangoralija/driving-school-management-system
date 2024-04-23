@@ -5,15 +5,17 @@ import { Form } from '@unform/web'
 import * as Yup from "yup";
 import SelectDefault from "@/Components/SelectDefault.jsx";
 import FlashNotification from "@/Components/FlashNotification.jsx";
+import Upload from "@/Components/Upload.jsx";
+import { _fetch } from "@/Components/Helpers.jsx";
 
 export default function CreateForm(props) {
     const formRef = React.useRef(null);
     const wrapperRef = React.useRef(null)
     const { flash } = usePage().props
 
-    const [ modal, setModal ] = React.useState(false)
     const [ successNotice, setSuccessNotice ] = React.useState(null)
     const [ errorNotice, setErrorNotice ] = React.useState(null)
+    const [ uploadedPhoto, setUploadedPhoto ] = React.useState(null)
 
     const submit = async() => {
         try{
@@ -23,10 +25,10 @@ export default function CreateForm(props) {
             formRef.current.setErrors({});
 
             const schema = Yup.object().shape({
-                name: Yup.string().required('Name is required.'),
-                email: Yup.string().email('Email has to be a valid address.').required('Email is required.'),
-                password: !props.administrator ? Yup.string().required('Password is required.') : null,
-                status: Yup.array().required('Please select status.'),
+                name: Yup.string().required('School name is required.'),
+                address: Yup.string().required('Address is required.'),
+                phone_number: Yup.string().required('Phone is required.'),
+                kvk_number: Yup.string().required('KVK number is required.'),
             });
 
             await schema.validate(formData, {
@@ -35,17 +37,11 @@ export default function CreateForm(props) {
 
             let finalData = {
                 ...formData,
-                status: formData.status.length>0 ? formData.status[0].value : null,
+                logo:uploadedPhoto ? JSON.stringify(uploadedPhoto) : null,
             }
 
-            if(props.administrator){
-                router.put(route('school-administrators.administrators.update', {administrator:props.administrator}), finalData, {
-                    onError: (errors) => {
-                        formRef.current.setErrors(errors);
-                    }
-                })
-            }else{
-                router.post(route('school-administrators.administrators.store'), finalData, {
+            if(props.school){
+                router.put(route('school-administrators.settings.update', {setting:props.school}), finalData, {
                     onError: (errors) => {
                         formRef.current.setErrors(errors);
                     }
@@ -69,12 +65,62 @@ export default function CreateForm(props) {
 
     }
 
+    console.log(route('upload-file'))
+
+    const _removeTempFile = async(file) => {
+        const formData = new FormData()
+        formData.append('file', file[0])
+        const removing = await _fetch(route('upload-file'), {
+            method:'DELETE',
+            body: JSON.stringify({
+                path: uploadedPhoto.path
+            })
+        })
+        setUploadedPhoto(null)
+    }
+
+    const _removeCloudFile = async(file) => {
+        const formData = new FormData()
+        formData.append('file', file[0])
+        const removing = await _fetch(route('upload-file'), {
+            method:'DELETE',
+            body: JSON.stringify({
+                path: uploadedPhoto.path
+            })
+        })
+        setUploadedPhoto(null)
+    }
+
+    const _uploadFile = async(file) => {
+        const formData = new FormData()
+        formData.append('file', file[0])
+        const uploading = await _fetch(route('upload-file'), {
+            body:formData
+        })
+        setUploadedPhoto({
+            ...uploading,
+            preview: URL.createObjectURL(file[0]),
+            name: file[0].name,
+            isNew: true
+        })
+    }
+
     React.useEffect(()=>{
-        if (formRef.current && props.administrator) {
-            formRef.current.setFieldValue('name', props.administrator.name);
-            formRef.current.setFieldValue('email', props.administrator.email);
+        if (formRef.current && props.school) {
+            formRef.current.setFieldValue('name', props.school.name);
+            formRef.current.setFieldValue('address', props.school.address);
+            formRef.current.setFieldValue('phone_number', props.school.phone_number);
+            formRef.current.setFieldValue('kvk_number', props.school.kvk_number);
+            if(props.school.logo_url && props.school.logo_url !== ""){
+                setUploadedPhoto({
+                    path: props.school.logo_url,
+                    preview: props.school.logo_url,
+                    name: props.school.logo_url.split('/')[props.school.logo_url.split('/').length - 1],
+                    isNew: false
+                })
+            }
         }
-    },[props.administrator])
+    },[props.school])
 
     React.useEffect(()=>{
         if(flash && Object.keys(flash).length){
@@ -86,7 +132,7 @@ export default function CreateForm(props) {
                 setErrorNotice(flash.errors)
             }
 
-            if(successNotice || errorNotice){
+            if(errorNotice || successNotice){
                 wrapperRef.current.scrollIntoView({ behavior: 'smooth' })
             }
         }
@@ -94,10 +140,10 @@ export default function CreateForm(props) {
 
     return (
         <>
-            <Head title={props.administrator ? 'Edit administrator' : 'Create administrator'} />
+            <Head title="School settings" />
 
             <div className="mx-auto mt-6 mb-10" ref={wrapperRef}>
-                <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">${props.administrator ? 'Edit administrator' : 'Create administrator'}</h1>
+                <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">School settings</h1>
                 <p className="mt-2 text-sm">
                     Lorem ipsum text
                 </p>
@@ -122,16 +168,20 @@ export default function CreateForm(props) {
             <div className="grid grid-cols-0 md:grid-cols-0 gap-6">
                 <Form ref={formRef} onSubmit={submit} className="card p-5 mb-3">
 
-                    <InputText name="name" label="Name*"/>
-                    <InputText name="email" label="Email*"/>
-                    <SelectDefault
-                        options={props.statuses}
-                        defaultValue={(props.statuses && props.administrator) ? props.statuses.find(x => x.value===props.administrator.status) : null}
-                        label="Account status"
-                        name="status"
-                    />
-                    <InputText type="password" name="password" label="Password*"/>
+                    <InputText name="name" label="School name*"/>
+                    <InputText name="address" label="Address*"/>
+                    <InputText name="phone_number" label="Phone*"/>
+                    <InputText name="kvk_number" label="KVK number*"/>
 
+                    <Upload
+                        isSingle
+                        current={uploadedPhoto}
+                        title="Drag and drop your image here"
+                        text="Allowed .jpg .png .jpeg"
+                        accept={['images']}
+                        actionUpload={(e)=>_uploadFile(e)}
+                        actionDelete={(e)=> uploadedPhoto?.isNew ? _removeTempFile(e) : null}
+                    />
 
                     <div className="flex flex-col md:flex-row justify-between items-center">
                         <div>

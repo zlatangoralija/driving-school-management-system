@@ -53,6 +53,11 @@ class UserService
                 'nested' => null
             ],
             [
+                'name' => 'School settings',
+                'url' => route('school-administrators.settings.index'),
+                'nested' => null
+            ],
+            [
                 'name' => 'Administrators',
                 'url' => route('school-administrators.administrators.index'),
                 'nested' => null

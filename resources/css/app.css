@@ -277,3 +277,28 @@ body > .main > #app{
 ._modal .icon-close{
     @apply text-primary absolute top-7 lg:top-12 right-6 lg:right-10
 }
+
+.dropZone{
+    @apply p-10 border-2 border-dashed rounded-md flex justify-center items-center flex-col cursor-pointer hover:border-primary w-full
+}
+.dropZoneWrapper{
+    @apply flex flex-col justify-center items-center
+}
+.dropZoneWrapper .dropZoneSinglePreview{
+    @apply flex flex-col justify-center items-center relative max-w-[125px]
+}
+.dropZoneWrapper .dropZoneSinglePreview > div{
+    @apply shadow-md rounded-md bg-gray-100 overflow-hidden w-[125px] h-[125px] min-w-[125px] flex justify-center items-center;
+}
+.dropZoneWrapper .dropZoneSinglePreview > div > img{
+    @apply w-full h-full object-cover object-center;
+}
+.dropZoneWrapper .dropZoneSinglePreview > div > div{
+    @apply text-center text-2xl font-semibold uppercase;
+}
+.dropZoneWrapper .dropZoneSinglePreview > .dropZoneDeleteSingle{
+    @apply absolute -top-3 -right-3 w-8 h-8 rounded-full bg-white flex justify-center items-center text-2xl text-secondary shadow-md;
+}
+.dropZoneWrapper .dropZoneSinglePreview > span{
+    @apply text-xs mt-2 block w-full
+}

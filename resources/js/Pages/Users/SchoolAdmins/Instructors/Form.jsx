@@ -85,7 +85,10 @@ export default function CreateForm(props) {
             if(flash.errors){
                 setErrorNotice(flash.errors)
             }
-            wrapperRef.current.scrollIntoView({ behavior: 'smooth' })
+
+            if(successNotice || errorNotice){
+                wrapperRef.current.scrollIntoView({ behavior: 'smooth' })
+            }
         }
     },[flash])
 

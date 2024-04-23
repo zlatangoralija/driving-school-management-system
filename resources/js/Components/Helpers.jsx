@@ -9,6 +9,64 @@ export const _inArray = (needle, haystack) => {
     return false;
 }
 
+export const _metaCSRFtoken = () => {
+
+    let token = null
+    const metas = document.getElementsByTagName("META")
+    for (let i = 0; i < metas.length; i++) {
+        const meta = metas[i];
+        if(meta.name==='csrf-token'){
+            token = meta.content
+        }
+    }
+
+    return token
+}
+
+export const _fetch = async(url, props={}, reponseType='json') => {
+    const _props = {
+        method:'POST',
+        headers:{},
+        ...props
+    }
+    //
+    const header = () => {
+        if(url=== route('upload-file') && _props.method==='POST'){
+            return {
+                'X-CSRF-TOKEN': _metaCSRFtoken(),
+                ..._props.headers
+            }
+        }
+
+        return {
+            "Content-Type": "application/json",
+            'X-CSRF-TOKEN': _metaCSRFtoken(),
+            ..._props.headers
+        }
+    }
+
+    const defaultProps = {
+        ..._props,
+        headers: header()
+    }
+
+    const response = await fetch(url, defaultProps);
+    let result
+
+    if(reponseType==='json'){
+        result = await response.json();
+    }
+    if(reponseType==='blob'){
+        result = await response.blob();
+    }
+
+    if(response.status !== 200){
+        return {error:true, ...result}
+    }
+
+    return result
+}
+
 export const _navItem = (data, index, active_page=[]) => {
 
     const nodeDD = React.useRef(null);

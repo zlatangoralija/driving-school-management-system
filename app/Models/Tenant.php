@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Enums\UserType;
+use App\Repositories\StorageRepository;
+use App\Services\StorageService;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
 use Stancl\Tenancy\Contracts\TenantWithDatabase;
@@ -13,6 +15,12 @@ class Tenant extends BaseTenant implements TenantWithDatabase
 {
     use HasDatabase, HasDomains, SoftDeletes;
 
+    public $storageService;
+    public function __construct($attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->storageService = new StorageService();
+    }
     protected $fillable = [
         'id',
         'name',
@@ -22,6 +30,23 @@ class Tenant extends BaseTenant implements TenantWithDatabase
         'kvk_number',
         'logo',
     ];
+
+    protected $appends = [
+        'logo_url',
+    ];
+
+    public function getLogoUrlAttribute()
+    {
+        try {
+            if ($this->logo){
+                return $this->storageService->url($this->logo);
+            }else{
+                return '';
+            }
+        } catch (\Exception $e) {
+            return '';
+        }
+    }
 
     public function students(){
         return $this->hasMany(User::class)

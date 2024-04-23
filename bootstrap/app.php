@@ -24,6 +24,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->appendToGroup('dashboard-middleware', [
             \App\Http\Middleware\InertiaDashboardMiddleware::class,
         ]);
+
+        $middleware->validateCsrfTokens(except: [
+            'https://driving-school-management-system.test/uploads',
+//            'https://driveplanx.nl/uploads',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

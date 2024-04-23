@@ -36,6 +36,7 @@ Route::middleware([
 
     Route::prefix('school-administrators')->middleware(['auth', 'dashboard-middleware'])->name('school-administrators.')->group(function () {
         Route::get('/dashboard', [\App\Http\Controllers\SchoolAdministrators\DashboardController::class, 'index'])->name('dashboard');
+        Route::resource('/settings', \App\Http\Controllers\SchoolAdministrators\SettingsController::class);
         Route::resource('/administrators', App\Http\Controllers\SchoolAdministrators\AdminController::class);
         Route::resource('/instructors', App\Http\Controllers\SchoolAdministrators\InstructorController::class);
         Route::resource('/students', App\Http\Controllers\SchoolAdministrators\StudentController::class);
