@@ -76,10 +76,10 @@ export default function Footer(props) {
                     <div className="text-center">
                         <a href="#"
                            className="flex items-center justify-center mb-5 text-2xl font-semibold text-gray-900">
-                            <img src={Logo} className="h-6 mr-3 sm:h-9" alt="Landwind Logo"/>
+                            <img src={Logo} className="h-6 mr-3 sm:h-9" alt="DrivePlanX Logo"/>
                             Logo
                         </a>
-                        <span className="block text-sm text-center text-gray-500">© {moment().format('Y')} LOGO™. All Rights Reserved.</span>
+                        <span className="block text-sm text-center text-gray-500">© {moment().format('Y')} DrivePlanX™. All Rights Reserved.</span>
                         <ul className="flex justify-center mt-5 space-x-5">
                             <li>
                                 <a href="#"
