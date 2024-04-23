@@ -153,6 +153,9 @@ class AdminController extends Controller
             Log::info('School admin update error');
             Log::info($exception->getMessage());
             Log::info($exception->getTraceAsString());
+
+            return redirect()->back()
+                ->with('error', ['There was an error updating school administrator profile.']);
         }
     }
 
@@ -173,6 +176,9 @@ class AdminController extends Controller
             Log::info('School admin delete error');
             Log::info($exception->getMessage());
             Log::info($exception->getTraceAsString());
+
+            return redirect()->back()
+                ->with('error', ['There was an error deleting school administrator profile.']);
         }
     }
 }

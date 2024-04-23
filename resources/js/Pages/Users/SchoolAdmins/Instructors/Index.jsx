@@ -72,7 +72,7 @@ export default function Index(props) {
         },
     ];
 
-    function deleteAdmin(id){
+    function deleteInstructor(id){
         router.delete(route('school-administrators.instructors.destroy', {instructor: id}), {
             onSuccess: (page) => {},
             onError: (errors) => {},
@@ -139,7 +139,7 @@ export default function Index(props) {
                 footer={
                     <div className="w-full flex justify-between items-center">
                         <button type="button" onClick={()=>setDeleteModal(null)} className="_button white w-full md:w-auto min-w-[150px]">Cancel</button>
-                        <button type="button" onClick={()=>deleteAdmin(deleteModal)} className="_button w-full md:w-auto min-w-[150px]">Delete instructors</button>
+                        <button type="button" onClick={()=>deleteInstructor(deleteModal)} className="_button w-full md:w-auto min-w-[150px]">Delete instructors</button>
                     </div>
                 }
             />

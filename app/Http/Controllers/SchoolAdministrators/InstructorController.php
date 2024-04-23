@@ -154,6 +154,9 @@ class InstructorController extends Controller
             Log::info('Instructor update error');
             Log::info($exception->getMessage());
             Log::info($exception->getTraceAsString());
+
+            return redirect()->back()
+                ->with('error', ['There was an error updating instructor profile.']);
         }
     }
 
@@ -174,6 +177,9 @@ class InstructorController extends Controller
             Log::info('Instructor delete error');
             Log::info($exception->getMessage());
             Log::info($exception->getTraceAsString());
+
+            return redirect()->back()
+                ->with('error', ['There was an error deleting instructor profile.']);
         }
     }
 }
