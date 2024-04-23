@@ -32,6 +32,15 @@ class UserService
         return null;
     }
 
+    public static function getHeaderLogo(){
+        $logo = public_path('/images/logo.jpg');
+        if(Auth::user() && Auth::user()->tenant && Auth::user()->tenant->logo){
+            $logo = Auth::user()->tenant->logo_url;
+        }
+
+        return $logo;
+    }
+
     public static function getSidebarMenu(){
         if(Auth::user()){
             switch (Auth::user()->type){

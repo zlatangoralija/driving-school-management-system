@@ -9,7 +9,7 @@ export default function Main({ children }) {
 
     return (
         <>
-            <Header auth={children.props.auth}/>
+            <Header auth={children.props.auth} layout={children.props.layout}/>
 
             <main className={`flex-auto ${!children.props.layout.hide_sidebar ? 'mainWrapper' : ''}`}>
                 <Layout>
@@ -28,8 +28,7 @@ export default function Main({ children }) {
                     </div>
                 </Layout>
             </main>
-
-
+            
             <Footer/>
         </>
     );
