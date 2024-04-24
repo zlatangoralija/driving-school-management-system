@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Tenant;
 use App\Repositories\StorageRepository;
 use App\Services\StorageService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -27,6 +28,12 @@ class SettingsController extends Controller
     {
         Inertia::share('layout.active_page', ['School settings']);
         $data['school'] = Auth::user()->tenant;
+        $subscription = Auth::user()->subscriptions()->first();
+        if($subscription){
+            $data['subscription_data'] = $subscription->asStripeSubscription();
+            $data['next_billing_date'] = Carbon::createFromTimeStamp($subscription->asStripeSubscription()->current_period_end)->format('F jS, Y');
+        }
+
         return Inertia::render('Users/SchoolAdmins/Settings/Form', $data);
     }
 

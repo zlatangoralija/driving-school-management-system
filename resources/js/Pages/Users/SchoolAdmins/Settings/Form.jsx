@@ -105,10 +105,10 @@ export default function CreateForm(props) {
 
     React.useEffect(()=>{
         if (formRef.current && props.school) {
-            formRef.current.setFieldValue('name', props.school.name);
-            formRef.current.setFieldValue('address', props.school.address);
-            formRef.current.setFieldValue('phone_number', props.school.phone_number);
-            formRef.current.setFieldValue('kvk_number', props.school.kvk_number);
+            formRef.current.setFieldValue('name', props.school.name ?? '');
+            formRef.current.setFieldValue('address', props.school.address ?? '');
+            formRef.current.setFieldValue('phone_number', props.school.phone_number ?? '');
+            formRef.current.setFieldValue('kvk_number', props.school.kvk_number ?? '');
             if(props.school.logo_url && props.school.logo_url !== ""){
                 setUploadedPhoto({
                     path: props.school.logo_url,
@@ -163,6 +163,39 @@ export default function CreateForm(props) {
                 />
             }
 
+            {props.subscription_data &&
+                <div className="bg-white shadow sm:rounded-lg mb-3">
+                    <div className="px-4 py-5 sm:p-6">
+                        <h3 className="text-base font-semibold leading-6 text-gray-900">Subscription</h3>
+                        <div className="mt-5">
+                            <div className="rounded-md bg-gray-50 px-6 py-5 sm:flex sm:items-start sm:justify-between">
+                                <h4 className="sr-only">Visa</h4>
+                                <div className="sm:flex sm:items-start">
+                                    <div className="mt-3 sm:ml-4 sm:mt-0">
+                                        <div className="text-sm font-medium text-gray-900">Current plan: {props.subscription_data.metadata.name}</div>
+                                        <div className="mt-1 text-sm text-gray-600 sm:flex sm:items-center">
+                                            <div>Price: ${(props.subscription_data.plan.amount / 100).toFixed(2)}</div>
+                                            <span className="hidden sm:mx-2 sm:inline" aria-hidden="true">&middot;</span>
+                                            <div>Status: {props.subscription_data.status}</div>
+                                            <span className="hidden sm:mx-2 sm:inline" aria-hidden="true">&middot;</span>
+                                            <div className="mt-1 sm:mt-0">Next payment:  {props.next_billing_date}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="mt-4 sm:ml-6 sm:mt-0 sm:flex-shrink-0">
+                                    <a href={route('stripe-billing-portal')}
+                                        type="button"
+                                        className="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                                    >
+                                        Manage
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
             <div className="grid grid-cols-0 md:grid-cols-0 gap-6">
                 <Form ref={formRef} onSubmit={submit} className="card p-5 mb-3">
 
@@ -181,7 +214,7 @@ export default function CreateForm(props) {
                         actionDelete={(e)=> uploadedPhoto?.isNew ? _removeTempFile(e) : null}
                     />
 
-                    <div className="flex flex-col md:flex-row justify-between items-center">
+                    <div className="flex flex-col md:flex-row justify-between items-center mt-3">
                         <div>
                             <button type="submit" className="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 focus:outline-none">Save</button>
                         </div>

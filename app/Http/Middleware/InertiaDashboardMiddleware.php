@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Tenant;
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -17,6 +19,16 @@ class InertiaDashboardMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         Inertia::share('layout.hide_sidebar', false);
-        return $next($request);
+
+        $tenant = $request->user()->tenant;
+        $tenantAdmin = User::where('tenant_id', $tenant->id)->whereHas('subscriptions')->first();
+
+        if($tenantAdmin){
+            if($tenantAdmin->subscriptions()->active()->count()){
+                return $next($request);
+            }
+        }
+
+        abort(403);
     }
 }
