@@ -48,7 +48,7 @@ export default function Header(props) {
                     <div className="hidden lg:flex items-center gap-3">
                         {props.auth?.user
                             ?
-                                <a href={props.auth.dashboard_url} className="text-white bg-primary hover:bg-primary-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 focus:outline-none">Dashboard</a>
+                                <a href={props.auth.dashboard_url} className="text-white bg-primary hover:bg-primary-800 focus:ring-4 focus:ring-primary-800 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 focus:outline-none">Dashboard</a>
                             :
                                 <>
                                     <a href="https://calendly.com/asimdeveloper23" target="_blank" className="font-semibold leading-6 text-gray-900 hover:text-primary">
@@ -58,7 +58,7 @@ export default function Header(props) {
                                     <Link href={route('login')} className="font-semibold leading-6 text-gray-900 hover:text-primary">
                                         Log in
                                     </Link>
-                                    <Link href={route('register')} className="text-white bg-primary hover:bg-primary-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 focus:outline-none">Start trial</Link>
+                                    <Link href={route('register')} className="text-white bg-primary hover:bg-primary-800 focus:ring-4 focus:ring-primary-800 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 focus:outline-none">Start trial</Link>
                                 </>
                         }
                     </div>
@@ -119,13 +119,13 @@ export default function Header(props) {
             {/*            </a>*/}
             {/*            <div className="flex items-center lg:order-2">*/}
             {/*                {props.auth?.user*/}
-            {/*                    ? <a href={props.auth.dashboard_url} className="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 focus:outline-none">Dashboard</a>*/}
+            {/*                    ? <a href={props.auth.dashboard_url} className="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-primary-800 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 focus:outline-none">Dashboard</a>*/}
             {/*                    :*/}
             {/*                    <div className="flex items-center gap-2">*/}
             {/*                        <a href="#" className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0">Book a demo</a>*/}
             {/*                        <p>|</p>*/}
             {/*                        <a href="#" className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0">Login</a>*/}
-            {/*                        <Link href={route('register')} className="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 focus:outline-none">Start trial</Link>*/}
+            {/*                        <Link href={route('register')} className="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-primary-800 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 focus:outline-none">Start trial</Link>*/}
             {/*                    </div>*/}
             {/*                }*/}
 
