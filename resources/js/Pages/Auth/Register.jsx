@@ -4,7 +4,7 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
-import Logo from "../../../images/logo.jpg";
+import Logo from "../../../images/logo.png";
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -166,7 +166,7 @@ export default function Register() {
                                 Already registered?
                             </Link>
 
-                            <button className="ml-3 text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 focus:outline-none" disabled={processing}>
+                            <button className="ml-3 text-white bg-primary hover:bg-primary-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 focus:outline-none" disabled={processing}>
                                 Register
                             </button>
                         </div>
