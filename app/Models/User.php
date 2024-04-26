@@ -77,4 +77,9 @@ class User extends Authenticatable implements FilamentUser
     public function school(){
         return $this->belongsTo(Tenant::class, 'tenant_id', 'id');
     }
+
+    public function students()
+    {
+        return $this->belongsToMany(User::class,'instructor_students','instructor_id','student_id');
+    }
 }

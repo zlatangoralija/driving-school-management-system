@@ -37,7 +37,15 @@ Route::middleware([
     });
 
     Route::prefix('instructors')->middleware(['auth', 'dashboard-middleware'])->name('instructors.')->group(function () {
-        Route::get('/dashboard', [InstructorController::class, 'dashboard'])->name('dashboard');
+        Route::get('/dashboard', [\App\Http\Controllers\Instructors\InstructorController::class, 'dashboard'])->name('dashboard');
+        Route::resource('/students', \App\Http\Controllers\Instructors\StudentController::class);
+        Route::resource('/courses', \App\Http\Controllers\Instructors\CourseController::class);
+        Route::resource('/bookings', \App\Http\Controllers\Instructors\BookingController::class);
+
+        //Ajax routes
+        Route::get('/get-students', [\App\Http\Controllers\Instructors\StudentController::class, 'getStudents'])->name('get-instructor-students');
+        Route::get('/get-bookings', [\App\Http\Controllers\Instructors\BookingController::class, 'getBookings'])->name('get-instructor-bookings');
+        Route::get('/get-courses', [\App\Http\Controllers\Instructors\CourseController::class, 'getCourses'])->name('get-instructor-courses');
     });
 
     Route::prefix('school-administrators')->middleware(['auth', 'dashboard-middleware'])->name('school-administrators.')->group(function () {
