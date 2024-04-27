@@ -23,7 +23,9 @@ class CourseController extends Controller
     public function index()
     {
         Inertia::share('layout.active_page', ['Courses']);
-        return Inertia::render('Users/Instructors/Courses/Index');
+
+        $data['students'] = Auth::user()->students()->pluck('users.email', 'users.id');
+        return Inertia::render('Users/Instructors/Courses/Index', $data);
     }
 
     public function getCourses(Request $request){
@@ -87,6 +89,10 @@ class CourseController extends Controller
                 ->with('error', ['There was an error creating a course.']);
         }
     }
+
+//    public function inviteToBook(Request $request){
+//        dd($request->input());
+//    }
 
     /**
      * Display the specified resource.

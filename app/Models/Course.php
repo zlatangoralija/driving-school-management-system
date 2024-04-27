@@ -25,13 +25,21 @@ class Course extends Model
     ];
 
     protected $appends = [
-        'payment_option_label'
+        'payment_option_label',
+        'invitation_url',
     ];
 
     protected function paymentOptionLabel(): Attribute
     {
         return new Attribute(
             get: fn () => str_replace('_', ' ', $this->payment_option->name)
+        );
+    }
+
+    protected function invitationUrl(): Attribute
+    {
+        return new Attribute(
+            get: fn () => route('students.booking-form', ['course' => $this])
         );
     }
 

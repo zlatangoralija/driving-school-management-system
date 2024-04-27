@@ -33,7 +33,15 @@ Route::middleware([
     })->middleware(['dashboard-middleware', 'auth']);
 
     Route::prefix('students')->middleware(['auth', 'dashboard-middleware'])->name('students.')->group(function () {
-        Route::get('/dashboard', [StudentController::class, 'dashboard'])->name('dashboard');
+        Route::get('/dashboard', [\App\Http\Controllers\Students\StudentController::class, 'dashboard'])->name('dashboard');
+        Route::resource('/bookings', \App\Http\Controllers\Students\BookingController::class);
+
+        //Bookings
+        Route::get('/invite-to-book/{course}', [\App\Http\Controllers\Students\BookingController::class, 'book'])->name('booking-form');
+
+        //Ajax routes
+        Route::get('/get-bookings', [\App\Http\Controllers\Students\BookingController::class, 'getBookings'])->name('get-bookings');
+
     });
 
     Route::prefix('instructors')->middleware(['auth', 'dashboard-middleware'])->name('instructors.')->group(function () {
@@ -41,6 +49,9 @@ Route::middleware([
         Route::resource('/students', \App\Http\Controllers\Instructors\StudentController::class);
         Route::resource('/courses', \App\Http\Controllers\Instructors\CourseController::class);
         Route::resource('/bookings', \App\Http\Controllers\Instructors\BookingController::class);
+
+        //Invitations
+//        Route::post('/invite-to-book', [\App\Http\Controllers\Instructors\CourseController::class, 'inviteToBook'])->name('courses.invite-to-book');
 
         //Ajax routes
         Route::get('/get-students', [\App\Http\Controllers\Instructors\StudentController::class, 'getStudents'])->name('get-instructor-students');

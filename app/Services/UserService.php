@@ -117,12 +117,12 @@ class UserService
                 'nested' => null
             ],
             [
-                'name' => 'Link #1',
-                'url' => '#',
+                'name' => 'Bookings',
+                'url' => route('students.bookings.index'),
                 'nested' => null
             ],
             [
-                'name' => 'Link 2',
+                'name' => 'Invitations',
                 'url' => '#',
                 'nested' => null
             ],

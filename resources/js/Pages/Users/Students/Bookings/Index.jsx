@@ -2,7 +2,12 @@ import React from "react";
 import {Head, Link, router, usePage} from "@inertiajs/react";
 import DataTableComponent from "@/Components/DataTable.jsx";
 import dayjs from "dayjs";
+import Modal from "@/Components/Modal.jsx";
 import FlashNotification from "@/Components/FlashNotification.jsx";
+import {Form} from "@unform/web";
+import SelectDefault from "@/Components/SelectDefault.jsx";
+import * as Yup from "yup";
+import InputText from "@/Components/InputText.jsx";
 
 export default function Index(props) {
     const wrapperRef = React.useRef(null)
@@ -55,10 +60,10 @@ export default function Index(props) {
             sortField: 'status',
         },
         {
-            name: 'Student',
-            selector: row => <>{row.student.name}</>,
+            name: 'Instructor',
+            selector: row => <>{row.instructor.name}</>,
             sortable: true,
-            sortField: 'student.name',
+            sortField: 'instructor.name',
         },
         {
             name: 'Date created',
@@ -109,7 +114,7 @@ export default function Index(props) {
 
             <DataTableComponent
                 columns={columns}
-                path={route('instructors.get-instructor-bookings')}
+                path={route('students.get-bookings')}
                 search={search}
                 object={"bookings"}
                 pagination={true}

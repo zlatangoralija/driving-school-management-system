@@ -4,16 +4,23 @@ import DataTableComponent from "@/Components/DataTable.jsx";
 import dayjs from "dayjs";
 import Modal from "@/Components/Modal.jsx";
 import FlashNotification from "@/Components/FlashNotification.jsx";
+import {Form} from "@unform/web";
+import SelectDefault from "@/Components/SelectDefault.jsx";
+import * as Yup from "yup";
+import InputText from "@/Components/InputText.jsx";
 
 export default function Index(props) {
     const wrapperRef = React.useRef(null)
+    const bookingInviteForm = React.useRef(null);
+
     const { flash } = usePage().props
 
     const [ search, setSearch ] = React.useState('')
     const [ filters, setFilters ] = React.useState()
-    const [deleteModal, setDeleteModal] = React.useState()
     const [ successNotice, setSuccessNotice ] = React.useState(null)
     const [ errorNotice, setErrorNotice ] = React.useState(null)
+    const [ deleteModal, setDeleteModal] = React.useState()
+    const [ bookingInviteModal, setBookingInviteModal] = React.useState()
 
     React.useEffect(()=>{
         if(flash && Object.keys(flash).length){
@@ -69,6 +76,12 @@ export default function Index(props) {
             sortField: 'created_at',
         },
         {
+            name: 'Invite to book',
+            selector: row => <><a href="#" onClick={() => setBookingInviteModal(row.invitation_url)} className="link">Invite to book</a></>,
+            sortable: null,
+            sortField: null,
+        },
+        {
             name: 'Action',
             selector: row => {
                 return(
@@ -83,6 +96,42 @@ export default function Index(props) {
             },
         },
     ];
+
+    const submitBookingInvitation = async(data) => {
+        try {
+            console.log('jhere', data);
+
+            //Validate form
+            const schema = Yup.object().shape({
+                student_id: Yup.array().min(1, 'Please select a student').required('Please select a student')
+            });
+
+            await schema.validate(data, {
+                abortEarly: false,
+            });
+
+            let finalData = {
+                ...data,
+                student_id: data.student_id.length>0 ? data.student_id[0].value : null,
+            }
+
+            router.post(route('instructors.courses.invite-to-book'), finalData, {
+                onError: (errors) => {
+                    bookingInviteForm.current.setErrors(errors);
+                }
+            })
+
+
+        } catch (err){
+            const validationErrors = {};
+            if (err instanceof Yup.ValidationError) {
+                err.inner.forEach(error => {
+                    validationErrors[error.path] = error.message;
+                });
+                bookingInviteForm.current.setErrors(validationErrors);
+            }
+        }
+    }
 
     function deleteStudent(id){
         router.delete(route('instructors.courses.destroy', {course: id}), {
@@ -134,6 +183,46 @@ export default function Index(props) {
                 pagination={true}
                 filters={filters}
                 onlyReload="courses"
+            />
+
+            <Modal
+                className="max-w-3xl"
+                status={bookingInviteModal}
+                close={()=>setBookingInviteModal(false)}
+                title={"Invite to book"}
+                content={
+                    <div>
+                        <div className='flex flex-col justify-center items-center'>
+                            <div className="flex justify-center flex-col mb-3 text-center">
+                                <p className="text-lg">Send this link to your student directly</p>
+                                <p className="text-lg text-primary">{bookingInviteModal}</p>
+                            </div>
+
+                            {/*<p className="text-lg mb-3">*/}
+                            {/*    OR*/}
+                            {/*</p>*/}
+
+                            {/*<p className="text-lg">*/}
+                            {/*    Send them an invitation to book to via email*/}
+                            {/*</p>*/}
+
+                            {/*<Form ref={bookingInviteForm} onSubmit={submitBookingInvitation} className="w-full">*/}
+                            {/*    <SelectDefault*/}
+                            {/*        name="student_id"*/}
+                            {/*        label="Student*"*/}
+                            {/*        options={Object.entries(props.students).map(([value, label]) => ({ value, label }))}*/}
+                            {/*    />*/}
+                            {/*</Form>*/}
+                        </div>
+                    </div>
+
+                }
+                footer={
+                    <div className='flex flex-col md:flex-row !justify-between items-center gap-2 w-full'>
+                        <button type="button" onClick={()=>setBookingInviteModal(false)} className="_button white w-full md:w-auto min-w-[150px]">Cancel</button>
+                        <button type="button" onClick={()=>bookingInviteForm.current.submitForm()} className="_button white w-full md:w-auto min-w-[150px]">Invite to book</button>
+                    </div>
+                }
             />
 
             <Modal
