@@ -6,6 +6,7 @@ use App\Enums\CoursePaymentOption;
 use App\Enums\UserStatus;
 use App\Enums\UserType;
 use App\Http\Controllers\Controller;
+use App\Models\BookingInvitation;
 use App\Models\Course;
 use App\Models\User;
 use App\Notifications\StudentCreated;
@@ -90,9 +91,32 @@ class CourseController extends Controller
         }
     }
 
-//    public function inviteToBook(Request $request){
-//        dd($request->input());
-//    }
+    public function inviteToBook(Request $request){
+        try {
+            DB::beginTransaction();
+
+            $input = $request->input();
+            $input['instructor_id'] = Auth::id();
+            $bookingInvitation = BookingInvitation::create($input);
+
+            DB::commit();
+
+            $bookingInvitation->student->notify(new \App\Notifications\BookingInvitation($bookingInvitation));
+
+
+            return redirect()->route('instructors.courses.index')
+                ->with('success', 'Booking invitation sent successfully');
+
+        } catch (\Exception $exception){
+            DB::rollBack();
+            Log::info('Invitation creation error');
+            Log::info($exception->getMessage());
+            Log::info($exception->getTraceAsString());
+
+            return redirect()->back()
+                ->with('error', ['There was an error sending an invitation.']);
+        }
+    }
 
     /**
      * Display the specified resource.

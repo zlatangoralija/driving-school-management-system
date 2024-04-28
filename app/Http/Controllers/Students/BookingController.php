@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Students;
 
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
+use App\Models\BookingInvitation;
 use App\Models\Course;
+use App\Notifications\NewBookingInstructor;
+use App\Notifications\NewBookingStudent;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -80,13 +83,24 @@ class BookingController extends Controller
                 'instructor_id' => $course->instructor_id,
             ]);
 
+            //If student came from invitation, update status of invitation
+            if($request->input('invitation_id')){
+                $invitation = BookingInvitation::find($request->input('invitation_id'));
+                if($invitation){
+                    $invitation->status = 2;
+                    $invitation->save();
+                }
+            }
+
             DB::commit();
+
+            $booking->instructor->notify(new NewBookingInstructor($booking));
+            $booking->student->notify(new NewBookingStudent($booking));
 
             return redirect()->route('students.bookings.index')
                 ->with('success', 'Booked successfully!');
 
         } catch (\Exception $exception){
-            dd($exception);
             DB::rollBack();
             Log::info('Booking creation error');
             Log::info($exception->getMessage());
@@ -100,9 +114,12 @@ class BookingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Booking $booking)
     {
-        //
+        Inertia::share('layout.active_page', ['Bookings']);
+        
+        $data['booking'] = $booking->with('course', 'instructor')->first();
+        return Inertia::render('Users/Students/Bookings/Show', $data);
     }
 
     /**

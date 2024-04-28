@@ -2,27 +2,24 @@
 
 namespace App\Models;
 
-use App\Enums\BookingStatus;
+use App\Enums\BookingInvitationStatus;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Booking extends Model
+class BookingInvitation extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'start_time',
-        'end_time',
-        'note',
-        'status',
         'course_id',
         'student_id',
         'instructor_id',
+        'status',
     ];
 
     protected $casts = [
-        'status' => BookingStatus::class
+        'status' => BookingInvitationStatus::class
     ];
 
     protected $appends = [

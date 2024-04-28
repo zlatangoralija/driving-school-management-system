@@ -38,21 +38,29 @@ export default function Book(props) {
     const submit = async(data) => {
         try{
 
+            //Get invitation ID, if student is coming to book from invitation
+            let invitation_id = null;
+            const search = window.location.search;
+            const params = new URLSearchParams(search);
+            if(search && params){
+                invitation_id = params.get('invitation_id');
+            }
+
             let finalData = {
                 start_time: data,
-                course: props.course.id
+                course: props.course.id,
+                invitation_id: invitation_id,
             }
 
             router.post(route('students.bookings.store'), finalData, {
                 onError: (errors) => {
-                    console.log('heree');
+                    console.log(errors);
                 }
             })
 
             return
 
         } catch (err) {
-            console.log('tuuuu sam aje')
             wrapperRef.current.scrollIntoView({ behavior: 'smooth' })
         }
 

@@ -50,9 +50,9 @@ export default function Index(props) {
         },
         {
             name: 'Status',
-            selector: row => <>{row.status}</>,
+            selector: row => <>{row.status_label}</>,
             sortable: true,
-            sortField: 'status',
+            sortField: 'status_label',
         },
         {
             name: 'Student',
@@ -72,7 +72,7 @@ export default function Index(props) {
                 return(
                     <>
                         <div className="flex justify-between gap-3">
-                            <Link href={"#"} className="link">View</Link>
+                            <Link href={route('instructors.bookings.show', {booking: row.id})} className="link">View</Link>
                         </div>
                     </>
                 )

@@ -1,27 +1,26 @@
 <?php
 
-namespace App\Http\Controllers\Instructors;
+namespace App\Http\Controllers\Students;
 
 use App\Http\Controllers\Controller;
-use App\Models\Booking;
+use App\Models\BookingInvitation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
-class BookingController extends Controller
+class InvitationController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        Inertia::share('layout.active_page', ['Bookings']);
-        return Inertia::render('Users/Instructors/Bookings/Index');
+        Inertia::share('layout.active_page', ['Invitations']);
+        return Inertia::render('Users/Students/Invitations/Index');
     }
 
-    public function getBookings(Request $request){
-        $data['bookings'] = Booking::where('instructor_id', Auth::id())
-            ->select('id', 'start_time', 'end_time', 'status', 'course_id', 'student_id', 'instructor_id')
+    public function getInvitations(Request $request){
+        $data['invitations'] = BookingInvitation::where('student_id', Auth::id())
             ->with('course', 'student', 'instructor')
             ->when($request->input('sort_by') && $request->input('sort_directions'), function ($q) use ($request){
                 return $q->orderBy($request->input('sort_by'), $request->input('sort_directions'));
@@ -56,12 +55,9 @@ class BookingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Booking $booking)
+    public function show(string $id)
     {
-        Inertia::share('layout.active_page', ['Bookings']);
-
-        $data['booking'] = $booking->with('course', 'student')->first();
-        return Inertia::render('Users/Instructors/Bookings/Show', $data);
+        //
     }
 
     /**

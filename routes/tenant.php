@@ -35,12 +35,14 @@ Route::middleware([
     Route::prefix('students')->middleware(['auth', 'dashboard-middleware'])->name('students.')->group(function () {
         Route::get('/dashboard', [\App\Http\Controllers\Students\StudentController::class, 'dashboard'])->name('dashboard');
         Route::resource('/bookings', \App\Http\Controllers\Students\BookingController::class);
+        Route::resource('/invitations', \App\Http\Controllers\Students\InvitationController::class);
 
         //Bookings
         Route::get('/invite-to-book/{course}', [\App\Http\Controllers\Students\BookingController::class, 'book'])->name('booking-form');
 
         //Ajax routes
         Route::get('/get-bookings', [\App\Http\Controllers\Students\BookingController::class, 'getBookings'])->name('get-bookings');
+        Route::get('/get-invitations', [\App\Http\Controllers\Students\InvitationController::class, 'getInvitations'])->name('get-invitations');
 
     });
 
@@ -51,7 +53,7 @@ Route::middleware([
         Route::resource('/bookings', \App\Http\Controllers\Instructors\BookingController::class);
 
         //Invitations
-//        Route::post('/invite-to-book', [\App\Http\Controllers\Instructors\CourseController::class, 'inviteToBook'])->name('courses.invite-to-book');
+        Route::post('/invite-to-book', [\App\Http\Controllers\Instructors\CourseController::class, 'inviteToBook'])->name('courses.invite-to-book');
 
         //Ajax routes
         Route::get('/get-students', [\App\Http\Controllers\Instructors\StudentController::class, 'getStudents'])->name('get-instructor-students');

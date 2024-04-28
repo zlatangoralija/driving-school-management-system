@@ -77,7 +77,7 @@ export default function Index(props) {
         },
         {
             name: 'Invite to book',
-            selector: row => <><a href="#" onClick={() => setBookingInviteModal(row.invitation_url)} className="link">Invite to book</a></>,
+            selector: row => <><a href="#" onClick={() => setBookingInviteModal({'invitation_url': row.invitation_url, 'course_id': row.id})} className="link">Invite to book</a></>,
             sortable: null,
             sortField: null,
         },
@@ -99,8 +99,6 @@ export default function Index(props) {
 
     const submitBookingInvitation = async(data) => {
         try {
-            console.log('jhere', data);
-
             //Validate form
             const schema = Yup.object().shape({
                 student_id: Yup.array().min(1, 'Please select a student').required('Please select a student')
@@ -113,9 +111,13 @@ export default function Index(props) {
             let finalData = {
                 ...data,
                 student_id: data.student_id.length>0 ? data.student_id[0].value : null,
+                course_id: bookingInviteModal?.course_id,
             }
 
             router.post(route('instructors.courses.invite-to-book'), finalData, {
+                onSuccess: (dres) => {
+                    setBookingInviteModal(false);
+                },
                 onError: (errors) => {
                     bookingInviteForm.current.setErrors(errors);
                 }
@@ -195,24 +197,24 @@ export default function Index(props) {
                         <div className='flex flex-col justify-center items-center'>
                             <div className="flex justify-center flex-col mb-3 text-center">
                                 <p className="text-lg">Send this link to your student directly</p>
-                                <p className="text-lg text-primary">{bookingInviteModal}</p>
+                                <p className="text-lg text-primary">{bookingInviteModal?.invitation_url}</p>
                             </div>
 
-                            {/*<p className="text-lg mb-3">*/}
-                            {/*    OR*/}
-                            {/*</p>*/}
+                            <p className="text-lg mb-3">
+                                OR
+                            </p>
 
-                            {/*<p className="text-lg">*/}
-                            {/*    Send them an invitation to book to via email*/}
-                            {/*</p>*/}
+                            <p className="text-lg">
+                                Send them an invitation to book to via email
+                            </p>
 
-                            {/*<Form ref={bookingInviteForm} onSubmit={submitBookingInvitation} className="w-full">*/}
-                            {/*    <SelectDefault*/}
-                            {/*        name="student_id"*/}
-                            {/*        label="Student*"*/}
-                            {/*        options={Object.entries(props.students).map(([value, label]) => ({ value, label }))}*/}
-                            {/*    />*/}
-                            {/*</Form>*/}
+                            <Form ref={bookingInviteForm} onSubmit={submitBookingInvitation} className="w-full">
+                                <SelectDefault
+                                    name="student_id"
+                                    label="Student*"
+                                    options={Object.entries(props.students).map(([value, label]) => ({ value, label }))}
+                                />
+                            </Form>
                         </div>
                     </div>
 

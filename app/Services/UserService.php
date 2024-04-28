@@ -123,7 +123,7 @@ class UserService
             ],
             [
                 'name' => 'Invitations',
-                'url' => '#',
+                'url' => route('students.invitations.index'),
                 'nested' => null
             ],
         ];
