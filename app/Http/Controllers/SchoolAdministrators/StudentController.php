@@ -89,7 +89,6 @@ class StudentController extends Controller
                 ->with('success', 'Student profile created successfully');
 
         } catch (\Exception $exception){
-            dd($exception);
             DB::rollBack();
             Log::info('Student creation error');
             Log::info($exception->getMessage());
@@ -154,6 +153,11 @@ class StudentController extends Controller
                 if(isset($student->getChanges()['email']) || isset($student->getChanges()['password'])){
                     $student->notify(new StudentUpdated($input));
                 }
+            }
+            
+            $instructor = User::find($request->input('instructor_id'))->first();
+            if($instructor){
+                $instructor->students()->attach($student->id);
             }
 
             return redirect()->route('school-administrators.students.index')
