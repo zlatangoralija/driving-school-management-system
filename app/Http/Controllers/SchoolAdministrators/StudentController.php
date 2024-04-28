@@ -154,7 +154,7 @@ class StudentController extends Controller
                     $student->notify(new StudentUpdated($input));
                 }
             }
-            
+
             $instructor = User::find($request->input('instructor_id'))->first();
             if($instructor){
                 $instructor->students()->attach($student->id);

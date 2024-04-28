@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\User;
 use App\Notifications\StudentCreated;
+use App\Notifications\StudentUpdated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -96,32 +97,90 @@ class StudentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(User $student)
     {
-        //
+        Inertia::share('layout.active_page', ['Students']);
+        $data['student'] = $student;
+        return Inertia::render('Users/Instructors/Students/Show', $data);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(User $student)
     {
-        //
+        Inertia::share('layout.active_page', ['Students']);
+
+        $data['student'] = $student;
+        $data['statuses'] = array_map(function ($status){
+            return [
+                'value' => $status->value,
+                'label' => $status->name,
+            ];
+        }, UserStatus::cases());
+
+        return Inertia::render('Users/Instructors/Students/Form', $data);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, User $student)
     {
-        //
+        try {
+            DB::beginTransaction();
+
+            $input = $request->input();
+            $student->update($request->except(['password']));
+
+            if($input['password']){
+                $student->password = $input['password'];
+                $student->save();
+            }
+
+            DB::commit();
+
+            if($student->getChanges()){
+                if(isset($student->getChanges()['email']) || isset($student->getChanges()['password'])){
+                    $student->notify(new StudentUpdated($input));
+                }
+            }
+
+            return redirect()->route('school-administrators.students.index')
+                ->with('success', 'Student profile updated successfully');
+
+        } catch (\Exception $exception){
+            DB::rollBack();
+            Log::info('Student update error');
+            Log::info($exception->getMessage());
+            Log::info($exception->getTraceAsString());
+
+            return redirect()->back()
+                ->with('error', ['There was an error updating student profile.']);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $student)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $student->delete();
+            DB::commit();
+
+            return redirect()->route('instructors.students.index')
+                ->with('success', 'Student profile deleted successfully');
+
+        } catch (\Exception $exception){
+            DB::rollBack();
+            Log::info('Student delete error');
+            Log::info($exception->getMessage());
+            Log::info($exception->getTraceAsString());
+
+            return redirect()->back()
+                ->with('error', ['There was an error deleting student profile.']);
+        }
     }
 }
