@@ -2,9 +2,16 @@
 
 namespace App\Http\Controllers\Instructors;
 
+use App\Enums\UserStatus;
+use App\Enums\UserType;
 use App\Http\Controllers\Controller;
+use App\Models\Course;
+use App\Models\User;
+use App\Notifications\StudentCreated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class StudentController extends Controller
@@ -40,7 +47,16 @@ class StudentController extends Controller
      */
     public function create()
     {
-        //
+        Inertia::share('layout.active_page', ['Students']);
+
+        $data['statuses'] = array_map(function ($status){
+            return [
+                'value' => $status->value,
+                'label' => $status->name,
+            ];
+        }, UserStatus::cases());
+
+        return Inertia::render('Users/Instructors/Students/Form', $data);
     }
 
     /**
@@ -48,7 +64,33 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            DB::beginTransaction();
+
+            $input = $request->input();
+            $input['instructor_id'] = Auth::id();
+            $input['type'] = UserType::Student;
+            $input['tenant_id'] = Auth::user()->tenant->id;
+            $student = User::create($input);
+
+            Auth::user()->students()->attach($student->id);
+
+            DB::commit();
+
+            $student->notify(new StudentCreated($input));
+
+            return redirect()->route('instructors.students.index')
+                ->with('success', 'Student created successfully');
+
+        } catch (\Exception $exception){
+            DB::rollBack();
+            Log::info('Student creation error');
+            Log::info($exception->getMessage());
+            Log::info($exception->getTraceAsString());
+
+            return redirect()->back()
+                ->with('error', ['There was an error creating a student.']);
+        }
     }
 
     /**

@@ -39,13 +39,13 @@ export default function CreateForm(props) {
             }
 
             if(props.student){
-                router.put(route('school-administrators.students.update', {student:props.student}), finalData, {
+                router.put(route('instructors.students.update', {student:props.student}), finalData, {
                     onError: (errors) => {
                         formRef.current.setErrors(errors);
                     }
                 })
             }else{
-                router.post(route('school-administrators.students.store'), finalData, {
+                router.post(route('instructors.students.store'), finalData, {
                     onError: (errors) => {
                         formRef.current.setErrors(errors);
                     }
@@ -97,7 +97,7 @@ export default function CreateForm(props) {
             <Head title={props.student ? 'Edit student' : 'Create student'} />
 
             <div className="mx-auto mt-6 mb-10" ref={wrapperRef}>
-                <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">${props.student ? 'Edit student' : 'Create student'}</h1>
+                <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{props.student ? 'Edit student' : 'Create student'}</h1>
                 <p className="mt-2 text-sm">
                     Lorem ipsum text
                 </p>

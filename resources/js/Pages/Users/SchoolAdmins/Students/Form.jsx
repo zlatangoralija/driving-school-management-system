@@ -27,6 +27,7 @@ export default function CreateForm(props) {
                 email: Yup.string().email('Email has to be a valid address.').required('Email is required.'),
                 password: !props.student ? Yup.string().required('Password is required.') : null,
                 status: Yup.array().required('Please select status.'),
+                instructor_id: Yup.array().required('Please select instructor.'),
             });
 
             await schema.validate(formData, {
@@ -97,7 +98,7 @@ export default function CreateForm(props) {
             <Head title={props.student ? 'Edit student' : 'Create student'} />
 
             <div className="mx-auto mt-6 mb-10" ref={wrapperRef}>
-                <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">${props.student ? 'Edit student' : 'Create student'}</h1>
+                <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{props.student ? 'Edit student' : 'Create student'}</h1>
                 <p className="mt-2 text-sm">
                     Lorem ipsum text
                 </p>
@@ -124,6 +125,12 @@ export default function CreateForm(props) {
 
                     <InputText name="name" label="Name*"/>
                     <InputText name="email" label="Email*"/>
+                    <SelectDefault
+                        options={Object.entries(props.instructors).map(([value, label]) => ({ value, label }))}
+                        label="Instructor*"
+                        name="instructor_id"
+                        isMulti
+                    />
                     <SelectDefault
                         options={props.statuses}
                         defaultValue={(props.statuses && props.student) ? props.statuses.find(x => x.value===props.student.status) : null}

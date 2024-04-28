@@ -11,6 +11,7 @@ use App\Notifications\SchoolAdminUpdated;
 use App\Notifications\StudentCreated;
 use App\Notifications\StudentUpdated;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
@@ -50,6 +51,7 @@ class StudentController extends Controller
     {
         Inertia::share('layout.active_page', ['Students']);
 
+        $data['instructors'] = User::where('type', UserType::Instructor)->pluck('name', 'id');
         $data['statuses'] = array_map(function ($status){
             return [
                 'value' => $status->value,
@@ -70,11 +72,16 @@ class StudentController extends Controller
 
             $input = $request->input();
             $input['type'] = UserType::Student;
+            $input['tenant'] = Auth::user()->tenant->id;
             $student = User::create($input);
 
             DB::commit();
 
             if($student){
+
+                $instructor = User::find($request->input('instructor_id'))->first();
+                $instructor->students()->attach($student->id);
+
                 $student->notify(new StudentCreated($input));
             }
 
@@ -82,6 +89,7 @@ class StudentController extends Controller
                 ->with('success', 'Student profile created successfully');
 
         } catch (\Exception $exception){
+            dd($exception);
             DB::rollBack();
             Log::info('Student creation error');
             Log::info($exception->getMessage());
@@ -110,6 +118,7 @@ class StudentController extends Controller
         Inertia::share('layout.active_page', ['Students']);
 
         $data['student'] = $student;
+        $data['instructors'] = User::where('type', UserType::Instructor)->pluck('name', 'id');
         $data['statuses'] = array_map(function ($status){
             return [
                 'value' => $status->value,
