@@ -302,3 +302,24 @@ body > .main > #app{
 .dropZoneWrapper .dropZoneSinglePreview > span{
     @apply text-xs mt-2 block w-full
 }
+
+/* StepperNav */
+.stepperNav{
+    @apply bg-white transition-all ease-in-out duration-200 flex justify-center items-center py-4 lg:px-6 relative overflow-x-auto gap-3 lg:gap-0 mb-5;
+}
+.stepperNav .line{
+    @apply hidden lg:block w-[68%] h-[1px] bg-gray-200 absolute top-7 left-[16%] z-[0]
+}
+.stepperNav .item{
+    @apply flex flex-row lg:flex-col justify-center items-center gap-2 relative min-w-[130px];
+}
+.stepperNav .item.current:after{
+    content: '';
+    @apply h-[3px] bg-primary -bottom-2 -left-2 -right-2 rounded-full absolute;
+}
+.stepperNav .item .title{
+    @apply uppercase font-bold text-sm leading-[15px] text-gray-900;
+}
+.stepperNav .item.current .title{
+    @apply text-primary;
+}

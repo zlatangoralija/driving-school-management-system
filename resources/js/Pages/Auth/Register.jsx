@@ -6,7 +6,7 @@ import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
 import Logo from "../../../images/logo.png";
 
-export default function Register() {
+export default function Register(props) {
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         school_name: '',
@@ -15,6 +15,10 @@ export default function Register() {
         phone: '',
         password: '',
         password_confirmation: '',
+        plan_id: props.plan_id,
+        plan_name: props.plan_name,
+        plan_qty: props.plan_qty,
+        trial: props.trial,
     });
 
     useEffect(() => {
@@ -45,6 +49,7 @@ export default function Register() {
                 <div className="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
                     <form onSubmit={submit}>
                         <div>
+
                             <InputLabel htmlFor="school_name" value="School name*" />
 
                             <TextInput

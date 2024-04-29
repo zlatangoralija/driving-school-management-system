@@ -1,9 +1,28 @@
+import React from "react";
 import Logo from '../../images/logo.png'
 import Feature1 from '../../images/feature-1.png'
 import Feature2 from '../../images/feature-2.png'
-import {Head} from "@inertiajs/react";
+import {Head, Link} from "@inertiajs/react";
+import Tabs from "@/Components/Tabs.jsx";
+import SelectDefault from "@/Components/SelectDefault.jsx";
+import SelectDefaultNoForm from "@/Components/SelectDefaultNoForm.jsx";
 
 export default function Index(props) {
+    const [ currentTab, setCurrentTab ] = React.useState(1)
+    const [ schoolSize, setSchoolSize ] = React.useState(1)
+
+    const team_size = [
+        {value:'1',label:'1'},
+        {value:'2',label:'2'},
+        {value:'3',label:'3'},
+        {value:'4',label:'4'},
+        {value:'5',label:'5'},
+        {value:'6',label:'6'},
+        {value:'7',label:'7'},
+        {value:'8',label:'8'},
+        {value:'9',label:'9'},
+    ]
+
     return (
         <>
             <Head title='Home'/>
@@ -377,205 +396,97 @@ export default function Index(props) {
                         <h2 className="mb-4 text-3xl font-extrabold tracking-tight text-gray-900">Lorem ipsum dolor sit amet</h2>
                         <p className="mb-5 font-light text-gray-500 sm:text-xl">Nam dictum vulputate erat, ac porttitor quam placerat id.</p>
                     </div>
+
+                    <Tabs
+                        current={currentTab}
+                        setStep={setCurrentTab}
+                        steps={[
+                            { title: "Monthly" },
+                            { title: "Yearly"},
+                        ]}
+                    />
+
+                    <div className="max-w-screen-md mx-auto mb-8 text-center lg:mb-12">
+                        <SelectDefaultNoForm
+                            options={team_size}
+                            label="Select school size"
+                            name="school_size"
+                            onChange={(e)=>{
+                                setSchoolSize(e.value)
+                            }}
+                        />
+                    </div>
+
                     <div className="space-y-8 lg:grid lg:grid-cols-3 sm:gap-6 xl:gap-10 lg:space-y-0">
-                        <div
-                            className="flex flex-col max-w-lg p-6 mx-auto text-center text-gray-900 bg-white border border-gray-100 rounded-lg shadow xl:p-8">
-                            <h3 className="mb-4 text-2xl font-semibold">Plan 1</h3>
-                            <p className="font-light text-gray-500 sm:text-lg">Cras eleifend, felis nec faucibus lobortis. Praesent ex massa.</p>
-                            <div className="flex items-baseline justify-center my-8">
-                                <span className="mr-2 text-5xl font-extrabold">$29</span>
-                                <span className="text-gray-500">/month</span>
-                            </div>
-                            <ul role="list" className="mb-8 space-y-4 text-left">
-                                <li className="flex items-center space-x-3">
-                                    <svg className="flex-shrink-0 w-5 h-5 text-green-500"
-                                         fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                        <path fillRule="evenodd"
-                                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                              clipRule="evenodd"></path>
-                                    </svg>
-                                    <span>Item 1</span>
-                                </li>
-                                <li className="flex items-center space-x-3">
-                                    <svg className="flex-shrink-0 w-5 h-5 text-green-500"
-                                         fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                        <path fillRule="evenodd"
-                                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                              clipRule="evenodd"></path>
-                                    </svg>
-                                    <span>Item 2</span>
-                                </li>
-                                <li className="flex items-center space-x-3">
-                                    <svg className="flex-shrink-0 w-5 h-5 text-green-500"
-                                         fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                        <path fillRule="evenodd"
-                                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                              clipRule="evenodd"></path>
-                                    </svg>
-                                    <span>Item 3</span>
-                                </li>
-                                <li className="flex items-center space-x-3">
-                                    <svg className="flex-shrink-0 w-5 h-5 text-green-500"
-                                         fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                        <path fillRule="evenodd"
-                                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                              clipRule="evenodd"></path>
-                                    </svg>
-                                    <span>Item 4</span>
-                                </li>
-                                <li className="flex items-center space-x-3">
-                                    <svg className="flex-shrink-0 w-5 h-5 text-green-500"
-                                         fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                        <path fillRule="evenodd"
-                                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                              clipRule="evenodd"></path>
-                                    </svg>
-                                    <span>item 5</span>
-                                </li>
-                            </ul>
-                            <a href="#" className="text-white bg-primary hover:bg-primary-800 focus:ring-4 focus:ring-purple-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Get started</a>
-                        </div>
-                        <div
-                            className="flex flex-col max-w-lg p-6 mx-auto text-center text-gray-900 bg-white border border-gray-100 rounded-lg shadow xl:p-8">
-                            <h3 className="mb-4 text-2xl font-semibold">Plan 2</h3>
-                            <p className="font-light text-gray-500 sm:text-lg">Nam dictum vulputate erat, ac porttitor quam placerat id.</p>
-                            <div className="flex items-baseline justify-center my-8">
-                                <span className="mr-2 text-5xl font-extrabold">$99</span>
-                                <span className="text-gray-500">/month</span>
-                            </div>
-                            <ul role="list" className="mb-8 space-y-4 text-left">
-                                <li className="flex items-center space-x-3">
-                                    <svg className="flex-shrink-0 w-5 h-5 text-green-500"
-                                         fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                        <path fillRule="evenodd"
-                                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                              clipRule="evenodd"></path>
-                                    </svg>
-                                    <span>Item 1</span>
-                                </li>
-                                <li className="flex items-center space-x-3">
-                                    <svg className="flex-shrink-0 w-5 h-5 text-green-500"
-                                         fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                        <path fillRule="evenodd"
-                                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                              clipRule="evenodd"></path>
-                                    </svg>
-                                    <span>Item 2</span>
-                                </li>
-                                <li className="flex items-center space-x-3">
-                                    <svg className="flex-shrink-0 w-5 h-5 text-green-500"
-                                         fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                        <path fillRule="evenodd"
-                                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                              clipRule="evenodd"></path>
-                                    </svg>
-                                    <span>Item 3</span>
-                                </li>
-                                <li className="flex items-center space-x-3">
-                                    <svg className="flex-shrink-0 w-5 h-5 text-green-500"
-                                         fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                        <path fillRule="evenodd"
-                                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                              clipRule="evenodd"></path>
-                                    </svg>
-                                    <span>Item 4</span>
-                                </li>
-                                <li className="flex items-center space-x-3">
-                                    <svg className="flex-shrink-0 w-5 h-5 text-green-500"
-                                         fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                        <path fillRule="evenodd"
-                                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                              clipRule="evenodd"></path>
-                                    </svg>
-                                    <span>Item 5</span>
-                                </li>
-                                <li className="flex items-center space-x-3">
-                                    <svg className="flex-shrink-0 w-5 h-5 text-green-500"
-                                         fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                        <path fillRule="evenodd"
-                                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                              clipRule="evenodd"></path>
-                                    </svg>
-                                    <span>Item 6</span>
-                                </li>
-                            </ul>
-                            <a href="#" className="text-white bg-primary hover:bg-primary-800 focus:ring-4 focus:ring-purple-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Get started</a>
-                        </div>
-                        <div
-                            className="flex flex-col max-w-lg p-6 mx-auto text-center text-gray-900 bg-white border border-gray-100 rounded-lg shadow xl:p-8">
-                            <h3 className="mb-4 text-2xl font-semibold">Plan 3</h3>
-                            <p className="font-light text-gray-500 sm:text-lg">Praesent sit amet elit est. Praesent ullamcorper ex massa.</p>
-                            <div className="flex items-baseline justify-center my-8">
-                                <span className="mr-2 text-5xl font-extrabold">$499</span>
-                                <span className="text-gray-500">/month</span>
-                            </div>
-                            <ul role="list" className="mb-8 space-y-4 text-left">
-                                <li className="flex items-center space-x-3">
-                                    <svg className="flex-shrink-0 w-5 h-5 text-green-500"
-                                         fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                        <path fillRule="evenodd"
-                                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                              clipRule="evenodd"></path>
-                                    </svg>
-                                    <span>Item 1</span>
-                                </li>
-                                <li className="flex items-center space-x-3">
-                                    <svg className="flex-shrink-0 w-5 h-5 text-green-500"
-                                         fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                        <path fillRule="evenodd"
-                                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                              clipRule="evenodd"></path>
-                                    </svg>
-                                    <span>Item 2</span>
-                                </li>
-                                <li className="flex items-center space-x-3">
-                                    <svg className="flex-shrink-0 w-5 h-5 text-green-500"
-                                         fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                        <path fillRule="evenodd"
-                                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                              clipRule="evenodd"></path>
-                                    </svg>
-                                    <span>Item 3</span>
-                                </li>
-                                <li className="flex items-center space-x-3">
-                                    <svg className="flex-shrink-0 w-5 h-5 text-green-500"
-                                         fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                        <path fillRule="evenodd"
-                                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                              clipRule="evenodd"></path>
-                                    </svg>
-                                    <span>Item 4</span>
-                                </li>
-                                <li className="flex items-center space-x-3">
-                                    <svg className="flex-shrink-0 w-5 h-5 text-green-500"
-                                         fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                        <path fillRule="evenodd"
-                                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                              clipRule="evenodd"></path>
-                                    </svg>
-                                    <span>item 5</span>
-                                </li>
-                                <li className="flex items-center space-x-3">
-                                    <svg className="flex-shrink-0 w-5 h-5 text-green-500"
-                                         fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                        <path fillRule="evenodd"
-                                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                              clipRule="evenodd"></path>
-                                    </svg>
-                                    <span>item 6</span>
-                                </li>
-                                <li className="flex items-center space-x-3">
-                                    <svg className="flex-shrink-0 w-5 h-5 text-green-500"
-                                         fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                        <path fillRule="evenodd"
-                                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                              clipRule="evenodd"></path>
-                                    </svg>
-                                    <span>item 7</span>
-                                </li>
-                            </ul>
-                            <a href="#" className="text-white bg-primary hover:bg-primary-800 focus:ring-4 focus:ring-purple-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Get started</a>
-                        </div>
+
+                        {currentTab===1 &&
+                            <>
+                                {props.plans[1] && props.plans[1].map((monthly_plan,index)=>{
+                                    return (
+                                        <div key={index} className="flex flex-col w-full p-6 mx-auto text-center text-gray-900 bg-white border border-gray-100 rounded-lg shadow xl:p-8">
+                                            <h3 className="mb-4 text-2xl font-semibold">{monthly_plan.name}</h3>
+                                            <p className="font-light text-gray-500 sm:text-lg">{monthly_plan.description}</p>
+                                            <div className="flex items-baseline justify-center my-8">
+                                                <span className="mr-2 text-5xl font-extrabold">${monthly_plan.price * schoolSize}</span>
+                                                <span className="text-gray-500">/month</span>
+                                            </div>
+                                            <ul role="list" className="mb-8 space-y-4 text-left">
+                                                {monthly_plan.items && monthly_plan.items.map((item,item_index)=>{
+                                                    return (
+                                                        <li key={item_index} className="flex items-center space-x-3">
+                                                            <svg className="flex-shrink-0 w-5 h-5 text-green-500"
+                                                                 fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                                                <path fillRule="evenodd"
+                                                                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                                      clipRule="evenodd"></path>
+                                                            </svg>
+                                                            <span>{item.text}</span>
+                                                        </li>
+                                                    )
+                                                })}
+                                            </ul>
+                                            <Link href={route('register', {plan: monthly_plan.stripe_id, qty:schoolSize ? schoolSize : 1})} className="text-white bg-primary hover:bg-primary-800 focus:ring-4 focus:ring-purple-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Get started</Link>
+                                        </div>
+                                    )
+                                })}
+                            </>
+                        }
+
+                        {currentTab===2 &&
+                            <>
+                                {props.plans[2] && props.plans[2].map((yearly_plan,index)=>{
+                                    return (
+                                        <div key={index} className="flex flex-col w-full p-6 mx-auto text-center text-gray-900 bg-white border border-gray-100 rounded-lg shadow xl:p-8">
+                                            <h3 className="mb-4 text-2xl font-semibold">{yearly_plan.name}</h3>
+                                            <p className="font-light text-gray-500 sm:text-lg">{yearly_plan.description}</p>
+                                            <div className="flex items-baseline justify-center my-8">
+                                                <span className="mr-2 text-5xl font-extrabold">${yearly_plan.price * schoolSize}</span>
+                                                <span className="text-gray-500">/year</span>
+                                            </div>
+                                            <ul role="list" className="mb-8 space-y-4 text-left">
+                                                {yearly_plan.items && yearly_plan.items.map((item,item_index)=>{
+                                                    return (
+                                                        <li key={item_index} className="flex items-center space-x-3">
+                                                            <svg className="flex-shrink-0 w-5 h-5 text-green-500"
+                                                                 fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                                                <path fillRule="evenodd"
+                                                                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                                      clipRule="evenodd"></path>
+                                                            </svg>
+                                                            <span>{item.text}</span>
+                                                        </li>
+                                                    )
+                                                })}
+                                            </ul>
+                                            <Link href={route('register', {plan: yearly_plan.stripe_id, qty:schoolSize ? schoolSize : 1})} className="text-white bg-primary hover:bg-primary-800 focus:ring-4 focus:ring-purple-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Get started</Link>
+                                        </div>
+                                    )
+                                })}
+                            </>
+                        }
+
+
+
                     </div>
                 </div>
             </section>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Enums\UserStatus;
 use App\Http\Controllers\Controller;
+use App\Models\SubscriptionPlan;
 use App\Models\Tenant;
 use App\Models\User;
 use Cassandra\Type\UserType;
@@ -24,9 +25,15 @@ class RegisteredUserController extends Controller
     /**
      * Display the registration view.
      */
-    public function create(): Response
+    public function create(Request $request): Response
     {
-        return Inertia::render('Auth/Register');
+        $plan = SubscriptionPlan::where('stripe_id', $request->input('plan'))->first();
+        $data['plan_id'] = $plan ? $plan->stripe_id : null;
+        $data['plan_name'] = $plan ? $plan->name : null;
+        $data['plan_qty'] = $request->input('qty');
+        $data['trial'] = $request->input('trial');
+
+        return Inertia::render('Auth/Register', $data);
     }
 
     /**
@@ -78,14 +85,29 @@ class RegisteredUserController extends Controller
 
             Auth::login($user);
 
-            $checkout = $request
-                ->user()
-                ->newSubscription('Basic', 'price_1P9ABjRugHYe8kO9h3jczkV1')
-                ->trialDays(30)
-                ->checkout([
-                    'success_url' => $fullDomain . '/school-administrators/dashboard',
-                    'cancel_url' => $fullDomain,
-                ]);
+            $checkout = null;
+            if($request->input('trial')){
+                $checkout = $request
+                    ->user()
+                    ->newSubscription('Basic', 'price_1P9ABjRugHYe8kO9h3jczkV1')
+                    ->trialDays(30)
+                    ->checkout([
+                        'success_url' => $fullDomain . '/school-administrators/dashboard',
+                        'cancel_url' => route('home'),
+                    ]);
+            }
+
+            if($request->input('plan_id')){
+                $checkout = $request
+                    ->user()
+                    ->newSubscription($request->input('plan_name'), $request->input('plan_id'))
+                    ->quantity($request->input('plan_qty') ?: 1)
+                    ->trialDays(30)
+                    ->checkout([
+                        'success_url' => $fullDomain . '/school-administrators/dashboard',
+                        'cancel_url' => route('home'),
+                    ]);
+            }
 
             return Inertia::location($checkout->url);
 
