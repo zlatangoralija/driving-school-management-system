@@ -22,8 +22,6 @@ export default function Header(props) {
         };
     });
 
-    console.log(props.layout.sidebar_menu)
-
     return (
         <>
             <header className="bg-white border-b mb-10">
