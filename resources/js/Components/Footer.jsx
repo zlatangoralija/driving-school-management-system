@@ -77,7 +77,6 @@ export default function Footer(props) {
                         <a href="#"
                            className="flex items-center justify-center mb-5 text-2xl font-semibold text-gray-900">
                             <img src={props.layout.logo ? props.layout.logo : Logo} className="h-6 mr-3 sm:h-10" alt="DrivePlanX Logo"/>
-                            Drive Plan X
                         </a>
                         <span className="block text-sm text-center text-gray-500">© {moment().format('Y')} DrivePlanX™. All Rights Reserved.</span>
                         <ul className="flex justify-center mt-5 space-x-5">

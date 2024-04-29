@@ -9,6 +9,12 @@ export const _inArray = (needle, haystack) => {
     return false;
 }
 
+export const _timeout = function(ms) {
+    return new Promise(resolve => {
+        setTimeout(resolve, ms)
+    });
+}
+
 export const _metaCSRFtoken = () => {
 
     let token = null

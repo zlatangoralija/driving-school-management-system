@@ -3,16 +3,26 @@ import {Link} from "@inertiajs/react";
 import React from "react";
 import { Dialog } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
-
-const navigation = [
-    { name: 'Product', href: '#' },
-    { name: 'Features', href: '#' },
-    { name: 'Marketplace', href: '#' },
-    { name: 'Company', href: '#' },
-]
+import {_navItem, _timeout} from "@/Components/Helpers.jsx";
 
 export default function Header(props) {
     const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
+
+    const handleClick = async(e) => {
+        if(mobileMenuOpen){
+            await _timeout(100)
+            setMobileMenuOpen(false)
+        }
+    };
+
+    React.useEffect(() => {
+        document.addEventListener("mousedown", handleClick);
+        return () => {
+            document.removeEventListener("mousedown", handleClick);
+        };
+    });
+
+    console.log(props.layout.sidebar_menu)
 
     return (
         <>
@@ -21,7 +31,6 @@ export default function Header(props) {
                     <div className="flex items-center gap-x-12">
                         <a href={route('home')} className="flex items-center">
                             <img src={props.layout.logo ? props.layout.logo : Logo} className="h-6 mr-3 sm:h-10" alt="DrivePlanX Logo"/>
-                            <span className="self-center text-xl font-semibold whitespace-nowrap">DrivePlanX</span>
                         </a>
                         <div className="hidden lg:flex lg:gap-x-12">
                             <Link href="#" className="font-semibold leading-6 text-gray-900 hover:text-primary">
@@ -64,14 +73,12 @@ export default function Header(props) {
                     </div>
                 </nav>
                 <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
-                    <div className="fixed inset-0 z-10" />
-                    <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+                    <div className="fixed inset-0 !z-[99999]" />
+                    <Dialog.Panel className="fixed inset-y-0 right-0 !z-[99999] w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
                         <div className="flex items-center justify-between">
-                            <a href="#" className="-m-1.5 p-1.5">
+                            <a href={route('home')} className="-m-1.5 p-1.5">
                                 <span className="sr-only">Your Company</span>
-                                <img
-                                    className="h-8 w-auto"
-                                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                                <img className="h-8 w-auto" src={Logo}
                                     alt=""
                                 />
                             </a>
@@ -87,94 +94,52 @@ export default function Header(props) {
                         <div className="mt-6 flow-root">
                             <div className="-my-6 divide-y divide-gray-500/10">
                                 <div className="space-y-2 py-6">
-                                    {navigation.map((item) => (
-                                        <a
-                                            key={item.name}
-                                            href={item.href}
-                                            className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                                        >
-                                            {item.name}
-                                        </a>
-                                    ))}
+                                    <Link href="#" className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                                        Link 1
+                                    </Link>
+
+                                    <Link href="#" className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                                        Link 2
+                                    </Link>
+
+                                    <Link href="#" className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                                        Link 3
+                                    </Link>
                                 </div>
+                                <hr/>
+
                                 <div className="py-6">
-                                    <a
-                                        href="#"
-                                        className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                                    >
-                                        Log in
-                                    </a>
+                                    {props.auth?.user
+                                        ?
+                                            <>
+                                                <a href={props.auth.dashboard_url} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Dashboard</a>
+                                                {!props.layout.hide_sidebar &&
+                                                    <>
+                                                        {props.layout?.sidebar_menu && props.layout?.sidebar_menu.map((item,index)=>{
+                                                            if(item.name !== 'Dashboard'){
+                                                                return <Link href={item.url} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">{item.name}</Link>
+                                                            }
+                                                        })}
+                                                    </>
+                                                }
+                                            </>
+                                        :
+                                        <>
+                                            <a href="https://calendly.com/asimdeveloper23" target="_blank" className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                                                Book a demo
+                                            </a>
+                                            <Link replace preserveState={false} href={route('login')} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                                                Log in
+                                            </Link>
+                                            <Link href={route('register')} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Start trial</Link>
+                                        </>
+                                    }
                                 </div>
                             </div>
                         </div>
                     </Dialog.Panel>
                 </Dialog>
             </header>
-            {/*<header className="fixed w-full border-b border-r-gray-100 z-[99999]">*/}
-            {/*    <nav className="bg-white border-gray-200 py-2.5">*/}
-            {/*        <div className="flex flex-wrap items-center justify-between max-w-screen-xl px-4 mx-auto">*/}
-            {/*            <a href={route('home')} className="flex items-center">*/}
-            {/*                <img src={props.layout.logo ? props.layout.logo : Logo} className="h-6 mr-3 sm:h-9" alt="DrivePlanX Logo"/>*/}
-            {/*                <span className="self-center text-xl font-semibold whitespace-nowrap">DrivePlanX</span>*/}
-            {/*            </a>*/}
-            {/*            <div className="flex items-center lg:order-2">*/}
-            {/*                {props.auth?.user*/}
-            {/*                    ? <a href={props.auth.dashboard_url} className="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-primary-800 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 focus:outline-none">Dashboard</a>*/}
-            {/*                    :*/}
-            {/*                    <div className="flex items-center gap-2">*/}
-            {/*                        <a href="#" className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0">Book a demo</a>*/}
-            {/*                        <p>|</p>*/}
-            {/*                        <a href="#" className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0">Login</a>*/}
-            {/*                        <Link href={route('register')} className="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-primary-800 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 focus:outline-none">Start trial</Link>*/}
-            {/*                    </div>*/}
-            {/*                }*/}
-
-            {/*                <button data-collapse-toggle="mobile-menu-2" type="button"*/}
-            {/*                        className="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"*/}
-            {/*                        aria-controls="mobile-menu-2" aria-expanded="false">*/}
-            {/*                    <span className="sr-only">Open main menu</span>*/}
-            {/*                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"*/}
-            {/*                         xmlns="http://www.w3.org/2000/svg">*/}
-            {/*                        <path fillRule="evenodd"*/}
-            {/*                              d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"*/}
-            {/*                              clipRule="evenodd"></path>*/}
-            {/*                    </svg>*/}
-            {/*                    <svg className="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20"*/}
-            {/*                         xmlns="http://www.w3.org/2000/svg">*/}
-            {/*                        <path fillRule="evenodd"*/}
-            {/*                              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"*/}
-            {/*                              clipRule="evenodd"></path>*/}
-            {/*                    </svg>*/}
-            {/*                </button>*/}
-            {/*            </div>*/}
-            {/*            <div className="items-center justify-between hidden w-full lg:flex lg:w-auto lg:order-1"*/}
-            {/*                 id="mobile-menu-2">*/}
-            {/*                <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">*/}
-            {/*                    <li>*/}
-            {/*                        <a href="#"*/}
-            {/*                           className="block py-2 pl-3 pr-4 text-white bg-purple-700 rounded lg:bg-transparent lg:text-purple-700 lg:p-0"*/}
-            {/*                           aria-current="page">Home</a>*/}
-            {/*                    </li>*/}
-            {/*                    <li>*/}
-            {/*                        <a href="#" className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0">Link 1</a>*/}
-            {/*                    </li>*/}
-            {/*                    <li>*/}
-            {/*                        <a href="#" className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0">Link 2</a>*/}
-            {/*                    </li>*/}
-            {/*                    <li>*/}
-            {/*                        <a href="#" className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0">Link 3</a>*/}
-            {/*                    </li>*/}
-            {/*                    <li>*/}
-            {/*                        <a href="#" className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0">Link 4</a>*/}
-            {/*                    </li>*/}
-            {/*                    <li>*/}
-            {/*                        <a href="#" className="block py-2 pl-3 pr-4 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-purple-700 lg:p-0">Contact</a>*/}
-            {/*                    </li>*/}
-            {/*                </ul>*/}
-            {/*            </div>*/}
-            {/*        </div>*/}
-            {/*    </nav>*/}
-            {/*</header>*/}
         </>
     );
 }
