@@ -115,7 +115,7 @@ export default function Header(props) {
                                                     <>
                                                         {props.layout?.sidebar_menu && props.layout?.sidebar_menu.map((item,index)=>{
                                                             if(item.name !== 'Dashboard'){
-                                                                return <Link href={item.url} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">{item.name}</Link>
+                                                                return <Link key={index} href={item.url} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">{item.name}</Link>
                                                             }
                                                         })}
                                                     </>
