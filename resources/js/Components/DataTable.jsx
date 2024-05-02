@@ -5,6 +5,16 @@ import axios from "axios";
 const DataTableComponent = (props) => {
 
     const isInit = React.useRef(false)
+    const [pending, setPending] = React.useState(true);
+    const [rows, setRows] = React.useState([]);
+    React.useEffect(() => {
+        const timeout = setTimeout(() => {
+            setRows(responseData);
+            setPending(false);
+        }, 100);
+        return () => clearTimeout(timeout);
+    }, []);
+
     const [ defaultOptions, setDefaultOptions ] = React.useState({
         totalRows:0
     })
@@ -65,6 +75,7 @@ const DataTableComponent = (props) => {
         <div className="tableWrapper">
             <DataTable
                 columns={props.columns}
+                progressPending={pending}
                 data={responseData}
                 highlightOnHover
                 responsive
