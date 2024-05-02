@@ -51,4 +51,8 @@ class Course extends Model
     public function admin(){
         return $this->belongsTo(User::class, 'admin_id');
     }
+
+    public function bookings(){
+        return $this->hasMany(Booking::class);
+    }
 }

@@ -3,9 +3,11 @@
 namespace App\Filament\Resources;
 
 use App\Enums\CoursePaymentOption;
+use App\Enums\UserType;
 use App\Filament\Resources\CourseResource\Pages;
 use App\Filament\Resources\CourseResource\RelationManagers;
 use App\Models\Course;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -17,9 +19,9 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class CourseResource extends Resource
 {
     protected static ?string $model = Course::class;
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    protected static ?string $navigationIcon = 'heroicon-o-calendar';
     protected static ?string $navigationGroup = 'Administration';
-    protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Form $form): Form
     {
@@ -28,7 +30,7 @@ class CourseResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\RichEditor::make('description')
+                Forms\Components\Textarea::make('description')
                     ->required()
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('number_of_lessons')
@@ -40,8 +42,15 @@ class CourseResource extends Resource
                     ->prefix('$'),
                 Forms\Components\Select::make('payment_option')
                     ->options(CoursePaymentOption::class)
+                    ->required(),
+                Forms\Components\Select::make('instructor_id')
+                    ->label('Instructor')
+                    ->options(User::where('type', UserType::Instructor)->pluck('name', 'id'))
                     ->searchable(),
-
+                Forms\Components\Select::make('admin_id')
+                    ->label('Administrator')
+                    ->options(User::where('type', UserType::Administrator)->pluck('name', 'id'))
+                    ->searchable(),
             ]);
     }
 
@@ -58,6 +67,12 @@ class CourseResource extends Resource
                     ->money()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('payment_option')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('instructor.name')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('admin.name')
+                    ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -84,7 +99,7 @@ class CourseResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\BookingsRelationManager::class
         ];
     }
 
