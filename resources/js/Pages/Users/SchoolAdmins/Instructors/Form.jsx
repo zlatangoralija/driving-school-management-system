@@ -126,7 +126,7 @@ export default function CreateForm(props) {
                     <InputText name="email" label="Email*"/>
                     <SelectDefault
                         options={props.statuses}
-                        defaultValue={(props.statuses && props.instructor) ? props.statuses.find(x => x.value===props.instructor.status) : null}
+                        defaultValue={(props.statuses && props.instructor) ? props.statuses.find(x => x.value===props.instructor.status) : props.statuses[0]}
                         label="Account status"
                         name="status"
                     />

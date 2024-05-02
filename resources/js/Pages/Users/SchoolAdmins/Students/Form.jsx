@@ -133,7 +133,7 @@ export default function CreateForm(props) {
                     />
                     <SelectDefault
                         options={props.statuses}
-                        defaultValue={(props.statuses && props.student) ? props.statuses.find(x => x.value===props.student.status) : null}
+                        defaultValue={(props.statuses && props.student) ? props.statuses.find(x => x.value===props.student.status) : props.statuses[0]}
                         label="Account status"
                         name="status"
                     />

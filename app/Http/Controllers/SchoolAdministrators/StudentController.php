@@ -137,10 +137,7 @@ class StudentController extends Controller
             DB::beginTransaction();
 
             $input = $request->input();
-            $student->update([
-                'name' => $input['name'],
-                'email' => $input['email'],
-            ]);
+            $student->update($request->except(['password']));
 
             if($input['password']){
                 $student->password = $input['password'];
