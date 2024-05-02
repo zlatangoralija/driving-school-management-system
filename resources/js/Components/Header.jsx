@@ -1,4 +1,4 @@
-import Logo from '../../images/logo.png'
+import Logo from '../../images/full-logo-white-bg.png'
 import {Link} from "@inertiajs/react";
 import React from "react";
 import { Dialog } from '@headlessui/react'
