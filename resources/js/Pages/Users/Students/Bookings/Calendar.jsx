@@ -6,6 +6,8 @@ import dayjs from "dayjs";
 import Modal from "@/Components/Modal.jsx";
 import moment from 'moment-timezone';
 import momentTimezonePlugin from '@fullcalendar/moment-timezone'
+import utc from "dayjs/plugin/utc.js";
+import timezone from "dayjs/plugin/timezone.js";
 
 const roundMinutesToNearestTen = (time) => {
     const minutes = time.minute(); // Get the minutes
@@ -16,10 +18,14 @@ const roundMinutesToNearestTen = (time) => {
 export default function Calendar(props) {
     const [eventModal, setEventModal] = React.useState(null);
 
-    const timezone = moment.tz.guess();
+    const tz = moment.tz.guess();
+
+    dayjs.extend(utc);
+    dayjs.extend(timezone);
+    dayjs.tz.setDefault(tz);
 
     const formatter = new Intl.DateTimeFormat('en-GB', {
-        timeZone: timezone, // Set the desired timezone
+        timeZone: tz, // Set the desired timezone
         hour: '2-digit',
         minute: '2-digit',
     });
@@ -73,7 +79,7 @@ export default function Calendar(props) {
                 expandRows={true}
                 slotEventOverlap={false}
                 scrollTime={formatted}
-                timeZone={timezone}
+                timeZone={tz}
                 eventClick={(info) => {
                     setEventModal(info.event)
                 }}
@@ -90,8 +96,8 @@ export default function Calendar(props) {
                             <p className="text-lg">Here are the event details:</p>
                             <ul>
                                 <li>Event: {eventModal.title}</li>
-                                <li>Start: {dayjs(eventModal.start).format('DD/MM/YYYY H:mm')}</li>
-                                <li>End: {dayjs(eventModal.end).format('DD/MM/YYYY H:mm')}</li>
+                                <li>Start: {dayjs(eventModal.start).tz(tz).format('DD/MM/YYYY H:mm')}</li>
+                                <li>End: {dayjs(eventModal.end).tz(tz).format('DD/MM/YYYY H:mm')}</li>
                             </ul>
                         </div>
                     }

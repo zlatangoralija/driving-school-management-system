@@ -39,20 +39,6 @@ class Booking extends Model
         );
     }
 
-    protected function startTime(): Attribute
-    {
-        return new Attribute(
-            get: fn ($value) => Carbon::parse($value)->setTimezone(Auth::user()->timezone ?: 'UTC')
-        );
-    }
-
-    protected function endTime(): Attribute
-    {
-        return new Attribute(
-            get: fn ($value) => Carbon::parse($value)->setTimezone(Auth::user()->timezone ?: 'UTC')
-        );
-    }
-
     public function course(){
         return $this->belongsTo(Course::class);
     }
