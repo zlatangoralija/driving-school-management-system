@@ -3,6 +3,7 @@ import {Head, Link, router, usePage} from "@inertiajs/react";
 import DataTableComponent from "@/Components/DataTable.jsx";
 import dayjs from "dayjs";
 import FlashNotification from "@/Components/FlashNotification.jsx";
+import moment from "moment-timezone";
 
 export default function Index(props) {
     const wrapperRef = React.useRef(null)
@@ -12,6 +13,8 @@ export default function Index(props) {
 
     const [ search, setSearch ] = React.useState('')
     const [ filters, setFilters ] = React.useState()
+
+    const timezone = moment.tz.guess();
 
     React.useEffect(()=>{
         if(flash && Object.keys(flash).length){
@@ -38,13 +41,13 @@ export default function Index(props) {
         },
         {
             name: 'Start time',
-            selector: row => <>{row.start_time}</>,
+            selector: row => <>{dayjs(row.start_time).format('DD/MM/YYYY H:mm')}</>,
             sortable: true,
             sortField: 'start_time',
         },
         {
             name: 'End time',
-            selector: row => <>{row.end_time}</>,
+            selector: row => <>{dayjs(row.end_time).format('DD/MM/YYYY H:mm')}</>,
             sortable: true,
             sortField: 'end_time',
         },
@@ -85,10 +88,16 @@ export default function Index(props) {
             <Head title="Bookings" />
 
             <div className="mx-auto mt-6 mb-10" ref={wrapperRef}>
-                <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">Bookings</h1>
-                <p className="mt-2 text-sm">
-                    Lorem ipsum text
-                </p>
+                <div className="flex justify-between">
+                    <div>
+                        <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">Bookings</h1>
+                        <p className="mt-2 text-sm">
+                            Lorem ipsum text
+                        </p>
+                    </div>
+                    <Link href={route('instructors.bookings-calendar')}>Calendar view</Link>
+
+                </div>
             </div>
 
             {successNotice && flash.success &&

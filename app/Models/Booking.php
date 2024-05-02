@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use App\Enums\BookingStatus;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Booking extends Model
 {
@@ -19,6 +21,7 @@ class Booking extends Model
         'course_id',
         'student_id',
         'instructor_id',
+        'admin_id',
     ];
 
     protected $casts = [
@@ -33,6 +36,20 @@ class Booking extends Model
     {
         return new Attribute(
             get: fn () => $this->status->name
+        );
+    }
+
+    protected function startTime(): Attribute
+    {
+        return new Attribute(
+            get: fn ($value) => Carbon::parse($value)->setTimezone(Auth::user()->timezone ?: 'UTC')
+        );
+    }
+
+    protected function endTime(): Attribute
+    {
+        return new Attribute(
+            get: fn ($value) => Carbon::parse($value)->setTimezone(Auth::user()->timezone ?: 'UTC')
         );
     }
 

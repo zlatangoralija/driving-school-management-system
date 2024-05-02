@@ -18,6 +18,7 @@ export default function CreateForm(props) {
     const [ successNotice, setSuccessNotice ] = React.useState(null)
     const [ errorNotice, setErrorNotice ] = React.useState(null)
 
+    console.log(props)
     const submit = async() => {
         try{
             const formData = formRef.current.getData();
@@ -30,6 +31,7 @@ export default function CreateForm(props) {
                 description: Yup.string().required('Course description is required.'),
                 number_of_lessons: Yup.string().matches(/^[0-9]+$/, 'Number of lessons has to be a number.').required('Please input number of lessons for this course.'),
                 payment_option: Yup.array().required('Please select payment option.'),
+                instructor_id: Yup.array().required('Please select instructor.'),
                 price: Yup.string().required('Price is required.'),
             });
 
@@ -40,6 +42,7 @@ export default function CreateForm(props) {
             let finalData = {
                 ...formData,
                 payment_option: formData.payment_option.length>0 ? formData.payment_option[0].value : null,
+                instructor_id: formData.instructor_id.length>0 ? formData.instructor_id[0].value : null,
                 price: formData.price ? parseFloat(formData.price.replace("$", '').replace(/,/g, '')) : null
             }
 
@@ -132,11 +135,17 @@ export default function CreateForm(props) {
 
                     <InputText name="name" label="Name*"/>
                     <InputTextarea name="description" label="Description*"/>
+                    <SelectDefault
+                        options={Object.entries(props.instructors).map(([value, label]) => ({ value, label }))}
+                        defaultValue={(props.instructors && props.course) ? Object.entries(props.instructors).map(([value, label]) => ({ value, label })).find(x =>  x.value==props.course.instructor_id) : ''}
+                        label="Instructor*"
+                        name="instructor_id"
+                    />
                     <InputText name="number_of_lessons" label="Number of lessons*"/>
                     <SelectDefault
                         options={props.payment_options}
                         defaultValue={(props.payment_options && props.course) ? props.payment_options.find(x => x.value===props.course.payment_option) : props.payment_options[0]}
-                        label="Payment option"
+                        label="Payment option*"
                         name="payment_option"
                     />
                     <InputCurrency placeholder="$0.00" type="text" label="Price*" name="price" />

@@ -64,7 +64,7 @@ export default function Index(props) {
         },
         {
             name: 'Created by',
-            selector: row => <>{row.instructor ? row.instructor.name : row.admin.name}</>,
+            selector: row => <>{row.admin ? row.admin.name : row.instructor.name }</>,
             sortable: true,
             sortField: 'price',
         },

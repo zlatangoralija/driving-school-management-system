@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\SchoolAdministrators;
 
 use App\Enums\CoursePaymentOption;
+use App\Enums\UserType;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -84,6 +86,7 @@ class CourseController extends Controller
                 'label' => str_replace('_', ' ', $option->name),
             ];
         }, CoursePaymentOption::cases());
+        $data['instructors'] = User::where('type', UserType::Instructor)->pluck('name', 'id');
 
         return Inertia::render('Users/SchoolAdmins/Courses/Form', $data);
     }
@@ -154,6 +157,7 @@ class CourseController extends Controller
                 'label' => str_replace('_', ' ', $option->name),
             ];
         }, CoursePaymentOption::cases());
+        $data['instructors'] = User::where('type', UserType::Instructor)->pluck('name', 'id');
 
         return Inertia::render('Users/SchoolAdmins/Courses/Form', $data);
     }

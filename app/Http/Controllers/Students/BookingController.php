@@ -38,6 +38,38 @@ class BookingController extends Controller
         return Inertia::render('Users/Students/Bookings/Index');
     }
 
+    public function calendar(){
+        $breadcrumbs = [
+            0 => [
+                'page' => 'Dashboard',
+                'url' => route('instructors.dashboard'),
+            ],
+            1 => [
+                'page' => 'Bookings',
+                'url' => route('instructors.bookings-calendar'),
+                'active' => true,
+            ],
+        ];
+        Inertia::share('layout.breadcrumbs', $breadcrumbs);
+        Inertia::share('layout.active_page', ['Bookings']);
+
+        $data['bookings'] = [];
+        $bookings = Booking::where('student_id', Auth::id())
+            ->select('id', 'start_time', 'end_time', 'status', 'course_id', 'student_id', 'instructor_id')
+            ->with('course', 'student', 'instructor')
+            ->get();
+
+        foreach ($bookings as $booking){
+            $data['bookings'][] = [
+                'title' => $booking->course->name . ' - ' . $booking->instructor->name,
+                'start' => $booking->start_time,
+                'end' => $booking->end_time,
+            ];
+        }
+
+        return Inertia::render('Users/Students/Bookings/Calendar', $data);
+    }
+
     public function getBookings(Request $request){
         $data['bookings'] = Booking::where('student_id', Auth::id())
             ->select('id', 'start_time', 'end_time', 'status', 'course_id', 'student_id', 'instructor_id')
@@ -109,6 +141,7 @@ class BookingController extends Controller
                 'course_id' => $course->id,
                 'student_id' => Auth::id(),
                 'instructor_id' => $course->instructor_id,
+                'admin_id' => $course->admin_id,
             ]);
 
             //If student came from invitation, update status of invitation
@@ -122,8 +155,13 @@ class BookingController extends Controller
 
             DB::commit();
 
-            $booking->instructor->notify(new NewBookingInstructor($booking));
-            $booking->student->notify(new NewBookingStudent($booking));
+            if($booking->instructor){
+                $booking->instructor->notify(new NewBookingInstructor($booking));
+            }
+
+            if($booking->student){
+                $booking->student->notify(new NewBookingStudent($booking));
+            }
 
             return redirect()->route('students.bookings.index')
                 ->with('success', 'Booked successfully!');

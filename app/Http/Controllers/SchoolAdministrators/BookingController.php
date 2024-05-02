@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Instructors;
+namespace App\Http\Controllers\SchoolAdministrators;
 
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -19,18 +18,17 @@ class BookingController extends Controller
         $breadcrumbs = [
             0 => [
                 'page' => 'Dashboard',
-                'url' => route('instructors.dashboard'),
+                'url' => route('school-administrators.dashboard'),
             ],
             1 => [
                 'page' => 'Bookings',
-                'url' => route('instructors.bookings.index'),
+                'url' => route('school-administrators.bookings.index'),
                 'active' => true,
             ],
         ];
         Inertia::share('layout.breadcrumbs', $breadcrumbs);
         Inertia::share('layout.active_page', ['Bookings']);
-
-        return Inertia::render('Users/Instructors/Bookings/Index');
+        return Inertia::render('Users/SchoolAdmins/Bookings/Index');
     }
 
     public function calendar(){
@@ -49,34 +47,39 @@ class BookingController extends Controller
         Inertia::share('layout.active_page', ['Bookings']);
 
         $data['bookings'] = [];
-        $bookings = Booking::where('instructor_id', Auth::id())
+        $bookings = Booking::whereHas('instructor', function ($instructor){
+                return $instructor->where('tenant_id', Auth::user()->tenant_id);
+            })
             ->select('id', 'start_time', 'end_time', 'status', 'course_id', 'student_id', 'instructor_id')
             ->with('course', 'student', 'instructor')
             ->get();
 
         foreach ($bookings as $booking){
             $data['bookings'][] = [
-                'title' => $booking->course->name . ' - ' . $booking->student->name,
+                'title' => $booking->course->name . ' - ' . $booking->instructor->name . ' - ' . $booking->student->name,
                 'start' => $booking->start_time,
                 'end' => $booking->end_time,
             ];
         }
 
-        return Inertia::render('Users/Instructors/Bookings/Calendar', $data);
+        return Inertia::render('Users/SchoolAdmins/Bookings/Calendar', $data);
     }
 
     public function getBookings(Request $request){
-        $data['bookings'] = Booking::where('instructor_id', Auth::id())
+        $data['bookings'] = Booking::whereHas('instructor', function ($instructor){
+                return $instructor->where('tenant_id', Auth::user()->tenant_id);
+            })
             ->select('id', 'start_time', 'end_time', 'status', 'course_id', 'student_id', 'instructor_id')
             ->with('course', 'student', 'instructor')
             ->when($request->input('sort_by') && $request->input('sort_directions'), function ($q) use ($request){
                 return $q->orderBy($request->input('sort_by'), $request->input('sort_directions'));
             }, function ($q) {
-                return $q->orderBy('start_time', 'asc');
+                return $q->orderBy('created_at', 'desc');
             })
             ->when($request->input('search') && $request->input('search') != '', function ($query) use ($request){
                 return $query->where('course.name', 'like', '%'.$request->input('search').'%')
-                    ->orWhere('instructor.name', 'like', '%'.$request->input('search').'%');
+                    ->orWhere('instructor.name', 'like', '%'.$request->input('search').'%')
+                    ->orWhere('student.name', 'like', '%'.$request->input('search').'%');
             })
             ->paginate($request->input('per_page') ?: 10);
 
@@ -107,23 +110,23 @@ class BookingController extends Controller
         $breadcrumbs = [
             0 => [
                 'page' => 'Dashboard',
-                'url' => route('instructors.dashboard'),
+                'url' => route('school-administrators.dashboard'),
             ],
             1 => [
                 'page' => 'Bookings',
-                'url' => route('instructors.bookings.index'),
+                'url' => route('school-administrators.bookings.index'),
             ],
             2 => [
                 'page' => 'View booking',
-                'url' => route('instructors.bookings.show', ['booking' => $booking]),
+                'url' => route('school-administrators.bookings.show', ['booking' => $booking]),
                 'active' => true,
             ],
         ];
         Inertia::share('layout.breadcrumbs', $breadcrumbs);
         Inertia::share('layout.active_page', ['Bookings']);
 
-        $data['booking'] = $booking->with('course', 'student')->first();
-        return Inertia::render('Users/Instructors/Bookings/Show', $data);
+        $data['booking'] = $booking->with('course', 'instructor', 'student')->first();
+        return Inertia::render('Users/SchoolAdmins/Bookings/Show', $data);
     }
 
     /**

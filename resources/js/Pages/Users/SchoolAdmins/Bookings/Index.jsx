@@ -2,12 +2,8 @@ import React from "react";
 import {Head, Link, router, usePage} from "@inertiajs/react";
 import DataTableComponent from "@/Components/DataTable.jsx";
 import dayjs from "dayjs";
-import Modal from "@/Components/Modal.jsx";
 import FlashNotification from "@/Components/FlashNotification.jsx";
-import {Form} from "@unform/web";
-import SelectDefault from "@/Components/SelectDefault.jsx";
-import * as Yup from "yup";
-import InputText from "@/Components/InputText.jsx";
+import moment from "moment-timezone";
 
 export default function Index(props) {
     const wrapperRef = React.useRef(null)
@@ -17,6 +13,8 @@ export default function Index(props) {
 
     const [ search, setSearch ] = React.useState('')
     const [ filters, setFilters ] = React.useState()
+
+    const timezone = moment.tz.guess();
 
     React.useEffect(()=>{
         if(flash && Object.keys(flash).length){
@@ -60,8 +58,14 @@ export default function Index(props) {
             sortField: 'status_label',
         },
         {
+            name: 'Student',
+            selector: row => <>{row.student.name}</>,
+            sortable: true,
+            sortField: 'student.name',
+        },
+        {
             name: 'Instructor',
-            selector: row => <>{row.instructor ? row.instructor.name : ''}</>,
+            selector: row => <>{row.student.name}</>,
             sortable: true,
             sortField: 'instructor.name',
         },
@@ -77,7 +81,7 @@ export default function Index(props) {
                 return(
                     <>
                         <div className="flex justify-between gap-3">
-                            <Link href={route('students.bookings.show', {booking: row.id})} className="link">View</Link>
+                            <Link href={route('school-administrators.bookings.show', {booking: row.id})} className="link">View</Link>
                         </div>
                     </>
                 )
@@ -97,7 +101,7 @@ export default function Index(props) {
                             Lorem ipsum text
                         </p>
                     </div>
-                    <Link href={route('students.bookings-calendar')}>Calendar view</Link>
+                    <Link href={route('school-administrators.bookings-calendar')}>Calendar view</Link>
 
                 </div>
             </div>
@@ -120,7 +124,7 @@ export default function Index(props) {
 
             <DataTableComponent
                 columns={columns}
-                path={route('students.get-bookings')}
+                path={route('school-administrators.get-bookings')}
                 search={search}
                 object={"bookings"}
                 pagination={true}
