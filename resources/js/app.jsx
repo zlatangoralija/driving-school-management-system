@@ -7,6 +7,12 @@ import Main from "./Layouts/Main.jsx";
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
+import.meta.glob([
+    '../images/**',
+    '../fonts/**',
+]);
+
+
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     resolve: name => {
