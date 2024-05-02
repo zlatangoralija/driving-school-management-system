@@ -42,8 +42,12 @@ class CourseController extends Controller
     }
 
     public function getCourses(Request $request){
-        $data['courses'] = Course::where('instructor_id', Auth::id())
-            ->select('id', 'name', 'description', 'price', 'payment_option', 'number_of_lessons', 'created_at')
+        $data['courses'] = Course::with('instructor', 'admin')
+            ->select('id', 'name', 'description', 'price', 'payment_option', 'number_of_lessons', 'created_at', 'instructor_id', 'admin_id')
+            ->where('instructor_id', Auth::id())
+            ->orWhereHas('admin', function ($admin){
+                return $admin->where('tenant_id', Auth::user()->tenant_id);
+            })
             ->when($request->input('sort_by') && $request->input('sort_directions'), function ($q) use ($request){
                 return $q->orderBy($request->input('sort_by'), $request->input('sort_directions'));
             }, function ($q) {

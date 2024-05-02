@@ -73,5 +73,6 @@ Route::middleware([
         Route::get('/get-administrators', [\App\Http\Controllers\SchoolAdministrators\AdminController::class, 'getAdministrators'])->name('get-school-administrators');
         Route::get('/get-instructors', [\App\Http\Controllers\SchoolAdministrators\InstructorController::class, 'getInstructors'])->name('get-school-instructors');
         Route::get('/get-students', [\App\Http\Controllers\SchoolAdministrators\StudentController::class, 'getStudents'])->name('get-school-students');
+        Route::get('/get-courses', [\App\Http\Controllers\SchoolAdministrators\CourseController::class, 'getCourses'])->name('get-school-courses');
     });
 });

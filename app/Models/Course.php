@@ -18,6 +18,7 @@ class Course extends Model
         'price',
         'payment_option',
         'instructor_id',
+        'admin_id'
     ];
 
     protected $casts = [
@@ -43,7 +44,11 @@ class Course extends Model
         );
     }
 
-    protected function instructor(){
+    public function instructor(){
         return $this->belongsTo(User::class, 'instructor_id');
+    }
+
+    public function admin(){
+        return $this->belongsTo(User::class, 'admin_id');
     }
 }

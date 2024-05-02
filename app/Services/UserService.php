@@ -81,6 +81,11 @@ class UserService
                 'url' => route('school-administrators.students.index'),
                 'nested' => null
             ],
+            [
+                'name' => 'Courses',
+                'url' => route('school-administrators.courses.index'),
+                'nested' => null
+            ],
         ];
     }
 

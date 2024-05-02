@@ -7,7 +7,7 @@ export default function Breadcrumbs(props) {
             <>
                 {props.breadcrumbs && props.breadcrumbs.length &&
                     <>
-                        <nav className="flex" aria-label="Breadcrumb">
+                        <nav className="flex mt-7" aria-label="Breadcrumb">
                             <ol role="list" className="flex items-center space-x-4">
                                 <li>
                                     <div>

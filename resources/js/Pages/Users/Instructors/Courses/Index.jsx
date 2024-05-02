@@ -70,6 +70,12 @@ export default function Index(props) {
             sortField: 'price',
         },
         {
+            name: 'Created by',
+            selector: row => <>{row.instructor ? row.instructor.name : row.admin.name}</>,
+            sortable: true,
+            sortField: 'price',
+        },
+        {
             name: 'Date created',
             selector: row => <>{dayjs(row.created_at).format('DD/MM/YYYY HH:mm')}</>,
             sortable: true,
@@ -89,7 +95,9 @@ export default function Index(props) {
                         <div className="flex justify-between gap-3">
                             <Link href={route('instructors.courses.show', {course: row.id})} className="link">View</Link>
                             <Link href={route('instructors.courses.edit', {course: row.id})} className="link">Edit</Link>
-                            <a href="#" onClick={() => setDeleteModal(row.id)} className="link text-[red]">Delete</a>
+                            {row.instructor_id === props.auth.user.id &&
+                                <a href="#" onClick={() => setDeleteModal(row.id)} className="link text-[red]">Delete</a>
+                            }
                         </div>
                     </>
                 )
