@@ -135,7 +135,7 @@ export default function CreateForm(props) {
                     <InputText name="number_of_lessons" label="Number of lessons*"/>
                     <SelectDefault
                         options={props.payment_options}
-                        defaultValue={(props.payment_options && props.course) ? props.payment_options.find(x => x.value===props.course.payment_option) : null}
+                        defaultValue={(props.payment_options && props.course) ? props.payment_options.find(x => x.value===props.course.payment_option) : props.payment_options[0]}
                         label="Payment option"
                         name="payment_option"
                     />
