@@ -22,7 +22,20 @@ class StudentController extends Controller
      */
     public function index()
     {
+        $breadcrumbs = [
+            0 => [
+                'page' => 'Dashboard',
+                'url' => route('instructors.dashboard'),
+            ],
+            1 => [
+                'page' => 'Students',
+                'url' => route('instructors.students.index'),
+                'active' => true,
+            ],
+        ];
+        Inertia::share('layout.breadcrumbs', $breadcrumbs);
         Inertia::share('layout.active_page', ['Students']);
+
         return Inertia::render('Users/Instructors/Students/Index');
     }
 
@@ -48,6 +61,22 @@ class StudentController extends Controller
      */
     public function create()
     {
+        $breadcrumbs = [
+            0 => [
+                'page' => 'Dashboard',
+                'url' => route('instructors.dashboard'),
+            ],
+            1 => [
+                'page' => 'Students',
+                'url' => route('instructors.students.index'),
+            ],
+            2 => [
+                'page' => 'Create students',
+                'url' => route('instructors.students.create'),
+                'active' => true,
+            ],
+        ];
+        Inertia::share('layout.breadcrumbs', $breadcrumbs);
         Inertia::share('layout.active_page', ['Students']);
 
         $data['statuses'] = array_map(function ($status){
@@ -99,6 +128,22 @@ class StudentController extends Controller
      */
     public function show(User $student)
     {
+        $breadcrumbs = [
+            0 => [
+                'page' => 'Dashboard',
+                'url' => route('instructors.dashboard'),
+            ],
+            1 => [
+                'page' => 'Students',
+                'url' => route('instructors.students.index'),
+            ],
+            2 => [
+                'page' => $student->name,
+                'url' => route('instructors.students.show', ['student' => $student]),
+                'active' => true,
+            ],
+        ];
+        Inertia::share('layout.breadcrumbs', $breadcrumbs);
         Inertia::share('layout.active_page', ['Students']);
         $data['student'] = $student;
         return Inertia::render('Users/Instructors/Students/Show', $data);
@@ -109,6 +154,22 @@ class StudentController extends Controller
      */
     public function edit(User $student)
     {
+        $breadcrumbs = [
+            0 => [
+                'page' => 'Dashboard',
+                'url' => route('instructors.dashboard'),
+            ],
+            1 => [
+                'page' => 'Students',
+                'url' => route('instructors.students.index'),
+            ],
+            2 => [
+                'page' => $student->name,
+                'url' => route('instructors.students.edit', ['student' => $student]),
+                'active' => true,
+            ],
+        ];
+        Inertia::share('layout.breadcrumbs', $breadcrumbs);
         Inertia::share('layout.active_page', ['Students']);
 
         $data['student'] = $student;

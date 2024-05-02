@@ -24,7 +24,7 @@ export default function Header(props) {
 
     return (
         <>
-            <header className="bg-white border-b mb-10">
+            <header className="bg-white border-b">
                 <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-6" aria-label="Global">
                     <div className="flex items-center gap-x-12">
                         <a href={route('home')} className="flex items-center">

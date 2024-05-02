@@ -15,6 +15,18 @@ class BookingController extends Controller
      */
     public function index()
     {
+        $breadcrumbs = [
+            0 => [
+                'page' => 'Dashboard',
+                'url' => route('instructors.dashboard'),
+            ],
+            1 => [
+                'page' => 'Bookings',
+                'url' => route('instructors.bookings.index'),
+                'active' => true,
+            ],
+        ];
+        Inertia::share('layout.breadcrumbs', $breadcrumbs);
         Inertia::share('layout.active_page', ['Bookings']);
         return Inertia::render('Users/Instructors/Bookings/Index');
     }
@@ -58,6 +70,22 @@ class BookingController extends Controller
      */
     public function show(Booking $booking)
     {
+        $breadcrumbs = [
+            0 => [
+                'page' => 'Dashboard',
+                'url' => route('instructors.dashboard'),
+            ],
+            1 => [
+                'page' => 'Bookings',
+                'url' => route('instructors.bookings.index'),
+            ],
+            2 => [
+                'page' => 'View booking',
+                'url' => route('instructors.bookings.show', ['booking' => $booking]),
+                'active' => true,
+            ],
+        ];
+        Inertia::share('layout.breadcrumbs', $breadcrumbs);
         Inertia::share('layout.active_page', ['Bookings']);
 
         $data['booking'] = $booking->with('course', 'student')->first();

@@ -13,7 +13,7 @@ body > .main > #app{
     @apply w-full min-h-[100vh] flex flex-1 flex-col max-w-full
 }
 .mainWrapper .layout{
-    @apply mx-auto max-w-full md:max-w-7xl w-full flex flex-1 mt-[20px] relative z-[996];
+    @apply mx-auto max-w-full md:max-w-7xl w-full flex flex-1 relative z-[996];
 }
 .mainWrapper .layout.full{
     @apply max-w-none w-full

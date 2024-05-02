@@ -21,6 +21,18 @@ class AdminController extends Controller
      */
     public function index()
     {
+        $breadcrumbs = [
+            0 => [
+                'page' => 'Dashboard',
+                'url' => route('school-administrators.dashboard'),
+            ],
+            1 => [
+                'page' => 'Administrators',
+                'url' => route('school-administrators.administrators.index'),
+                'active' => true,
+            ],
+        ];
+        Inertia::share('layout.breadcrumbs', $breadcrumbs);
         Inertia::share('layout.active_page', ['Administrators']);
         return Inertia::render('Users/SchoolAdmins/Administrators/Index');
     }
@@ -47,6 +59,22 @@ class AdminController extends Controller
      */
     public function create()
     {
+        $breadcrumbs = [
+            0 => [
+                'page' => 'Dashboard',
+                'url' => route('school-administrators.dashboard'),
+            ],
+            1 => [
+                'page' => 'Administrators',
+                'url' => route('school-administrators.administrators.index'),
+            ],
+            2 => [
+                'page' => 'Create administrator',
+                'url' => route('school-administrators.administrators.create'),
+                'active' => true,
+            ],
+        ];
+        Inertia::share('layout.breadcrumbs', $breadcrumbs);
         Inertia::share('layout.active_page', ['Administrators']);
 
         $data['statuses'] = array_map(function ($status){
@@ -96,7 +124,24 @@ class AdminController extends Controller
      */
     public function show(User $administrator)
     {
+        $breadcrumbs = [
+            0 => [
+                'page' => 'Dashboard',
+                'url' => route('school-administrators.dashboard'),
+            ],
+            1 => [
+                'page' => 'Administrators',
+                'url' => route('school-administrators.administrators.index'),
+            ],
+            2 => [
+                'page' => $administrator->name,
+                'url' => route('school-administrators.administrators.show', ['administrator' => $administrator]),
+                'active' => true,
+            ],
+        ];
+        Inertia::share('layout.breadcrumbs', $breadcrumbs);
         Inertia::share('layout.active_page', ['Administrators']);
+
         $data['administrator'] = $administrator;
         return Inertia::render('Users/SchoolAdmins/Administrators/Show', $data);
     }
@@ -106,6 +151,22 @@ class AdminController extends Controller
      */
     public function edit(User $administrator)
     {
+        $breadcrumbs = [
+            0 => [
+                'page' => 'Dashboard',
+                'url' => route('school-administrators.dashboard'),
+            ],
+            1 => [
+                'page' => 'Administrators',
+                'url' => route('school-administrators.administrators.index'),
+            ],
+            2 => [
+                'page' => $administrator->name,
+                'url' => route('school-administrators.administrators.edit', ['administrator' => $administrator]),
+                'active' => true,
+            ],
+        ];
+        Inertia::share('layout.breadcrumbs', $breadcrumbs);
         Inertia::share('layout.active_page', ['Administrators']);
 
         $data['administrator'] = $administrator;

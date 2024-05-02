@@ -23,6 +23,18 @@ class CourseController extends Controller
      */
     public function index()
     {
+        $breadcrumbs = [
+            0 => [
+                'page' => 'Dashboard',
+                'url' => route('instructors.dashboard'),
+            ],
+            1 => [
+                'page' => 'Courses',
+                'url' => route('instructors.courses.index'),
+                'active' => true,
+            ],
+        ];
+        Inertia::share('layout.breadcrumbs', $breadcrumbs);
         Inertia::share('layout.active_page', ['Courses']);
 
         $data['students'] = Auth::user()->students()->pluck('users.email', 'users.id');
@@ -51,6 +63,22 @@ class CourseController extends Controller
      */
     public function create()
     {
+        $breadcrumbs = [
+            0 => [
+                'page' => 'Dashboard',
+                'url' => route('instructors.dashboard'),
+            ],
+            1 => [
+                'page' => 'Courses',
+                'url' => route('instructors.courses.index'),
+            ],
+            2 => [
+                'page' => 'Create course',
+                'url' => route('instructors.courses.create'),
+                'active' => true,
+            ],
+        ];
+        Inertia::share('layout.breadcrumbs', $breadcrumbs);
         Inertia::share('layout.active_page', ['Courses']);
 
         $data['payment_options'] = array_map(function ($option){
@@ -131,6 +159,22 @@ class CourseController extends Controller
      */
     public function edit(Course $course)
     {
+        $breadcrumbs = [
+            0 => [
+                'page' => 'Dashboard',
+                'url' => route('instructors.dashboard'),
+            ],
+            1 => [
+                'page' => 'Courses',
+                'url' => route('instructors.courses.index'),
+            ],
+            2 => [
+                'page' => $course->name,
+                'url' => route('instructors.courses.edit', ['course' => $course]),
+                'active' => true,
+            ],
+        ];
+        Inertia::share('layout.breadcrumbs', $breadcrumbs);
         Inertia::share('layout.active_page', ['Courses']);
 
         $data['course'] = $course;

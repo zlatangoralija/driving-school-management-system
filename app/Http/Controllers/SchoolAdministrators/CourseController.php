@@ -13,7 +13,20 @@ class CourseController extends Controller
      */
     public function index()
     {
+        $breadcrumbs = [
+            0 => [
+                'page' => 'Dashboard',
+                'url' => route('school-administrators.dashboard'),
+            ],
+            1 => [
+                'page' => 'Courses',
+                'url' => route('school-administrators.courses.index'),
+                'active' => true,
+            ],
+        ];
+        Inertia::share('layout.breadcrumbs', $breadcrumbs);
         Inertia::share('layout.active_page', ['Courses']);
+
         return Inertia::render('Users/SchoolAdmins/Courses/Index');
     }
 

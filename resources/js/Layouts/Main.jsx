@@ -3,6 +3,7 @@ import Footer from "../Components/Footer.jsx";
 import Sidebar from "@/Components/Sidebar.jsx";
 import Layout from "@/Components/Layout.jsx";
 import React from "react";
+import Breadcrumbs from "@/Components/Breadcrumbs.jsx";
 
 export default function Main({ children }) {
     const [ expandSidebar, setExpandSidebar ] = React.useState(true)
@@ -24,6 +25,7 @@ export default function Main({ children }) {
                     }
 
                     <div className={`mainContent`}>
+                        <Breadcrumbs breadcrumbs={children.props.layout.breadcrumbs}/>
                         {children}
                     </div>
                 </Layout>

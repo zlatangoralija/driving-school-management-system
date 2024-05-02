@@ -26,7 +26,20 @@ class SettingsController extends Controller
      */
     public function index()
     {
+        $breadcrumbs = [
+            0 => [
+                'page' => 'Dashboard',
+                'url' => route('school-administrators.dashboard'),
+            ],
+            1 => [
+                'page' => 'School settings',
+                'url' => route('school-administrators.settings.index'),
+                'active' => true,
+            ],
+        ];
+        Inertia::share('layout.breadcrumbs', $breadcrumbs);
         Inertia::share('layout.active_page', ['School settings']);
+
         $data['school'] = Auth::user()->tenant;
         $subscription = Auth::user()->subscriptions()->first();
         if($subscription){

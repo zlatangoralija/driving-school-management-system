@@ -15,6 +15,18 @@ class InvitationController extends Controller
      */
     public function index()
     {
+        $breadcrumbs = [
+            0 => [
+                'page' => 'Dashboard',
+                'url' => route('students.dashboard'),
+            ],
+            1 => [
+                'page' => 'Invitations',
+                'url' => route('students.invitations.index'),
+                'active' => true,
+            ],
+        ];
+        Inertia::share('layout.breadcrumbs', $breadcrumbs);
         Inertia::share('layout.active_page', ['Invitations']);
         return Inertia::render('Users/Students/Invitations/Index');
     }
