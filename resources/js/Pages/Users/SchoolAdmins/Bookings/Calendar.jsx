@@ -8,6 +8,7 @@ import moment from 'moment-timezone';
 import momentTimezonePlugin from '@fullcalendar/moment-timezone'
 import utc from "dayjs/plugin/utc.js";
 import timezone from "dayjs/plugin/timezone.js";
+import {timezoneDate} from "@/Components/Helpers.jsx";
 
 const roundMinutesToNearestTen = (time) => {
     const minutes = time.minute(); // Get the minutes
@@ -95,8 +96,8 @@ export default function Calendar(props) {
                             <p className="text-lg">Here are the event details:</p>
                             <ul>
                                 <li>Event: {eventModal.title}</li>
-                                <li>Start: {dayjs(eventModal.start).tz(tz).format('DD/MM/YYYY H:mm')}</li>
-                                <li>End: {dayjs(eventModal.end).tz(tz).format('DD/MM/YYYY H:mm')}</li>
+                                <li>Start: {timezoneDate(eventModal.start).format('DD/MM/YYYY H:mm')}</li>
+                                <li>End: {timezoneDate(eventModal.end).format('DD/MM/YYYY H:mm')}</li>
                             </ul>
                         </div>
                     }

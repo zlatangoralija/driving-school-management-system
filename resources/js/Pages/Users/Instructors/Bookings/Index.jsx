@@ -6,6 +6,7 @@ import FlashNotification from "@/Components/FlashNotification.jsx";
 import moment from "moment-timezone";
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
+import {timezoneDate} from "@/Components/Helpers.jsx";
 
 export default function Index(props) {
     const wrapperRef = React.useRef(null)
@@ -47,13 +48,13 @@ export default function Index(props) {
         },
         {
             name: 'Start time',
-            selector: row => <>{dayjs(row.start_time).tz(tz).format('DD/MM/YYYY H:mm')}</>,
+            selector: row => <>{timezoneDate(row.start_time).format('DD/MM/YYYY H:mm')}</>,
             sortable: true,
             sortField: 'start_time',
         },
         {
             name: 'End time',
-            selector: row => <>{dayjs(row.end_time).tz(tz).format('DD/MM/YYYY H:mm')}</>,
+            selector: row => <>{timezoneDate(row.end_time).format('DD/MM/YYYY H:mm')}</>,
             sortable: true,
             sortField: 'end_time',
         },
@@ -71,7 +72,7 @@ export default function Index(props) {
         },
         {
             name: 'Date created',
-            selector: row => <>{dayjs(row.created_at).format('DD/MM/YYYY HH:mm')}</>,
+            selector: row => <>{timezoneDate(row.created_at).format('DD/MM/YYYY HH:mm')}</>,
             sortable: true,
             sortField: 'created_at',
         },

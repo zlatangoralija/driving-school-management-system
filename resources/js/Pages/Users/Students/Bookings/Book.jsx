@@ -1,10 +1,20 @@
 import React from "react";
 import {Head, router, usePage} from "@inertiajs/react";
 import DatePicker from "react-datepicker";
-import { addHours, setMinutes, setSeconds, setMilliseconds } from 'date-fns';
+import {addHours, setHours, setMilliseconds, setMinutes, setSeconds} from 'date-fns';
 import "react-datepicker/dist/react-datepicker.css";
 import Modal from "@/Components/Modal.jsx";
 import FlashNotification from "@/Components/FlashNotification.jsx";
+import moment from "moment-timezone";
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+
+const tz = moment.tz.guess();
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.tz.setDefault(tz);
 
 export default function Book(props) {
     const [ successNotice, setSuccessNotice ] = React.useState(null)
@@ -15,25 +25,30 @@ export default function Book(props) {
     const [bookingModal, setBookingModal] = React.useState(false);
 
     const [startDate, setStartDate] = React.useState(() => {
-        // Get the current date
         const currentDate = new Date();
-
-        // Add one hour
         const plusOneHour = addHours(currentDate, 1);
-
-        // Set minutes, seconds, and milliseconds to zero for a clean start
-        const cleanStart = setMilliseconds(setSeconds(setMinutes(plusOneHour, 0), 0), 0);
-
-        return cleanStart; // This will be the initial state for `startDate`
+        return setMilliseconds(setSeconds(setMinutes(plusOneHour, 0), 0), 0);
     });
 
     const filterPassedTime = (time) => {
+        //TODO: helper function for all dayjs calls, which will apply timezone by default, so we dont have to re-write this every time
+        //TODO: Validate booking times in backend as well!!
+
         const currentDate = new Date();
         const selectedDate = new Date(time);
 
-        return currentDate.getTime() < selectedDate.getTime();
-    };
+        const excluded = props.excluded_slots.map(time => setHours(setMinutes(new Date(time.date), time.minutes), time.hours))
 
+        const convertedDates = excluded.map(dateStr => {
+            const originalFormat = 'YYYY-MM-DD HH:mm:ss';
+            const parsedDate = dayjs(dateStr, 'ddd MMM DD YYYY HH:mm:ss [GMT]ZZ').format(originalFormat);
+            const muscatDate = dayjs.utc(parsedDate, originalFormat).tz(tz);
+            return muscatDate.toDate();
+        });
+
+        const isTimeInArray = convertedDates.some(date => date.getTime() === time.getTime());
+        return !isTimeInArray && currentDate.getTime() < selectedDate.getTime();
+    };
 
     const submit = async(data) => {
         try{

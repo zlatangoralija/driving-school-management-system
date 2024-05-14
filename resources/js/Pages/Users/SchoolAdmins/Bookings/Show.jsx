@@ -1,17 +1,8 @@
 import {Head} from "@inertiajs/react";
 import React from "react";
-import moment from "moment-timezone";
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc.js";
-import timezone from "dayjs/plugin/timezone.js";
+import {timezoneDate} from "@/Components/Helpers.jsx";
 
 export default function Show(props) {
-    const tz = moment.tz.guess();
-
-    dayjs.extend(utc);
-    dayjs.extend(timezone);
-    dayjs.tz.setDefault(tz);
-
     return (
         <>
             <Head title="Bookings" />
@@ -27,8 +18,8 @@ export default function Show(props) {
                 <p>Student: {props.booking.student.name}</p>
                 <p>Instructor: {props.booking.instructor.name}</p>
                 <p>Course: {props.booking.course.name}</p>
-                <p>Start time: {dayjs(props.booking.start_time).tz(tz).format('DD/MM/YYYY H:mm')}</p>
-                <p>End time: {dayjs(props.booking.end_time).tz(tz).format('DD/MM/YYYY H:mm')}</p>
+                <p>Start time: {timezoneDate(props.booking.start_time).format('DD/MM/YYYY H:mm')}</p>
+                <p>End time: {timezoneDate(props.booking.end_time).format('DD/MM/YYYY H:mm')}</p>
             </div>
         </>
     );

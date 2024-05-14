@@ -6,8 +6,7 @@ import dayjs from "dayjs";
 import Modal from "@/Components/Modal.jsx";
 import moment from 'moment-timezone';
 import momentTimezonePlugin from '@fullcalendar/moment-timezone'
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
+import {timezoneDate} from "@/Components/Helpers.jsx";
 
 const roundMinutesToNearestTen = (time) => {
     const minutes = time.minute(); // Get the minutes
@@ -15,14 +14,16 @@ const roundMinutesToNearestTen = (time) => {
     return time.minute(0).second(0); // Set rounded minutes and reset seconds
 };
 
+const tz = moment.tz.guess();
+
 export default function Calendar(props) {
     const [eventModal, setEventModal] = React.useState(null);
 
-    const tz = moment.tz.guess();
-
-    dayjs.extend(utc);
-    dayjs.extend(timezone);
-    dayjs.tz.setDefault(tz);
+    const bookings = props.bookings.map(booking => ({
+        ...booking,
+        start: timezoneDate(booking.start).format('YYYY-MM-DD HH:mm:ss'),
+        end: timezoneDate(booking.end).format('YYYY-MM-DD HH:mm:ss')
+    }));
 
     const formatter = new Intl.DateTimeFormat('en-GB', {
         timeZone: tz, // Set the desired timezone
@@ -71,7 +72,7 @@ export default function Calendar(props) {
                 }}
                 allDaySlot={false}
                 initialView="timeGridWeek"
-                events={props.bookings}
+                events={bookings}
                 slotDuration='00:10:00'
                 nowIndicator
                 eventDisplay="block"
@@ -80,7 +81,6 @@ export default function Calendar(props) {
                 scrollTime={formatted}
                 timeZone={tz}
                 eventClick={(info) => {
-                    console.log(info.event.start, info.event.end)
                     setEventModal(info.event)
                 }}
             />
@@ -96,8 +96,8 @@ export default function Calendar(props) {
                             <p className="text-lg">Here are the event details:</p>
                             <ul>
                                 <li>Event: {eventModal.title}</li>
-                                <li>Start: {dayjs(eventModal.start).tz(tz).format('DD/MM/YYYY H:mm')}</li>
-                                <li>End: {dayjs(eventModal.end).tz(tz).format('DD/MM/YYYY H:mm')}</li>
+                                <li>Start: {timezoneDate(eventModal.start).format('DD/MM/YYYY H:mm')}</li>
+                                <li>End: {timezoneDate(eventModal.end).format('DD/MM/YYYY H:mm')}</li>
                             </ul>
                         </div>
                     }

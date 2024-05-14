@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Students;
 
+use App\Enums\UserType;
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use App\Models\BookingInvitation;
 use App\Models\Course;
+use App\Models\User;
 use App\Notifications\NewBookingInstructor;
 use App\Notifications\NewBookingStudent;
 use Carbon\Carbon;
@@ -108,6 +110,36 @@ class BookingController extends Controller
         Inertia::share('layout.active_page', ['Bookings']);
 
         $data['course'] = $course;
+
+        $events = Booking::where('instructor_id', $course->instructor_id)
+            ->where('start_time', '>=', Carbon::now())
+            ->get();
+
+        $excludeTimes = [];
+
+        foreach ($events as $event) {
+            // Convert start_time and end_time strings to Carbon instances
+            $startTime = Carbon::parse($event['start_time']);
+            $endTime = Carbon::parse($event['end_time']);
+
+            $eventDate = $startTime->format('Y-m-d');
+
+            // Loop through each minute between start and end times
+            while ($startTime->lte($endTime)) {
+                // Add the time to the excludeTimes array, along with the event date
+                $excludeTimes[] = [
+                    'date' =>  $eventDate,
+                    'hours' => $startTime->hour,
+                    'minutes' => $startTime->minute
+                ];
+
+                // Move to the next 30-minute interval
+                $startTime->addMinutes(30);
+            }
+        }
+
+        $data['excluded_slots'] = $excludeTimes;
+
         return Inertia::render('Users/Students/Bookings/Book', $data);
     }
 

@@ -8,6 +8,7 @@ import {Form} from "@unform/web";
 import SelectDefault from "@/Components/SelectDefault.jsx";
 import * as Yup from "yup";
 import InputText from "@/Components/InputText.jsx";
+import {timezoneDate} from "@/Components/Helpers.jsx";
 
 export default function Index(props) {
     const wrapperRef = React.useRef(null)
@@ -77,7 +78,7 @@ export default function Index(props) {
         },
         {
             name: 'Date created',
-            selector: row => <>{dayjs(row.created_at).format('DD/MM/YYYY HH:mm')}</>,
+            selector: row => <>{timezoneDate(row.created_at).format('DD/MM/YYYY HH:mm')}</>,
             sortable: true,
             sortField: 'created_at',
         },

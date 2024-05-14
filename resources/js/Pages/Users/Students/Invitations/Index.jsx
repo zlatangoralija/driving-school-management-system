@@ -1,16 +1,8 @@
 import React from "react";
 import {Head, Link, router, usePage} from "@inertiajs/react";
 import DataTableComponent from "@/Components/DataTable.jsx";
-import dayjs from "dayjs";
-import Modal from "@/Components/Modal.jsx";
 import FlashNotification from "@/Components/FlashNotification.jsx";
-import {Form} from "@unform/web";
-import SelectDefault from "@/Components/SelectDefault.jsx";
-import * as Yup from "yup";
-import InputText from "@/Components/InputText.jsx";
-import moment from "moment-timezone";
-import utc from "dayjs/plugin/utc.js";
-import timezone from "dayjs/plugin/timezone.js";
+import {timezoneDate} from "@/Components/Helpers.jsx";
 
 export default function Index(props) {
     const wrapperRef = React.useRef(null)
@@ -20,12 +12,6 @@ export default function Index(props) {
 
     const [ search, setSearch ] = React.useState('')
     const [ filters, setFilters ] = React.useState()
-
-    const tz = moment.tz.guess();
-
-    dayjs.extend(utc);
-    dayjs.extend(timezone);
-    dayjs.tz.setDefault(tz);
 
     React.useEffect(()=>{
         if(flash && Object.keys(flash).length){
@@ -64,7 +50,7 @@ export default function Index(props) {
         },
         {
             name: 'Date created',
-            selector: row => <>{dayjs(row.created_at).tz(tz).format('DD/MM/YYYY HH:mm')}</>,
+            selector: row => <>{timezoneDate(row.created_at).format('DD/MM/YYYY HH:mm')}</>,
             sortable: true,
             sortField: 'created_at',
         },

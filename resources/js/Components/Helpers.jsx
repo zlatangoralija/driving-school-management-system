@@ -1,5 +1,14 @@
 import React from "react";
 import {Link} from "@inertiajs/react";
+import moment from "moment-timezone";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc.js";
+import timezone from "dayjs/plugin/timezone.js";
+
+const tz = moment.tz.guess();
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.tz.setDefault(tz);
 
 export const _inArray = (needle, haystack) => {
     var length = haystack.length;
@@ -130,4 +139,8 @@ export const _navItem = (data, index, active_page=[]) => {
         </li>
     )
 
+}
+
+export const timezoneDate = function(date) {
+    return dayjs.utc(date).tz(tz)
 }

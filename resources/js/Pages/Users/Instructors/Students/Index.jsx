@@ -4,6 +4,7 @@ import DataTableComponent from "@/Components/DataTable.jsx";
 import dayjs from "dayjs";
 import Modal from "@/Components/Modal.jsx";
 import FlashNotification from "@/Components/FlashNotification.jsx";
+import {timezoneDate} from "@/Components/Helpers.jsx";
 
 export default function Index(props) {
     const wrapperRef = React.useRef(null)
@@ -52,7 +53,7 @@ export default function Index(props) {
         },
         {
             name: 'Date created',
-            selector: row => <>{dayjs(row.created_at).format('DD/MM/YYYY HH:mm')}</>,
+            selector: row => <>{timezoneDate(row.created_at).format('DD/MM/YYYY HH:mm')}</>,
             sortable: true,
             sortField: 'created_at',
         },
