@@ -18,7 +18,6 @@ export default function CreateForm(props) {
     const [ successNotice, setSuccessNotice ] = React.useState(null)
     const [ errorNotice, setErrorNotice ] = React.useState(null)
 
-    console.log(props)
     const submit = async() => {
         try{
             const formData = formRef.current.getData();

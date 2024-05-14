@@ -1,13 +1,15 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Checkbox from '@/Components/Checkbox';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import { Head, Link, useForm } from '@inertiajs/react';
+import {Head, Link, useForm, usePage} from '@inertiajs/react';
 import Logo from "../../../images/full-logo-vertical.png";
+import FlashNotification from "@/Components/FlashNotification.jsx";
 
 export default function Login({ status, canResetPassword }) {
+
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
@@ -38,7 +40,7 @@ export default function Login({ status, canResetPassword }) {
                 </div>
 
                 <div className="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
-                    {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
+                    {status && <div className="mb-4 font-medium text-sm text-red-600 text-center">{status}</div>}
 
                     <form onSubmit={submit}>
                         <div>
