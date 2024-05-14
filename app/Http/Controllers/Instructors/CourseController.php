@@ -153,9 +153,28 @@ class CourseController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Course $course)
     {
-        //
+        $breadcrumbs = [
+            0 => [
+                'page' => 'Dashboard',
+                'url' => route('instructors.dashboard'),
+            ],
+            1 => [
+                'page' => 'Courses',
+                'url' => route('instructors.courses.index'),
+            ],
+            2 => [
+                'page' => $course->name,
+                'url' => route('instructors.courses.show', ['course' => $course]),
+                'active' => true,
+            ],
+        ];
+        Inertia::share('layout.breadcrumbs', $breadcrumbs);
+        Inertia::share('layout.active_page', ['Courses']);
+
+        $data['course'] = $course;
+        return Inertia::render('Users/Instructors/Courses/Show', $data);
     }
 
     /**
