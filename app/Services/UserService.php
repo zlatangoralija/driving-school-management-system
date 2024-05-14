@@ -108,7 +108,7 @@ class UserService
             ],
             [
                 'name' => 'Bookings',
-                'url' => route('instructors.bookings.index'),
+                'url' => route('instructors.bookings-calendar'),
                 'nested' => null
             ],
             [
@@ -128,7 +128,7 @@ class UserService
             ],
             [
                 'name' => 'Bookings',
-                'url' => route('students.bookings.index'),
+                'url' => route('students.bookings-calendar'),
                 'nested' => null
             ],
             [
