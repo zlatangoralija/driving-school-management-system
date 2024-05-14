@@ -30,23 +30,23 @@ export default function Book(props) {
         return setMilliseconds(setSeconds(setMinutes(plusOneHour, 0), 0), 0);
     });
 
+    let isTimeInArray = false;
     const filterPassedTime = (time) => {
-        //TODO: helper function for all dayjs calls, which will apply timezone by default, so we dont have to re-write this every time
-        //TODO: Validate booking times in backend as well!!
-
         const currentDate = new Date();
         const selectedDate = new Date(time);
 
-        const excluded = props.excluded_slots.map(time => setHours(setMinutes(new Date(time.date), time.minutes), time.hours))
+        if(props.excluded_slots && props.excluded_slots.length){
+            const excluded = props.excluded_slots.map(time => setHours(setMinutes(new Date(time.date), time.minutes), time.hours))
 
-        const convertedDates = excluded.map(dateStr => {
-            const originalFormat = 'YYYY-MM-DD HH:mm:ss';
-            const parsedDate = dayjs(dateStr, 'ddd MMM DD YYYY HH:mm:ss [GMT]ZZ').format(originalFormat);
-            const muscatDate = dayjs.utc(parsedDate, originalFormat).tz(tz);
-            return muscatDate.toDate();
-        });
+            const convertedDates = excluded.map(dateStr => {
+                const originalFormat = 'YYYY-MM-DD HH:mm:ss';
+                const parsedDate = dayjs(dateStr, 'ddd MMM DD YYYY HH:mm:ss [GMT]ZZ').format(originalFormat);
+                const muscatDate = dayjs.utc(parsedDate, originalFormat).tz(tz);
+                return muscatDate.toDate();
+            });
 
-        const isTimeInArray = convertedDates.some(date => date.getTime() === time.getTime());
+            isTimeInArray = convertedDates.some(date => date.getTime() === time.getTime());
+        }
         return !isTimeInArray && currentDate.getTime() < selectedDate.getTime();
     };
 

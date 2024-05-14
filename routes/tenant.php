@@ -54,6 +54,7 @@ Route::middleware([
         Route::resource('/students', \App\Http\Controllers\Instructors\StudentController::class);
         Route::resource('/courses', \App\Http\Controllers\Instructors\CourseController::class);
         Route::resource('/bookings', \App\Http\Controllers\Instructors\BookingController::class);
+        Route::resource('/availability-breaks', \App\Http\Controllers\Instructors\AvailabilityBreakController::class);
 
         //Booking calendar view
         Route::get('/bookings-calendar', [\App\Http\Controllers\Instructors\BookingController::class, 'calendar'])->name('bookings-calendar');
@@ -65,6 +66,7 @@ Route::middleware([
         Route::get('/get-students', [\App\Http\Controllers\Instructors\StudentController::class, 'getStudents'])->name('get-instructor-students');
         Route::get('/get-bookings', [\App\Http\Controllers\Instructors\BookingController::class, 'getBookings'])->name('get-instructor-bookings');
         Route::get('/get-courses', [\App\Http\Controllers\Instructors\CourseController::class, 'getCourses'])->name('get-instructor-courses');
+        Route::get('/get-availability-breaks', [\App\Http\Controllers\Instructors\AvailabilityBreakController::class, 'getBreaks'])->name('get-availability-breaks');
     });
 
     Route::prefix('school-administrators')->middleware(['auth', 'dashboard-middleware'])->name('school-administrators.')->group(function () {

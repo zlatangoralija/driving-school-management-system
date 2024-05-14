@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Students;
 
 use App\Enums\UserType;
 use App\Http\Controllers\Controller;
+use App\Models\AvailabilityBreak;
 use App\Models\Booking;
 use App\Models\BookingInvitation;
 use App\Models\Course;
@@ -115,6 +116,9 @@ class BookingController extends Controller
             ->where('start_time', '>=', Carbon::now())
             ->get();
 
+        $breaks = AvailabilityBreak::where('user_id', $course->instructor_id)
+            ->get();
+
         $excludeTimes = [];
 
         foreach ($events as $event) {
@@ -131,6 +135,28 @@ class BookingController extends Controller
                     'date' =>  $eventDate,
                     'hours' => $startTime->hour,
                     'minutes' => $startTime->minute
+                ];
+
+                // Move to the next 30-minute interval
+                $startTime->addMinutes(30);
+            }
+        }
+
+        foreach ($breaks as $break){
+            // Convert start_time and end_time strings to Carbon instances
+            $startTime = Carbon::parse($break['start_time']);
+            $endTime = Carbon::parse($break['end_time']);
+
+            $breakDate = $startTime->format('Y-m-d');
+
+            // Loop through each minute between start and end times
+            while ($startTime->lte($endTime)) {
+                // Add the time to the excludeTimes array, along with the event date
+                $excludeTimes[] = [
+                    'date' =>  $breakDate,
+                    'hours' => $startTime->hour,
+                    'minutes' => $startTime->minute,
+                    'message' => $break->reason
                 ];
 
                 // Move to the next 30-minute interval

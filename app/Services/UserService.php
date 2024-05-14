@@ -112,6 +112,11 @@ class UserService
                 'nested' => null
             ],
             [
+                'name' => 'Availability breaks',
+                'url' => route('instructors.availability-breaks.index'),
+                'nested' => null
+            ],
+            [
                 'name' => 'Courses',
                 'url' => route('instructors.courses.index'),
                 'nested' => null

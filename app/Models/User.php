@@ -87,4 +87,8 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->belongsToMany(User::class,'instructor_students','student_id', 'instructor_id');
     }
+
+    public function availabilityBreaks(){
+        return $this->hasMany(AvailabilityBreak::class);
+    }
 }
