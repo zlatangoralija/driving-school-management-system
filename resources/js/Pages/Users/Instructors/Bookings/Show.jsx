@@ -16,8 +16,8 @@ export default function Show(props) {
             </div>
 
             <div className="card grid grid-cols-0 md:grid-cols-0 gap-6 p-5 mb-3">
-                <p>Student: {props.booking.student.name}</p>
-                <p>Course: {props.booking.course.name}</p>
+                <p>Student: {props.booking?.student?.name}</p>
+                <p>Course: {props.booking?.course?.name}</p>
                 <p>Start time: {timezoneDate(props.booking.start_time).format('DD/MM/YYYY H:mm')}</p>
                 <p>End time: {timezoneDate(props.booking.end_time).format('DD/MM/YYYY H:mm')}</p>
             </div>
