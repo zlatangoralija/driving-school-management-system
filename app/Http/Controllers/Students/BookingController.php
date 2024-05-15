@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
 class BookingController extends Controller
@@ -192,6 +193,30 @@ class BookingController extends Controller
             $startTime = Carbon::parse($request->input('start_time'));
             $endTime = $startTime->copy()->addMinutes(30);
 
+            //First check that there are no other events booked at this timeslot
+            $existing = Booking::where('instructor_id', $course->instructor_id)
+                ->where('start_time', $startTime)
+                ->orWhere('end_time', $startTime)
+                ->first();
+
+            if($existing){
+                throw ValidationException::withMessages([
+                    'start_time' => ['Booking slot already taken. Please select another slot.'],
+                ]);
+            }
+
+            //Then check if there is break on this timeslot
+            $break = AvailabilityBreak::where('user_id', $course->instructor_id)
+                ->where('start_time', $startTime)
+                ->orWhere('end_time', $startTime)
+                ->first();
+
+            if($break){
+                throw ValidationException::withMessages([
+                    'start_time' => ['Instructor is not available at the selected slot. Please select another slot.'],
+                ]);
+            }
+
             $booking = Booking::create([
                 'start_time' => $startTime,
                 'end_time' => $endTime,
@@ -231,7 +256,7 @@ class BookingController extends Controller
             Log::info($exception->getTraceAsString());
 
             return redirect()->back()
-                ->with('error', ['There was an error creating a booking.']);
+                ->with('error', isset($exception->validator) ? [$exception->getMessage()] :  ['There was an error creating a booking.']);
         }
     }
 

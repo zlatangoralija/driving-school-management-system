@@ -25,7 +25,9 @@ class Booking extends Model
     ];
 
     protected $casts = [
-        'status' => BookingStatus::class
+        'status' => BookingStatus::class,
+        'start_time' => 'datetime',
+        'end_time' => 'datetime',
     ];
 
     protected $appends = [

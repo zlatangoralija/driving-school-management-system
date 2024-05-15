@@ -98,6 +98,8 @@ export default function Book(props) {
         }
     },[flash])
 
+    console.log(flash);
+
     return (
         <>
             <Head title={"Book " + props.course.name}/>
