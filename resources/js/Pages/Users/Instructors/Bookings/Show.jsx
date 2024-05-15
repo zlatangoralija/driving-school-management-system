@@ -4,6 +4,9 @@ import moment from "moment-timezone";
 import {timezoneDate} from "@/Components/Helpers.jsx";
 
 export default function Show(props) {
+
+    console.log(props);
+
     return (
         <>
             <Head title="Bookings" />
