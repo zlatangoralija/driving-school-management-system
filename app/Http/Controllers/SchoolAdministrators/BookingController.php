@@ -125,7 +125,7 @@ class BookingController extends Controller
         Inertia::share('layout.breadcrumbs', $breadcrumbs);
         Inertia::share('layout.active_page', ['Bookings']);
 
-        $data['booking'] = $booking->with('course', 'instructor', 'student')->first();
+        $data['booking'] = $booking->load('course', 'instructor', 'student');
         return Inertia::render('Users/SchoolAdmins/Bookings/Show', $data);
     }
 
