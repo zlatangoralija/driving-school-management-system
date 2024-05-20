@@ -3,6 +3,9 @@
 namespace App\Services;
 
 use App\Enums\UserType;
+use App\Models\AvailabilityBreak;
+use App\Models\Booking;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class UserService
@@ -142,5 +145,65 @@ class UserService
                 'nested' => null
             ],
         ];
+    }
+
+    public static function getInstructorUnavailableSlots($id){
+        $events = Booking::where('instructor_id', $id)
+            ->where('start_time', '>=', Carbon::now())
+            ->get();
+
+        $breaks = AvailabilityBreak::where('user_id', $id)
+            ->get();
+
+        $excludeTimes = [];
+
+        foreach ($events as $event) {
+            // Convert start_time and end_time strings to Carbon instances
+            $startTime = Carbon::parse($event['start_time']);
+            $endTime = Carbon::parse($event['end_time']);
+
+            $eventDate = $startTime->format('Y-m-d');
+
+            // Loop through each minute between start and end times
+            while ($startTime->lte($endTime)) {
+                // Add the time to the excludeTimes array, along with the event date
+                $excludeTimes[] = [
+                    'date' =>  $eventDate,
+                    'hours' => $startTime->hour,
+                    'minutes' => $startTime->minute
+                ];
+
+                // Move to the next 30-minute interval
+                $startTime->addMinutes(30);
+            }
+        }
+
+        foreach ($breaks as $break){
+            // Convert start_time and end_time strings to Carbon instances
+            $startTime = Carbon::parse($break['start_time']);
+            $endTime = Carbon::parse($break['end_time']);
+
+            $breakDate = $startTime->format('Y-m-d');
+
+            // Loop through each minute between start and end times
+            while ($startTime->lte($endTime)) {
+                // Add the time to the excludeTimes array, along with the event date
+                $excludeTimes[] = [
+                    'date' =>  $breakDate,
+                    'hours' => $startTime->hour,
+                    'minutes' => $startTime->minute,
+                    'message' => $break->reason
+                ];
+
+                // Move to the next 30-minute interval
+                $startTime->addMinutes(30);
+            }
+        }
+
+        return $excludeTimes;
+    }
+
+    public static function getStudentUnavailableSlots($id){
+
     }
 }

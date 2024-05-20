@@ -9,6 +9,8 @@ import moment from "moment-timezone";
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
+import {timezoneDate} from "@/Components/Helpers.jsx";
+
 
 const tz = moment.tz.guess();
 
@@ -52,9 +54,9 @@ export default function Book(props) {
 
     const submit = async(data) => {
         try{
-
             //Get invitation ID, if student is coming to book from invitation
             let invitation_id = null;
+            let booking_id = props.booking.id
             const search = window.location.search;
             const params = new URLSearchParams(search);
             if(search && params){
@@ -67,15 +69,24 @@ export default function Book(props) {
                 invitation_id: invitation_id,
             }
 
-            router.post(route('students.bookings.store'), finalData, {
-                onError: (errors) => {
-                    console.log(errors);
-                }
-            })
+            if(booking_id){
+                router.patch(route('students.bookings.update', {'booking': booking_id}), finalData, {
+                    onError: (errors) => {
+                        console.log(errors);
+                    }
+                })
+            }else{
+                router.post(route('students.bookings.store'), finalData, {
+                    onError: (errors) => {
+                        console.log(errors);
+                    }
+                })
+            }
 
             return
 
         } catch (err) {
+            console.log(err);
             wrapperRef.current.scrollIntoView({ behavior: 'smooth' })
         }
 
@@ -97,8 +108,6 @@ export default function Book(props) {
             }
         }
     },[flash])
-
-    console.log(flash);
 
     return (
         <>
@@ -153,7 +162,7 @@ export default function Book(props) {
                         <p className="text-lg">You're about to book {props.course.name}</p>
                         <p>Booking details:</p>
                         <ul>
-                            <li>Start:</li>
+                            <li>Start: {timezoneDate(startDate).format('DD/MM/YYYY H:mm')}</li>
                         </ul>
                     </div>
                 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Students;
 
+use App\Enums\BookingStatus;
 use App\Enums\UserType;
 use App\Http\Controllers\Controller;
 use App\Models\AvailabilityBreak;
@@ -11,6 +12,7 @@ use App\Models\Course;
 use App\Models\User;
 use App\Notifications\NewBookingInstructor;
 use App\Notifications\NewBookingStudent;
+use App\Services\UserService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -113,59 +115,7 @@ class BookingController extends Controller
 
         $data['course'] = $course;
 
-        $events = Booking::where('instructor_id', $course->instructor_id)
-            ->where('start_time', '>=', Carbon::now())
-            ->get();
-
-        $breaks = AvailabilityBreak::where('user_id', $course->instructor_id)
-            ->get();
-
-        $excludeTimes = [];
-
-        foreach ($events as $event) {
-            // Convert start_time and end_time strings to Carbon instances
-            $startTime = Carbon::parse($event['start_time']);
-            $endTime = Carbon::parse($event['end_time']);
-
-            $eventDate = $startTime->format('Y-m-d');
-
-            // Loop through each minute between start and end times
-            while ($startTime->lte($endTime)) {
-                // Add the time to the excludeTimes array, along with the event date
-                $excludeTimes[] = [
-                    'date' =>  $eventDate,
-                    'hours' => $startTime->hour,
-                    'minutes' => $startTime->minute
-                ];
-
-                // Move to the next 30-minute interval
-                $startTime->addMinutes(30);
-            }
-        }
-
-        foreach ($breaks as $break){
-            // Convert start_time and end_time strings to Carbon instances
-            $startTime = Carbon::parse($break['start_time']);
-            $endTime = Carbon::parse($break['end_time']);
-
-            $breakDate = $startTime->format('Y-m-d');
-
-            // Loop through each minute between start and end times
-            while ($startTime->lte($endTime)) {
-                // Add the time to the excludeTimes array, along with the event date
-                $excludeTimes[] = [
-                    'date' =>  $breakDate,
-                    'hours' => $startTime->hour,
-                    'minutes' => $startTime->minute,
-                    'message' => $break->reason
-                ];
-
-                // Move to the next 30-minute interval
-                $startTime->addMinutes(30);
-            }
-        }
-
-        $data['excluded_slots'] = $excludeTimes;
+        $data['excluded_slots'] = UserService::getInstructorUnavailableSlots($course->instructor_id);
 
         return Inertia::render('Users/Students/Bookings/Book', $data);
     }
@@ -191,8 +141,9 @@ class BookingController extends Controller
             $course = Course::findOrFail($request->input('course'));
 
             $startTime = Carbon::parse($request->input('start_time'));
-            $endTime = $startTime->copy()->addMinutes(30);
+            $endTime = $startTime->copy()->addMinutes($course->duration);
 
+            //TODO: do this in service!
             //First check that there are no other events booked at this timeslot
             $existing = Booking::where('instructor_id', $course->instructor_id)
                 ->where('start_time', $startTime)
@@ -238,6 +189,8 @@ class BookingController extends Controller
 
             DB::commit();
 
+
+            //TODO: booking should be pending state still, until instructor approves it
             if($booking->instructor){
                 $booking->instructor->notify(new NewBookingInstructor($booking));
             }
@@ -290,17 +243,102 @@ class BookingController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Booking $booking)
     {
-        //
+        $breadcrumbs = [
+            0 => [
+                'page' => 'Dashboard',
+                'url' => route('students.dashboard'),
+            ],
+            1 => [
+                'page' => 'Bookings',
+                'url' => route('students.bookings.index'),
+            ],
+            2 => [
+                'page' => 'Confirm booking for:  ' . $booking->course->name,
+                'url' => route('students.confirm-booking', ['booking' => $booking]),
+                'active' => true,
+            ],
+        ];
+        Inertia::share('layout.breadcrumbs', $breadcrumbs);
+        Inertia::share('layout.active_page', ['Bookings']);
+
+        $data['booking'] = $booking;
+        $data['course'] = $booking->course;
+        $data['excluded_slots'] = UserService::getInstructorUnavailableSlots($booking->course->instructor_id);
+
+        return Inertia::render('Users/Students/Bookings/Book', $data);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Booking $booking)
     {
-        //
+        try {
+            DB::beginTransaction();
+
+            $input = $request->input();
+            $course = $booking->course;
+
+            $startTime = Carbon::parse($request->input('start_time'));
+            $endTime = $startTime->copy()->addMinutes($course->duration);
+
+            //TODO: do this in service!
+            //First check that there are no other events booked at this timeslot
+            $existing = Booking::where('instructor_id', $course->instructor_id)
+                ->where('start_time', $startTime)
+                ->orWhere('end_time', $startTime)
+                ->first();
+
+            if($existing){
+                throw ValidationException::withMessages([
+                    'start_time' => ['Booking slot already taken. Please select another slot.'],
+                ]);
+            }
+
+            //Then check if there is break on this timeslot
+            $break = AvailabilityBreak::where('user_id', $course->instructor_id)
+                ->where('start_time', $startTime)
+                ->orWhere('end_time', $startTime)
+                ->first();
+
+            if($break){
+                throw ValidationException::withMessages([
+                    'start_time' => ['Instructor is not available at the selected slot. Please select another slot.'],
+                ]);
+            }
+
+            $booking->update([
+                'start_time' => $startTime,
+                'end_time' => $endTime,
+                'note' => $request->input('note'),
+                'status' => BookingStatus::Booked,
+            ]);
+
+            DB::commit();
+
+            //TODO: booking should be pending state still, until instructor approves it
+            if($booking->instructor){
+                $booking->instructor->notify(new NewBookingInstructor($booking));
+            }
+
+            if($booking->student){
+                $booking->student->notify(new NewBookingStudent($booking));
+            }
+
+            return redirect()->route('students.bookings.index')
+                ->with('success', 'Booked successfully!');
+
+        } catch (\Exception $exception){
+            DB::rollBack();
+            Log::info('Booking creation error');
+            Log::info($exception->getMessage());
+            Log::info($exception->getTraceAsString());
+
+            return redirect()->back()
+                ->with('error', isset($exception->validator) ? [$exception->getMessage()] :  ['There was an error creating a booking.']);
+        }
     }
 
     /**

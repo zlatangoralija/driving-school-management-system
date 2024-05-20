@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Course extends Model
 {
@@ -16,6 +17,7 @@ class Course extends Model
         'name',
         'description',
         'number_of_lessons',
+        'duration',
         'price',
         'payment_option',
         'instructor_id',
@@ -55,5 +57,10 @@ class Course extends Model
 
     public function bookings(){
         return $this->hasMany(Booking::class);
+    }
+
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class);
     }
 }

@@ -22,6 +22,7 @@ class Booking extends Model
         'student_id',
         'instructor_id',
         'admin_id',
+        'uuid',
     ];
 
     protected $casts = [

@@ -38,13 +38,13 @@ export default function Index(props) {
         },
         {
             name: 'Start time',
-            selector: row => <>{timezoneDate(row.start_time).format('DD/MM/YYYY H:mm')}</>,
+            selector: row => <>{row.start_time ?timezoneDate(row.start_time).format('DD/MM/YYYY H:mm'): '/'}</>,
             sortable: true,
             sortField: 'start_time',
         },
         {
             name: 'End time',
-            selector: row => <>{timezoneDate(row.end_time).format('DD/MM/YYYY H:mm')}</>,
+            selector: row => <>{row.end_time ?timezoneDate(row.end_time).format('DD/MM/YYYY H:mm'): '/'}</>,
             sortable: true,
             sortField: 'end_time',
         },
@@ -73,6 +73,9 @@ export default function Index(props) {
                     <>
                         <div className="flex justify-between gap-3">
                             <Link href={route('instructors.bookings.show', {booking: row.id})} className="link">View</Link>
+                            {!row.status &&
+                                <Link href={route('students.bookings.show', {booking: row.id})} className="link">Book</Link>
+                            }
                         </div>
                     </>
                 )

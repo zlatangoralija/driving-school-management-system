@@ -32,6 +32,7 @@ export default function CreateForm(props) {
                 payment_option: Yup.array().required('Please select payment option.'),
                 instructor_id: Yup.array().required('Please select instructor.'),
                 price: Yup.string().required('Price is required.'),
+                duration: Yup.number().integer('Please enter a valid integer number.').required('Please enter a number.')
             });
 
             await schema.validate(formData, {
@@ -81,6 +82,7 @@ export default function CreateForm(props) {
             formRef.current.setFieldValue('name', props.course.name);
             formRef.current.setFieldValue('description', props.course.description);
             formRef.current.setFieldValue('number_of_lessons', props.course.number_of_lessons);
+            formRef.current.setFieldValue('duration', props.course.duration);
             formRef.current.setFieldValue('payment_option', props.course.payment_option);
             formRef.current.setFieldValue('price', props.course.price);
         }
@@ -141,6 +143,7 @@ export default function CreateForm(props) {
                         name="instructor_id"
                     />
                     <InputText name="number_of_lessons" label="Number of lessons*"/>
+                    <InputText name="duration" label="Duration*"/>
                     <SelectDefault
                         options={props.payment_options}
                         defaultValue={(props.payment_options && props.course) ? props.payment_options.find(x => x.value===props.course.payment_option) : props.payment_options[0]}

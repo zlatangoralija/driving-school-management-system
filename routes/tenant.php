@@ -42,6 +42,7 @@ Route::middleware([
 
         //Bookings
         Route::get('/invite-to-book/{course}', [\App\Http\Controllers\Students\BookingController::class, 'book'])->name('booking-form');
+        Route::get('/confirm-booking/{booking}', [\App\Http\Controllers\Students\BookingController::class, 'confirm'])->name('confirm-booking');
 
         //Ajax routes
         Route::get('/get-bookings', [\App\Http\Controllers\Students\BookingController::class, 'getBookings'])->name('get-bookings');
@@ -57,10 +58,11 @@ Route::middleware([
         Route::resource('/availability-breaks', \App\Http\Controllers\Instructors\AvailabilityBreakController::class);
 
         //Booking calendar view
-        Route::get('/bookings-calendar', [\App\Http\Controllers\Instructors\BookingController::class, 'calendar'])->name('bookings-calendar');
+        Route::get('/bookings-calendar/{course_id?}/{student_id?}', [\App\Http\Controllers\Instructors\BookingController::class, 'calendar'])->name('bookings-calendar');
+        Route::get('/confirm-booking/{booking}', [\App\Http\Controllers\Instructors\BookingController::class, 'confirm'])->name('confirm-booking');
 
         //Invitations
-        Route::post('/invite-to-book', [\App\Http\Controllers\Instructors\CourseController::class, 'inviteToBook'])->name('courses.invite-to-book');
+        Route::post('/assign-course', [\App\Http\Controllers\Instructors\CourseController::class, 'assign'])->name('courses.assign-students');
 
         //Ajax routes
         Route::get('/get-students', [\App\Http\Controllers\Instructors\StudentController::class, 'getStudents'])->name('get-instructor-students');

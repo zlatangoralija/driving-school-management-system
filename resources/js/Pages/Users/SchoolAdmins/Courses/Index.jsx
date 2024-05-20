@@ -52,6 +52,12 @@ export default function Index(props) {
             sortField: 'number_of_lessons',
         },
         {
+            name: 'Lesson duration',
+            selector: row => <>{row.duration ? row.duration + ' minutes' : ''}</>,
+            sortable: true,
+            sortField: 'duration',
+        },
+        {
             name: 'Payment option',
             selector: row => <>{row.payment_option_label}</>,
             sortable: true,

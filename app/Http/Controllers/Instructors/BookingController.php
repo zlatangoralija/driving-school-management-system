@@ -3,10 +3,18 @@
 namespace App\Http\Controllers\Instructors;
 
 use App\Http\Controllers\Controller;
+use App\Models\AvailabilityBreak;
 use App\Models\Booking;
+use App\Models\BookingInvitation;
+use App\Models\Course;
+use App\Notifications\NewBookingInstructor;
+use App\Notifications\NewBookingStudent;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
 class BookingController extends Controller
@@ -33,7 +41,7 @@ class BookingController extends Controller
         return Inertia::render('Users/Instructors/Bookings/Index');
     }
 
-    public function calendar(){
+    public function calendar($courseID = null, $studentID = null){
         $breadcrumbs = [
             0 => [
                 'page' => 'Dashboard',
@@ -47,6 +55,19 @@ class BookingController extends Controller
         ];
         Inertia::share('layout.breadcrumbs', $breadcrumbs);
         Inertia::share('layout.active_page', ['Bookings']);
+
+        $data['course_id'] = $courseID;
+        $data['student_id'] = $studentID;
+        $data['course_name'] = $courseID ? Course::find($courseID)->name : null;
+
+        $data['students'] = Auth::user()->students()->pluck('users.email', 'users.id');
+        $data['courses'] = Course::with('instructor', 'admin')
+            ->select('id', 'name', 'description', 'price', 'payment_option', 'number_of_lessons', 'created_at', 'instructor_id', 'admin_id')
+            ->where('instructor_id', Auth::id())
+            ->orWhereHas('admin', function ($admin){
+                return $admin->where('tenant_id', Auth::user()->tenant_id);
+            })->pluck('name', 'id');
+
 
         $data['bookings'] = [];
         $bookings = Booking::where('instructor_id', Auth::id())
@@ -96,7 +117,76 @@ class BookingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            DB::beginTransaction();
+
+            $input = $request->input();
+            $input['student_Id'] = Auth::id();
+            $course = Course::findOrFail($request->input('course_id'));
+
+            $startTime = Carbon::parse($request->input('start_time'));
+            $endTime = $startTime->copy()->addMinutes(30);
+
+            //First check that there are no other events booked at this timeslot
+            $existing = Booking::where('instructor_id', $course->instructor_id)
+                ->where('start_time', $startTime)
+                ->orWhere('end_time', $startTime)
+                ->first();
+
+            if($existing){
+                throw ValidationException::withMessages([
+                    'start_time' => ['Booking slot already taken. Please select another slot.'],
+                ]);
+            }
+
+            //Then check if there is break on this timeslot for instructors
+            $instructorBreak = AvailabilityBreak::where('user_id', $course->instructor_id)
+                ->where('start_time', $startTime)
+                ->orWhere('end_time', $startTime)
+                ->first();
+
+            if($instructorBreak){
+                throw ValidationException::withMessages([
+                    'start_time' => ['Instructor is not available at the selected slot. Please select another slot.'],
+                ]);
+            }
+
+            //TODO: add student break check as well
+
+            $booking = Booking::create([
+                'start_time' => $startTime,
+                'end_time' => $endTime,
+                'note' => $request->input('note'),
+                'course_id' => $course->id,
+                'student_id' => $request->input('student_id'),
+                'instructor_id' => Auth::id(),
+                'admin_id' => $course->admin_id,
+            ]);
+
+            DB::commit();
+
+            if($booking->instructor){
+                $booking->instructor->notify(new NewBookingInstructor($booking));
+            }
+
+            if($booking->student){
+                $booking->student->notify(new NewBookingStudent($booking));
+            }
+
+            return redirect()->back()
+                ->with('success', 'Booking created successfully! Waiting for student confirmation');
+
+        } catch (\Exception $exception){
+            DB::rollBack();
+            Log::info('Booking creation error');
+            Log::info($exception->getMessage());
+            Log::info($exception->getTraceAsString());
+
+            return redirect()->back()
+                ->with('error', isset($exception->validator) ? [$exception->getMessage()] :  ['There was an error creating a booking.']);
+        }
+
+
     }
 
     /**

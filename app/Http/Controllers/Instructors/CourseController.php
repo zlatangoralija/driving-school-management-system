@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Instructors;
 
+use App\Enums\BookingStatus;
 use App\Enums\CoursePaymentOption;
 use App\Enums\UserStatus;
 use App\Enums\UserType;
 use App\Http\Controllers\Controller;
+use App\Models\Booking;
 use App\Models\BookingInvitation;
 use App\Models\Course;
 use App\Models\User;
@@ -14,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class CourseController extends Controller
@@ -43,7 +46,7 @@ class CourseController extends Controller
 
     public function getCourses(Request $request){
         $data['courses'] = Course::with('instructor', 'admin')
-            ->select('id', 'name', 'description', 'price', 'payment_option', 'number_of_lessons', 'created_at', 'instructor_id', 'admin_id')
+            ->select('id', 'name', 'description', 'price', 'payment_option', 'number_of_lessons', 'duration', 'created_at', 'instructor_id', 'admin_id')
             ->where('instructor_id', Auth::id())
             ->orWhereHas('admin', function ($admin){
                 return $admin->where('tenant_id', Auth::user()->tenant_id);
@@ -123,23 +126,45 @@ class CourseController extends Controller
         }
     }
 
-    public function inviteToBook(Request $request){
+    public function assign(Request $request){
+
         try {
             DB::beginTransaction();
 
             $input = $request->input();
             $input['instructor_id'] = Auth::id();
-            $bookingInvitation = BookingInvitation::create($input);
+            $course = Course::find($request->input('course_id'));
+            $uniqueID = Str::uuid();
+
+            foreach ($request->input('student_ids') as $id){
+                //first assign student to the course
+                $student = User::find($id);
+                $student->courses()->attach($course, [
+                    'uuid' => $uniqueID
+                ]);
+
+                //then create pending bookings for student (number of lessons = number of pending bookings)
+                for ($i=0;$i<$course->number_of_lessons;$i++){
+                    Booking::create([
+                        'course_id' => $course->id,
+                        'student_id' => $id,
+                        'instructor_id' => Auth::id(),
+                        'admin_id' => $course->admin_id,
+                        'status' => BookingStatus::Pending,
+                        'uuid' => $uniqueID,
+                    ]);
+                }
+            }
 
             DB::commit();
 
-            $bookingInvitation->student->notify(new \App\Notifications\BookingInvitation($bookingInvitation));
-
+            //todo: send notification to each student
 
             return redirect()->route('instructors.courses.index')
-                ->with('success', 'Booking invitation sent successfully');
+                ->with('success', 'Course assigned successfully');
 
         } catch (\Exception $exception){
+            dd($exception);
             DB::rollBack();
             Log::info('Invitation creation error');
             Log::info($exception->getMessage());
@@ -174,6 +199,8 @@ class CourseController extends Controller
         Inertia::share('layout.active_page', ['Courses']);
 
         $data['course'] = $course;
+        $data['students'] = Auth::user()->students()->pluck('users.email', 'users.id');
+
         return Inertia::render('Users/Instructors/Courses/Show', $data);
     }
 

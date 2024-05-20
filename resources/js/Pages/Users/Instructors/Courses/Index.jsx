@@ -21,7 +21,7 @@ export default function Index(props) {
     const [ successNotice, setSuccessNotice ] = React.useState(null)
     const [ errorNotice, setErrorNotice ] = React.useState(null)
     const [ deleteModal, setDeleteModal] = React.useState()
-    const [ bookingInviteModal, setBookingInviteModal] = React.useState()
+    const [ assignCourseModal, setAssignCourseModal] = React.useState()
 
     React.useEffect(()=>{
         if(flash && Object.keys(flash).length){
@@ -59,6 +59,12 @@ export default function Index(props) {
             sortField: 'number_of_lessons',
         },
         {
+            name: 'Lesson duration',
+            selector: row => <>{row.duration ? row.duration + ' minutes' : ''}</>,
+            sortable: true,
+            sortField: 'duration',
+        },
+        {
             name: 'Payment option',
             selector: row => <>{row.payment_option_label}</>,
             sortable: true,
@@ -83,8 +89,8 @@ export default function Index(props) {
             sortField: 'created_at',
         },
         {
-            name: 'Invite to book',
-            selector: row => <><a href="#" onClick={() => setBookingInviteModal({'invitation_url': row.invitation_url, 'course_id': row.id})} className="link">Invite to book</a></>,
+            name: 'Assign client',
+            selector: row => <><a href="#" onClick={() => setAssignCourseModal({'invitation_url': row.invitation_url, 'course_id': row.id})} className="link">Assign to students</a></>,
             sortable: null,
             sortField: null,
         },
@@ -106,11 +112,11 @@ export default function Index(props) {
         },
     ];
 
-    const submitBookingInvitation = async(data) => {
+    const assignCourse = async(data) => {
         try {
             //Validate form
             const schema = Yup.object().shape({
-                student_id: Yup.array().min(1, 'Please select a student').required('Please select a student')
+                student_ids: Yup.array().of(Yup.string()).min(1, 'Please select at least one sutdent.').required('Please select at least one sutdent.'),
             });
 
             await schema.validate(data, {
@@ -119,13 +125,12 @@ export default function Index(props) {
 
             let finalData = {
                 ...data,
-                student_id: data.student_id.length>0 ? data.student_id[0].value : null,
-                course_id: bookingInviteModal?.course_id,
+                course_id: assignCourseModal?.course_id,
             }
 
-            router.post(route('instructors.courses.invite-to-book'), finalData, {
+            router.post(route('instructors.courses.assign-students'), finalData, {
                 onSuccess: (dres) => {
-                    setBookingInviteModal(false);
+                    setAssignCourseModal(false);
                 },
                 onError: (errors) => {
                     bookingInviteForm.current.setErrors(errors);
@@ -134,6 +139,7 @@ export default function Index(props) {
 
 
         } catch (err){
+            console.log(err);
             const validationErrors = {};
             if (err instanceof Yup.ValidationError) {
                 err.inner.forEach(error => {
@@ -198,29 +204,22 @@ export default function Index(props) {
 
             <Modal
                 className="max-w-3xl"
-                status={bookingInviteModal}
-                close={()=>setBookingInviteModal(false)}
-                title={"Invite to book"}
+                status={assignCourseModal}
+                close={()=>setAssignCourseModal(false)}
+                title={"Assign course"}
                 content={
                     <div>
                         <div className='flex flex-col justify-center items-center'>
-                            <div className="flex justify-center flex-col mb-3 text-center">
-                                <p className="text-lg">Send this link to your student directly</p>
-                                <p className="text-lg text-primary">{bookingInviteModal?.invitation_url}</p>
-                            </div>
-
-                            <p className="text-lg mb-3">
-                                OR
-                            </p>
 
                             <p className="text-lg">
-                                Send them an invitation to book to via email
+                                Select students you want to assign this course to
                             </p>
 
-                            <Form ref={bookingInviteForm} onSubmit={submitBookingInvitation} className="w-full">
+                            <Form ref={bookingInviteForm} onSubmit={assignCourse} className="w-full">
                                 <SelectDefault
-                                    name="student_id"
-                                    label="Student*"
+                                    name="student_ids"
+                                    label="Students*"
+                                    isMulti
                                     options={Object.entries(props.students).map(([value, label]) => ({ value, label }))}
                                 />
                             </Form>
@@ -230,8 +229,8 @@ export default function Index(props) {
                 }
                 footer={
                     <div className='flex flex-col md:flex-row !justify-between items-center gap-2 w-full'>
-                        <button type="button" onClick={()=>setBookingInviteModal(false)} className="_button white w-full md:w-auto min-w-[150px]">Cancel</button>
-                        <button type="button" onClick={()=>bookingInviteForm.current.submitForm()} className="_button white w-full md:w-auto min-w-[150px]">Invite to book</button>
+                        <button type="button" onClick={()=>setAssignCourseModal(false)} className="_button white w-full md:w-auto min-w-[150px]">Cancel</button>
+                        <button type="button" onClick={()=>bookingInviteForm.current.submitForm()} className="_button white w-full md:w-auto min-w-[150px]">Assing</button>
                     </div>
                 }
             />
