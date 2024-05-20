@@ -44,6 +44,7 @@ class HandleInertiaRequests extends Middleware
                 'hide_sidebar' => true,
                 'logo' => UserService::getHeaderLogo(),
                 'sidebar_menu' => UserService::getSidebarMenu(),
+                'settings_menu' => UserService::getHeaderMenu(),
             ]
         ];
     }

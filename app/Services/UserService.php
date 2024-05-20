@@ -57,16 +57,37 @@ class UserService
         }
     }
 
+    public static function getSidebarMobileSettingsMenu(){
+        if(Auth::user()){
+            switch (Auth::user()->type){
+                case UserType::SchoolAdmin:
+                    return self::schoolAdminMenu();
+                case UserType::Instructor:
+                    return self::instructorSidebarMobileSettingsMenu();
+                case UserType::Student:
+                    return self::studentMenu();
+            }
+        }
+    }
+
+    public static function getHeaderMenu(){
+        if(Auth::user()){
+            switch (Auth::user()->type){
+                case UserType::SchoolAdmin:
+                    return self::schoolAdminHeaderMenu();
+                case UserType::Instructor:
+                    return self::instructorHeaderMenu();
+                case UserType::Student:
+                    return self::studentHeaderMenu();
+            }
+        }
+    }
+
     public static function schoolAdminMenu(){
         return [
             [
                 'name' => 'Dashboard',
                 'url' => route('school-administrators.dashboard'),
-                'nested' => null
-            ],
-            [
-                'name' => 'School settings',
-                'url' => route('school-administrators.settings.index'),
                 'nested' => null
             ],
             [
@@ -93,6 +114,23 @@ class UserService
                 'name' => 'Bookings',
                 'url' => route('school-administrators.bookings.index'),
                 'nested' => null
+            ],
+        ];
+    }
+
+    public static function schoolAdminHeaderMenu(){
+        return [
+            [
+                'name' => 'Account settings',
+                'url' => route('school-administrators.account-settings'),
+            ],
+            [
+                'name' => 'School settings',
+                'url' => route('school-administrators.school-settings'),
+            ],
+            [
+                'name' => 'Payment settings',
+                'url' => route('school-administrators.payment-settings'),
             ],
         ];
     }
@@ -127,6 +165,54 @@ class UserService
         ];
     }
 
+    public static function instructorHeaderMenu(){
+        return [
+            [
+                'name' => 'Account settings',
+                'url' => route('instructors.account-settings'),
+            ],
+            [
+                'name' => 'Booking settings',
+                'url' => route('instructors.booking-settings'),
+            ],
+            [
+                'name' => 'Payment settings',
+                'url' => route('instructors.payment-settings'),
+            ],
+        ];
+    }
+
+    public static function instructorSidebarMobileSettingsMenu(){
+        return [
+            [
+                'name' => 'Settings',
+                'url' => '#',
+                'icon' => 'icon-logo-short',
+                'active' => false,
+                'nested' => [
+                    [
+                        'name' => 'My plan',
+                        'url' => '#',
+                        'active' => false,
+                        'nested' => null,
+                    ],
+                    [
+                        'name' => 'Tests',
+                        'url' => '#',
+                        'active' => false,
+                        'nested' => null,
+                    ],
+                    [
+                        'name' => 'Supplements',
+                        'url' => '#',
+                        'active' => false,
+                        'nested' => null,
+                    ],
+                ]
+            ],
+        ];
+    }
+
     public static function studentMenu(){
         return [
             [
@@ -143,6 +229,19 @@ class UserService
                 'name' => 'Invitations',
                 'url' => route('students.invitations.index'),
                 'nested' => null
+            ],
+        ];
+    }
+
+    public static function studentHeaderMenu(){
+        return [
+            [
+                'name' => 'Account settings',
+                'url' => route('instructors.account-settings'),
+            ],
+            [
+                'name' => 'Booking settings',
+                'url' => route('instructors.booking-settings'),
             ],
         ];
     }

@@ -41,7 +41,7 @@ export default function CreateForm(props) {
             }
 
             if(props.school){
-                router.put(route('school-administrators.settings.update', {setting:props.school}), finalData, {
+                router.put(route('school-administrators.update-school-settings', {setting:props.school}), finalData, {
                     onError: (errors) => {
                         formRef.current.setErrors(errors);
                     }

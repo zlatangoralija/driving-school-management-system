@@ -44,6 +44,14 @@ Route::middleware([
         Route::get('/invite-to-book/{course}', [\App\Http\Controllers\Students\BookingController::class, 'book'])->name('booking-form');
         Route::get('/confirm-booking/{booking}', [\App\Http\Controllers\Students\BookingController::class, 'confirm'])->name('confirm-booking');
 
+        //Settings
+        Route::get('/account-settings', [\App\Http\Controllers\Students\AccountSettingsController::class, 'accountSettings'])->name('account-settings');
+        Route::put('/update-account-settings', [\App\Http\Controllers\Students\AccountSettingsController::class, 'updateAccountSettings'])->name('update-account-settings');
+        Route::get('/payment-settings', [\App\Http\Controllers\Students\AccountSettingsController::class, 'paymentSettings'])->name('payment-settings');
+        Route::put('/update-payment-settings', [\App\Http\Controllers\Students\AccountSettingsController::class, 'updatePaymentSettings'])->name('update-payment-settings');
+        Route::get('/booking-settings', [\App\Http\Controllers\Students\AccountSettingsController::class, 'bookingSettings'])->name('booking-settings');
+        Route::put('/update-booking-settings', [\App\Http\Controllers\Students\AccountSettingsController::class, 'updateBookingSettings'])->name('update-booking-settings');
+
         //Ajax routes
         Route::get('/get-bookings', [\App\Http\Controllers\Students\BookingController::class, 'getBookings'])->name('get-bookings');
         Route::get('/get-invitations', [\App\Http\Controllers\Students\InvitationController::class, 'getInvitations'])->name('get-invitations');
@@ -64,6 +72,14 @@ Route::middleware([
         //Invitations
         Route::post('/assign-course', [\App\Http\Controllers\Instructors\CourseController::class, 'assign'])->name('courses.assign-students');
 
+        //Settings
+        Route::get('/account-settings', [\App\Http\Controllers\Instructors\AccountSettingsController::class, 'accountSettings'])->name('account-settings');
+        Route::put('/update-account-settings', [\App\Http\Controllers\Instructors\AccountSettingsController::class, 'updateAccountSettings'])->name('update-account-settings');
+        Route::get('/payment-settings', [\App\Http\Controllers\Instructors\AccountSettingsController::class, 'paymentSettings'])->name('payment-settings');
+        Route::put('/update-payment-settings', [\App\Http\Controllers\Instructors\AccountSettingsController::class, 'updatePaymentSettings'])->name('update-payment-settings');
+        Route::get('/booking-settings', [\App\Http\Controllers\Instructors\AccountSettingsController::class, 'bookingSettings'])->name('booking-settings');
+        Route::put('/update-booking-settings', [\App\Http\Controllers\Instructors\AccountSettingsController::class, 'updateBookingSettings'])->name('update-booking-settings');
+
         //Ajax routes
         Route::get('/get-students', [\App\Http\Controllers\Instructors\StudentController::class, 'getStudents'])->name('get-instructor-students');
         Route::get('/get-bookings', [\App\Http\Controllers\Instructors\BookingController::class, 'getBookings'])->name('get-instructor-bookings');
@@ -73,7 +89,6 @@ Route::middleware([
 
     Route::prefix('school-administrators')->middleware(['auth', 'dashboard-middleware'])->name('school-administrators.')->group(function () {
         Route::get('/dashboard', [\App\Http\Controllers\SchoolAdministrators\DashboardController::class, 'index'])->name('dashboard');
-        Route::resource('/settings', \App\Http\Controllers\SchoolAdministrators\SettingsController::class);
         Route::resource('/administrators', App\Http\Controllers\SchoolAdministrators\AdminController::class);
         Route::resource('/instructors', App\Http\Controllers\SchoolAdministrators\InstructorController::class);
         Route::resource('/students', App\Http\Controllers\SchoolAdministrators\StudentController::class);
@@ -82,6 +97,16 @@ Route::middleware([
 
         //Booking calendar view
         Route::get('/bookings-calendar', [\App\Http\Controllers\SchoolAdministrators\BookingController::class, 'calendar'])->name('bookings-calendar');
+
+        //Settings
+        Route::get('/account-settings', [\App\Http\Controllers\SchoolAdministrators\AccountSettingsController::class, 'accountSettings'])->name('account-settings');
+        Route::put('/update-account-settings', [\App\Http\Controllers\SchoolAdministrators\AccountSettingsController::class, 'updateAccountSettings'])->name('update-account-settings');
+        Route::get('/payment-settings', [\App\Http\Controllers\SchoolAdministrators\AccountSettingsController::class, 'paymentSettings'])->name('payment-settings');
+        Route::put('/update-payment-settings', [\App\Http\Controllers\SchoolAdministrators\AccountSettingsController::class, 'updatePaymentSettings'])->name('update-payment-settings');
+        Route::get('/booking-settings', [\App\Http\Controllers\SchoolAdministrators\AccountSettingsController::class, 'bookingSettings'])->name('booking-settings');
+        Route::put('/update-booking-settings', [\App\Http\Controllers\SchoolAdministrators\AccountSettingsController::class, 'updateBookingSettings'])->name('update-booking-settings');
+        Route::get('/school-settings', [\App\Http\Controllers\SchoolAdministrators\AccountSettingsController::class, 'schoolSettings'])->name('school-settings');
+        Route::put('/update-school-settings/{setting}', [\App\Http\Controllers\SchoolAdministrators\AccountSettingsController::class, 'updateSchoolSettings'])->name('update-school-settings');
 
         //Ajax routes
         Route::get('/get-administrators', [\App\Http\Controllers\SchoolAdministrators\AdminController::class, 'getAdministrators'])->name('get-school-administrators');
