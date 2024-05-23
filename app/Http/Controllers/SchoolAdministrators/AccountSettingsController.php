@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\SchoolAdministrators;
 
 use App\Http\Controllers\Controller;
+use App\Models\StripeUserIntegration;
 use App\Models\Tenant;
 use App\Services\StorageService;
+use App\Services\StripeService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,6 +19,7 @@ class AccountSettingsController extends Controller
     public function __construct()
     {
         $this->storageService = new StorageService();
+        $this->stripeService = new StripeService();
     }
 
     public function accountSettings(){
@@ -53,7 +56,14 @@ class AccountSettingsController extends Controller
     }
 
     public function paymentSettings(){
-        return Inertia::render('Users/SchoolAdmins/Settings/Payment');
+        $data['active_integration'] = StripeUserIntegration::where('user_id', Auth::id())
+            ->where('status', 1)
+            ->first();
+
+        $data['express_dashboard'] = $data['active_integration'] ? $this->stripeService->loginLink($data['active_integration']->account_id) : null;
+        $data['connect_url'] = route('stripe-integration-express');
+
+        return Inertia::render('Users/SchoolAdmins/Settings/Payment', $data);
     }
 
     public function updatePaymentSettings(Request $request){

@@ -17,8 +17,8 @@ return [
     */
 
     'key' => env('STRIPE_KEY'),
-
     'secret' => env('STRIPE_SECRET'),
+    'client_id' => env('STRIPE_CLIENT_ID'),
 
     /*
     |--------------------------------------------------------------------------

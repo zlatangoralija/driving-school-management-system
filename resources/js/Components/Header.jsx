@@ -101,7 +101,7 @@ export default function Header(props) {
                                                         return <>
                                                             <Menu.Item>
                                                                 {({ active }) => (
-                                                                    <Link
+                                                                    <a
                                                                         key={index}
                                                                         href={item.url}
                                                                         className={classNames(
@@ -110,7 +110,7 @@ export default function Header(props) {
                                                                         )}
                                                                     >
                                                                         {item.name}
-                                                                    </Link>
+                                                                    </a>
                                                                 )}
                                                             </Menu.Item>
                                                         </>

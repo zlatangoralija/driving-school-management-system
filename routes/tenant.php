@@ -114,6 +114,5 @@ Route::middleware([
         Route::get('/get-students', [\App\Http\Controllers\SchoolAdministrators\StudentController::class, 'getStudents'])->name('get-school-students');
         Route::get('/get-courses', [\App\Http\Controllers\SchoolAdministrators\CourseController::class, 'getCourses'])->name('get-school-courses');
         Route::get('/get-bookings', [\App\Http\Controllers\SchoolAdministrators\BookingController::class, 'getBookings'])->name('get-bookings');
-
     });
 });

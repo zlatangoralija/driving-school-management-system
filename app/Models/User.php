@@ -97,4 +97,15 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->belongsToMany(Course::class);
     }
+
+    public function stripeIntegration()
+    {
+        return $this->hasOne(StripeUserIntegration::class);
+    }
+
+    public function activeStripeIntegration()
+    {
+        return $this->stripeIntegration()
+            ->where('status', StripeUserIntegration::$_STATUS_ACTIVE);
+    }
 }
