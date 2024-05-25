@@ -11,9 +11,7 @@ import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import {timezoneDate} from "@/Components/Helpers.jsx";
 
-
 const tz = moment.tz.guess();
-
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.tz.setDefault(tz);
@@ -52,7 +50,83 @@ export default function Book(props) {
         return !isTimeInArray && currentDate.getTime() < selectedDate.getTime();
     };
 
-    const submit = async(data) => {
+    //TODO: handle case when the booking is already paid through pre-paid course
+
+    const initPendingBooking = async(data) => {
+        //Get invitation ID, if student is coming to book from invitation
+        let invitation_id = null;
+        let booking_id = props.booking.id
+        const search = window.location.search;
+        const params = new URLSearchParams(search);
+        if(search && params){
+            invitation_id = params.get('invitation_id');
+        }
+
+        let finalData = {
+            start_time: data,
+            course: props.course.id,
+            invitation_id: invitation_id,
+        }
+
+        if(booking_id){
+            return await axios.put(route('students.update-book-and-pay', {'booking': booking_id}), finalData)
+                .then(res => {
+                    return {
+                        status: true,
+                        ...res
+                    }
+                }).catch(err => {
+
+                    console.log(err.response);
+                    return {
+                        status: false,
+                        message: err.response && err.response.data && err.response.data.message ? err.response.data.message : 'Something went wrong, please try again'
+                    }
+                });
+        }else{
+            return await axios.post(route('students.store-book-and-pay'), finalData)
+                .then(res => {
+                    return {
+                        status: true,
+                        url: res.url,
+                        ...res
+                    }
+                }).catch(err => {
+                    console.log(err.response);
+                    return {
+                        status: false,
+                        message: err.response && err.response.data && err.response.data.message ? err.response.data.message : 'Something went wrong, please try again'
+                    }
+                });
+        }
+    }
+
+    const bookAndPay = async(data) => {
+        try{
+            const bookingResponse = await initPendingBooking(data);
+
+            //Handle errors
+            if(!bookingResponse){
+                return;
+            }
+
+            if(!bookingResponse.status){
+                console.log('handle errors')
+                return;
+            }
+
+
+            window.location.href = bookingResponse.data;
+            return;
+
+        } catch (err) {
+            console.log(err);
+            wrapperRef.current.scrollIntoView({ behavior: 'smooth' })
+        }
+
+    }
+
+    const book = async(data) => {
         try{
             //Get invitation ID, if student is coming to book from invitation
             let invitation_id = null;
@@ -169,7 +243,7 @@ export default function Book(props) {
                 footer={
                     <div className="w-full flex justify-between items-center">
                         <button type="button" onClick={()=>setBookingModal(false)} className="_button white w-full md:w-auto min-w-[150px]">Cancel</button>
-                        <button type="button" onClick={()=>submit(startDate)} className="_button w-full md:w-auto min-w-[150px]">Confirm</button>
+                        <button type="button" onClick={()=> props.booking?.id && props.booking?.payment_status ? book(startDate) : bookAndPay(startDate)} className="_button w-full md:w-auto min-w-[150px]">Confirm</button>
                     </div>
                 }
             />

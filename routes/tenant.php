@@ -36,6 +36,8 @@ Route::middleware([
         Route::get('/dashboard', [\App\Http\Controllers\Students\StudentController::class, 'dashboard'])->name('dashboard');
         Route::resource('/bookings', \App\Http\Controllers\Students\BookingController::class);
         Route::resource('/invitations', \App\Http\Controllers\Students\InvitationController::class);
+        Route::resource('/courses', \App\Http\Controllers\Students\CourseController::class);
+        Route::resource('/invoices', \App\Http\Controllers\Students\InvoiceController::class);
 
         //Booking calendar view
         Route::get('/bookings-calendar', [\App\Http\Controllers\Students\BookingController::class, 'calendar'])->name('bookings-calendar');
@@ -43,6 +45,9 @@ Route::middleware([
         //Bookings
         Route::get('/invite-to-book/{course}', [\App\Http\Controllers\Students\BookingController::class, 'book'])->name('booking-form');
         Route::get('/confirm-booking/{booking}', [\App\Http\Controllers\Students\BookingController::class, 'confirm'])->name('confirm-booking');
+
+        Route::post('/book-and-pay', [\App\Http\Controllers\Students\BookingController::class, 'storeBookAndPay'])->name('store-book-and-pay');
+        Route::put('/book-and-pay/{booking}', [\App\Http\Controllers\Students\BookingController::class, 'updateBookAndPay'])->name('update-book-and-pay');
 
         //Settings
         Route::get('/account-settings', [\App\Http\Controllers\Students\AccountSettingsController::class, 'accountSettings'])->name('account-settings');
@@ -55,6 +60,9 @@ Route::middleware([
         //Ajax routes
         Route::get('/get-bookings', [\App\Http\Controllers\Students\BookingController::class, 'getBookings'])->name('get-bookings');
         Route::get('/get-invitations', [\App\Http\Controllers\Students\InvitationController::class, 'getInvitations'])->name('get-invitations');
+        Route::get('/get-courses', [\App\Http\Controllers\Students\CourseController::class, 'getCourses'])->name('get-student-courses');
+        Route::get('/get-course-bookings/{uuid}', [\App\Http\Controllers\Students\CourseController::class, 'getCourseBookings'])->name('get-course-bookings');
+        Route::get('/get-student-invoices', [\App\Http\Controllers\Students\InvoiceController::class, 'getInvoices'])->name('get-student-invoices');
 
     });
 
@@ -64,6 +72,7 @@ Route::middleware([
         Route::resource('/courses', \App\Http\Controllers\Instructors\CourseController::class);
         Route::resource('/bookings', \App\Http\Controllers\Instructors\BookingController::class);
         Route::resource('/availability-breaks', \App\Http\Controllers\Instructors\AvailabilityBreakController::class);
+        Route::resource('/invoices', \App\Http\Controllers\Instructors\InvoiceController::class);
 
         //Booking calendar view
         Route::get('/bookings-calendar/{course_id?}/{student_id?}', [\App\Http\Controllers\Instructors\BookingController::class, 'calendar'])->name('bookings-calendar');
@@ -85,6 +94,8 @@ Route::middleware([
         Route::get('/get-bookings', [\App\Http\Controllers\Instructors\BookingController::class, 'getBookings'])->name('get-instructor-bookings');
         Route::get('/get-courses', [\App\Http\Controllers\Instructors\CourseController::class, 'getCourses'])->name('get-instructor-courses');
         Route::get('/get-availability-breaks', [\App\Http\Controllers\Instructors\AvailabilityBreakController::class, 'getBreaks'])->name('get-availability-breaks');
+        Route::get('/get-instructor-invoices', [\App\Http\Controllers\Instructors\InvoiceController::class, 'getInvoices'])->name('get-invoices');
+
     });
 
     Route::prefix('school-administrators')->middleware(['auth', 'dashboard-middleware'])->name('school-administrators.')->group(function () {

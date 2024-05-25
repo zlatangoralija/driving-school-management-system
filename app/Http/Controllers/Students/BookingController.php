@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Students;
 
 use App\Enums\BookingStatus;
+use App\Enums\CoursePaymentOption;
 use App\Enums\UserType;
 use App\Http\Controllers\Controller;
 use App\Models\AvailabilityBreak;
@@ -12,6 +13,7 @@ use App\Models\Course;
 use App\Models\User;
 use App\Notifications\NewBookingInstructor;
 use App\Notifications\NewBookingStudent;
+use App\Services\StripeService;
 use App\Services\UserService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -26,6 +28,12 @@ class BookingController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    public function __construct()
+    {
+        $this->stripeService = new StripeService();
+    }
+
     public function index()
     {
         $breadcrumbs = [
@@ -313,7 +321,6 @@ class BookingController extends Controller
                 'start_time' => $startTime,
                 'end_time' => $endTime,
                 'note' => $request->input('note'),
-                'status' => BookingStatus::Booked,
             ]);
 
             DB::commit();
@@ -329,6 +336,240 @@ class BookingController extends Controller
 
             return redirect()->route('students.bookings.index')
                 ->with('success', 'Booked successfully!');
+
+        } catch (\Exception $exception){
+            DB::rollBack();
+            Log::info('Booking update error');
+            Log::info($exception->getMessage());
+            Log::info($exception->getTraceAsString());
+
+            return redirect()->back()
+                ->with('error', isset($exception->validator) ? [$exception->getMessage()] :  ['There was an error creating a booking.']);
+        }
+    }
+
+    public function storeBookAndPay(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $input = $request->input();
+            $input['student_Id'] = Auth::id();
+            $course = Course::findOrFail($request->input('course'));
+
+            $startTime = Carbon::parse($request->input('start_time'));
+            $endTime = $startTime->copy()->addMinutes($course->duration);
+
+            //TODO: do this in service!
+            //First check that there are no other events booked at this timeslot
+            $existing = Booking::where('instructor_id', $course->instructor_id)
+                ->where('start_time', $startTime)
+                ->orWhere('end_time', $startTime)
+                ->first();
+
+            if($existing){
+                throw ValidationException::withMessages([
+                    'start_time' => ['Booking slot already taken. Please select another slot.'],
+                ]);
+            }
+
+            //Then check if there is break on this timeslot
+            $break = AvailabilityBreak::where('user_id', $course->instructor_id)
+                ->where('start_time', $startTime)
+                ->orWhere('end_time', $startTime)
+                ->first();
+
+            if($break){
+                throw ValidationException::withMessages([
+                    'start_time' => ['Instructor is not available at the selected slot. Please select another slot.'],
+                ]);
+            }
+
+            $booking = Booking::create([
+                'start_time' => $startTime,
+                'end_time' => $endTime,
+                'note' => $request->input('note'),
+                'course_id' => $course->id,
+                'student_id' => Auth::id(),
+                'instructor_id' => $course->instructor_id,
+                'admin_id' => $course->admin_id,
+            ]);
+
+            //If student came from invitation, update status of invitation
+            if($request->input('invitation_id')){
+                $invitation = BookingInvitation::find($request->input('invitation_id'));
+                if($invitation){
+                    $invitation->status = 2;
+                    $invitation->save();
+                }
+            }
+
+            DB::commit();
+
+            if($course->payment_option == CoursePaymentOption::Pre_Paid){
+                $items = [];
+                for ($i=0;$i<$course->number_of_lessons;$i++){
+                    $items[] = [
+                        'price_data' => [
+                            'currency' => 'usd',
+                            'product_data' => [
+                                'name' => 'Lesson #' . $i + 1 . ' for course: ' . $course->name,
+                            ],
+                            'unit_amount' => $this->stripeService->getStripePrice($course->price),
+                        ],
+                        'quantity' => 1,
+                    ];
+                }
+
+                $data['items'] = $items;
+                $data['metadata'] = [
+                    'course_uuid' => $booking->uuid,
+                    'booked_id' => $booking->id
+                ];
+            }else{
+                $data['items'] = [[
+                    'price_data' => [
+                        'currency' => 'usd',
+                        'product_data' => [
+                            'name' => 'Lesson for course: ' . $course->name,
+                        ],
+                        'unit_amount' => $this->stripeService->getStripePrice($course->price),
+                    ],
+                    'quantity' => 1,
+                ]];
+
+                $data['metadata'] = [
+                    'booking_id' => $booking->id
+                ];
+            }
+
+
+            $data['customer_email'] = Auth::user()->email;
+            $data['success_url'] = 'https://example.com/success';
+            $data['cancel_url'] = 'https://example.com/cancel'; //TODO: pass booking ID to cancel, so we can reset the booking data again
+            $data['payment_intent_data'] = [
+                'application_fee_amount' => $this->stripeService->getStripeFeeAmount($course->price),
+                'on_behalf_of' => $this->stripeService->getConnectedAccountID($course),
+                'transfer_data' => [
+                    'destination' => $this->stripeService->getConnectedAccountID($course),
+                ],
+            ];
+
+            $checkoutUrl = $this->stripeService->checkout($data);
+
+            DB::commit();
+
+            return $checkoutUrl;
+
+        } catch (\Exception $exception){
+            DB::rollBack();
+            Log::info('Booking creation error');
+            Log::info($exception->getMessage());
+            Log::info($exception->getTraceAsString());
+
+            return redirect()->back()
+                ->with('error', isset($exception->validator) ? [$exception->getMessage()] :  ['There was an error creating a booking.']);
+        }
+    }
+
+    public function updateBookAndPay(Request $request, Booking $booking)
+    {
+        try {
+            DB::beginTransaction();
+
+            $input = $request->input();
+            $course = $booking->course;
+
+            $startTime = Carbon::parse($request->input('start_time'));
+            $endTime = $startTime->copy()->addMinutes($course->duration);
+
+            //TODO: do this in service!
+            //First check that there are no other events booked at this timeslot
+            $existing = Booking::where('instructor_id', $course->instructor_id)
+                ->where('start_time', $startTime)
+                ->orWhere('end_time', $startTime)
+                ->first();
+
+            if($existing){
+                throw ValidationException::withMessages([
+                    'start_time' => ['Booking slot already taken. Please select another slot.'],
+                ]);
+            }
+
+            //Then check if there is break on this timeslot
+            $break = AvailabilityBreak::where('user_id', $course->instructor_id)
+                ->where('start_time', $startTime)
+                ->orWhere('end_time', $startTime)
+                ->first();
+
+            if($break){
+                throw ValidationException::withMessages([
+                    'start_time' => ['Instructor is not available at the selected slot. Please select another slot.'],
+                ]);
+            }
+
+            $booking->update([
+                'start_time' => $startTime,
+                'end_time' => $endTime,
+                'note' => $request->input('note'),
+            ]);
+
+            //Create a stripe checkout session
+
+            if($course->payment_option == CoursePaymentOption::Pre_Paid){
+                $items = [];
+                for ($i=0;$i<$course->number_of_lessons;$i++){
+                    $items[] = [
+                        'price_data' => [
+                            'currency' => 'usd',
+                            'product_data' => [
+                                'name' => 'Lesson #' . $i + 1 . ' for course: ' . $course->name,
+                            ],
+                            'unit_amount' => $this->stripeService->getStripePrice($course->price),
+                        ],
+                        'quantity' => 1,
+                    ];
+                }
+
+                $data['items'] = $items;
+                $data['metadata'] = [
+                    'course_uuid' => $booking->uuid,
+                    'booked_id' => $booking->id
+                ];
+            }else{
+                $data['items'] = [[
+                    'price_data' => [
+                        'currency' => 'usd',
+                        'product_data' => [
+                            'name' => 'Lesson for course: ' . $course->name,
+                        ],
+                        'unit_amount' => $this->stripeService->getStripePrice($course->price),
+                    ],
+                    'quantity' => 1,
+                ]];
+
+                $data['metadata'] = [
+                    'booking_id' => $booking->id
+                ];
+            }
+
+
+            $data['customer_email'] = Auth::user()->email;
+            $data['success_url'] = 'https://example.com/success';
+            $data['cancel_url'] = 'https://example.com/cancel'; //TODO: pass booking ID to cancel, so we can reset the booking data again
+            $data['payment_intent_data'] = [
+                'application_fee_amount' => $this->stripeService->getStripeFeeAmount($course->price),
+                'on_behalf_of' => $this->stripeService->getConnectedAccountID($course),
+                'transfer_data' => [
+                    'destination' => $this->stripeService->getConnectedAccountID($course),
+                ],
+            ];
+
+            $checkoutUrl = $this->stripeService->checkout($data);
+
+            DB::commit();
+
+            return $checkoutUrl;
 
         } catch (\Exception $exception){
             DB::rollBack();

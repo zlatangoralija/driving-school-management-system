@@ -106,6 +106,6 @@ class User extends Authenticatable implements FilamentUser
     public function activeStripeIntegration()
     {
         return $this->stripeIntegration()
-            ->where('status', StripeUserIntegration::$_STATUS_ACTIVE);
+            ->where('status', 1);
     }
 }

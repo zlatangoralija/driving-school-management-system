@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Enums\SchoolPayoutOption;
 use App\Enums\UserStatus;
 use App\Http\Controllers\Controller;
 use App\Models\SubscriptionPlan;
@@ -64,6 +65,7 @@ class RegisteredUserController extends Controller
                 'domain_prefix' => $domainPrefix,
                 'address' => $request->address,
                 'phone_number' => $request->phone,
+                'payout_option' => SchoolPayoutOption::School,
             ]);
 
             $user = User::create([

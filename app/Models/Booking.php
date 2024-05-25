@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\BookingPaymentStatus;
 use App\Enums\BookingStatus;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -18,6 +19,7 @@ class Booking extends Model
         'end_time',
         'note',
         'status',
+        'payment_status',
         'course_id',
         'student_id',
         'instructor_id',
@@ -27,6 +29,7 @@ class Booking extends Model
 
     protected $casts = [
         'status' => BookingStatus::class,
+        'payment_status' => BookingPaymentStatus::class,
         'start_time' => 'datetime',
         'end_time' => 'datetime',
     ];

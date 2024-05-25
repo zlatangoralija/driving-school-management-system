@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\SchoolAdministrators;
 
+use App\Enums\CoursePaymentOption;
+use App\Enums\SchoolPayoutOption;
 use App\Http\Controllers\Controller;
 use App\Models\StripeUserIntegration;
 use App\Models\Tenant;
@@ -80,13 +82,18 @@ class AccountSettingsController extends Controller
 
     public function schoolSettings()
     {
-
         $data['school'] = Auth::user()->tenant;
         $subscription = Auth::user()->subscriptions()->first();
         if($subscription){
             $data['subscription_data'] = $subscription->asStripeSubscription();
             $data['next_billing_date'] = Carbon::createFromTimeStamp($subscription->asStripeSubscription()->current_period_end)->format('F jS, Y');
         }
+        $data['payout_options'] = array_map(function ($option){
+            return [
+                'value' => $option->value,
+                'label' => str_replace('_', ' ', $option->name),
+            ];
+        }, SchoolPayoutOption::cases());
 
         return Inertia::render('Users/SchoolAdmins/Settings/School', $data);
     }

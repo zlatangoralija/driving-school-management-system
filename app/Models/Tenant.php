@@ -27,8 +27,10 @@ class Tenant extends BaseTenant implements TenantWithDatabase
         'domain_prefix',
         'address',
         'phone_number',
+        'data',
         'kvk_number',
         'logo',
+        'payout_option'
     ];
 
     protected $appends = [

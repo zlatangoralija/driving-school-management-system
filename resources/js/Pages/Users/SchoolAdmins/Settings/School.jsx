@@ -29,6 +29,7 @@ export default function CreateForm(props) {
                 address: Yup.string().required('Address is required.'),
                 phone_number: Yup.string().required('Phone is required.'),
                 kvk_number: Yup.string().required('KVK number is required.'),
+                payout_option: Yup.array().required('Please select school payout option.'),
             });
 
             await schema.validate(formData, {
@@ -37,6 +38,7 @@ export default function CreateForm(props) {
 
             let finalData = {
                 ...formData,
+                payout_option: formData.payout_option.length>0 ? formData.payout_option[0].value : null,
                 logo:uploadedPhoto ? JSON.stringify(uploadedPhoto) : null,
             }
 
@@ -109,6 +111,7 @@ export default function CreateForm(props) {
             formRef.current.setFieldValue('address', props.school.address ?? '');
             formRef.current.setFieldValue('phone_number', props.school.phone_number ?? '');
             formRef.current.setFieldValue('kvk_number', props.school.kvk_number ?? '');
+            formRef.current.setFieldValue('payout_option', props.school.payout_option ?? '');
             if(props.school.logo_url && props.school.logo_url !== ""){
                 setUploadedPhoto({
                     path: props.school.logo_url,
@@ -203,6 +206,12 @@ export default function CreateForm(props) {
                     <InputText name="address" label="Address*"/>
                     <InputText name="phone_number" label="Phone*"/>
                     <InputText name="kvk_number" label="KVK number*"/>
+                    <SelectDefault
+                        options={props.payout_options}
+                        defaultValue={(props.payout_options && props.school) ? props.payout_options.find(x => x.value===props.school.payout_option) : null}
+                        label="Payout option. Select who will receive funds after course lesson has been booked by a student"
+                        name="payout_option"
+                    />
 
                     <Upload
                         isSingle

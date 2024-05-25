@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Instructors;
 
 use App\Http\Controllers\Controller;
+use App\Models\StripeUserIntegration;
+use App\Services\StripeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -11,6 +13,11 @@ use Inertia\Inertia;
 
 class AccountSettingsController extends Controller
 {
+    public function __construct()
+    {
+        $this->stripeService = new StripeService();
+    }
+
     public function accountSettings(){
         $data['account'] = Auth::user();
         return Inertia::render('Users/Instructors/Settings/Account', $data);
@@ -45,7 +52,13 @@ class AccountSettingsController extends Controller
     }
 
     public function paymentSettings(){
-        return Inertia::render('Users/Instructors/Settings/Payment');
+        $data['active_integration'] = StripeUserIntegration::where('user_id', Auth::id())
+            ->where('status', 1)
+            ->first();
+
+        $data['express_dashboard'] = $data['active_integration'] ? $this->stripeService->loginLink($data['active_integration']->account_id) : null;
+        $data['connect_url'] = route('stripe-integration-express');
+        return Inertia::render('Users/Instructors/Settings/Payment', $data);
     }
 
     public function updatePaymentSettings(Request $request){

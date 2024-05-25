@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\SchoolPayoutOption;
 use App\Enums\UserType;
 use App\Models\AvailabilityBreak;
 use App\Models\Booking;
@@ -119,7 +120,7 @@ class UserService
     }
 
     public static function schoolAdminHeaderMenu(){
-        return [
+        $menu = [
             [
                 'name' => 'Account settings',
                 'url' => route('school-administrators.account-settings'),
@@ -128,11 +129,16 @@ class UserService
                 'name' => 'School settings',
                 'url' => route('school-administrators.school-settings'),
             ],
-            [
+        ];
+
+        if(Auth::user()->tenant->payout_option == SchoolPayoutOption::School->value){
+            $menu[] = [
                 'name' => 'Payment settings',
                 'url' => route('school-administrators.payment-settings'),
-            ],
-        ];
+            ];
+        }
+
+        return $menu;
     }
 
     public static function instructorMenu(){
@@ -162,11 +168,16 @@ class UserService
                 'url' => route('instructors.courses.index'),
                 'nested' => null
             ],
+            [
+                'name' => 'Invoices',
+                'url' => route('instructors.invoices.index'),
+                'nested' => null
+            ],
         ];
     }
 
     public static function instructorHeaderMenu(){
-        return [
+        $menu = [
             [
                 'name' => 'Account settings',
                 'url' => route('instructors.account-settings'),
@@ -175,11 +186,16 @@ class UserService
                 'name' => 'Booking settings',
                 'url' => route('instructors.booking-settings'),
             ],
-            [
+        ];
+
+        if(Auth::user()->tenant->payout_option == SchoolPayoutOption::Instructors->value){
+            $menu[] = [
                 'name' => 'Payment settings',
                 'url' => route('instructors.payment-settings'),
-            ],
-        ];
+            ];
+        }
+
+        return $menu;
     }
 
     public static function instructorSidebarMobileSettingsMenu(){
@@ -221,6 +237,11 @@ class UserService
                 'nested' => null
             ],
             [
+                'name' => 'Courses',
+                'url' => route('students.courses.index'),
+                'nested' => null
+            ],
+            [
                 'name' => 'Bookings',
                 'url' => route('students.bookings-calendar'),
                 'nested' => null
@@ -228,6 +249,11 @@ class UserService
             [
                 'name' => 'Invitations',
                 'url' => route('students.invitations.index'),
+                'nested' => null
+            ],
+            [
+                'name' => 'Invoices',
+                'url' => route('students.invoices.index'),
                 'nested' => null
             ],
         ];

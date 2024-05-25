@@ -12,6 +12,7 @@ use App\Models\BookingInvitation;
 use App\Models\Course;
 use App\Models\User;
 use App\Notifications\StudentCreated;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -140,7 +141,8 @@ class CourseController extends Controller
                 //first assign student to the course
                 $student = User::find($id);
                 $student->courses()->attach($course, [
-                    'uuid' => $uniqueID
+                    'uuid' => $uniqueID,
+                    'created_at' => Carbon::now(),
                 ]);
 
                 //then create pending bookings for student (number of lessons = number of pending bookings)
@@ -164,7 +166,6 @@ class CourseController extends Controller
                 ->with('success', 'Course assigned successfully');
 
         } catch (\Exception $exception){
-            dd($exception);
             DB::rollBack();
             Log::info('Invitation creation error');
             Log::info($exception->getMessage());
