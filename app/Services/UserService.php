@@ -159,11 +159,6 @@ class UserService
                 'nested' => null
             ],
             [
-                'name' => 'Availability breaks',
-                'url' => route('instructors.availability-breaks.index'),
-                'nested' => null
-            ],
-            [
                 'name' => 'Courses',
                 'url' => route('instructors.courses.index'),
                 'nested' => null
@@ -184,7 +179,7 @@ class UserService
             ],
             [
                 'name' => 'Booking settings',
-                'url' => route('instructors.booking-settings'),
+                'url' => route('instructors.availability-breaks.index'),
             ],
         ];
 

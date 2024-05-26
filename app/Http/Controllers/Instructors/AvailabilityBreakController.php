@@ -23,7 +23,7 @@ class AvailabilityBreakController extends Controller
                 'url' => route('instructors.dashboard'),
             ],
             1 => [
-                'page' => 'Availability settings',
+                'page' => 'Booking settings',
                 'url' => route('instructors.availability-breaks.index'),
                 'active' => true,
             ],
@@ -59,7 +59,7 @@ class AvailabilityBreakController extends Controller
                 'url' => route('instructors.dashboard'),
             ],
             1 => [
-                'page' => 'Availability settings',
+                'page' => 'Booking settings',
                 'url' => route('instructors.availability-breaks.index'),
             ],
             2 => [
@@ -72,7 +72,6 @@ class AvailabilityBreakController extends Controller
         Inertia::share('layout.active_page', ['Availability breaks']);
 
         return Inertia::render('Users/Instructors/AvailabilityBreaks/Form');
-
     }
 
     /**

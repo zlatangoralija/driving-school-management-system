@@ -86,8 +86,6 @@ Route::middleware([
         Route::put('/update-account-settings', [\App\Http\Controllers\Instructors\AccountSettingsController::class, 'updateAccountSettings'])->name('update-account-settings');
         Route::get('/payment-settings', [\App\Http\Controllers\Instructors\AccountSettingsController::class, 'paymentSettings'])->name('payment-settings');
         Route::put('/update-payment-settings', [\App\Http\Controllers\Instructors\AccountSettingsController::class, 'updatePaymentSettings'])->name('update-payment-settings');
-        Route::get('/booking-settings', [\App\Http\Controllers\Instructors\AccountSettingsController::class, 'bookingSettings'])->name('booking-settings');
-        Route::put('/update-booking-settings', [\App\Http\Controllers\Instructors\AccountSettingsController::class, 'updateBookingSettings'])->name('update-booking-settings');
 
         //Ajax routes
         Route::get('/get-students', [\App\Http\Controllers\Instructors\StudentController::class, 'getStudents'])->name('get-instructor-students');

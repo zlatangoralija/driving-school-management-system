@@ -64,12 +64,4 @@ class AccountSettingsController extends Controller
     public function updatePaymentSettings(Request $request){
 
     }
-
-    public function bookingSettings(){
-        return Inertia::render('Users/Instructors/Settings/Booking');
-    }
-
-    public function updateBookingSettings(Request $request){
-
-    }
 }
