@@ -151,7 +151,7 @@ export const _navItem = (data, index, active_page=[]) => {
 }
 
 export const timezoneDate = function(date) {
-    return dayjs.utc(date).tz(user_timezone ? user_timezone : tz)
+    return dayjs.utc(date).tz(user_tz ? user_tz : tz)
 }
 
 export const userTimezone = function() {
