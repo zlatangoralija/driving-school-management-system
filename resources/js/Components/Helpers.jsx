@@ -6,10 +6,18 @@ import utc from "dayjs/plugin/utc.js";
 import timezone from "dayjs/plugin/timezone.js";
 
 const tz = moment.tz.guess();
-const user_timezone = this.userTimezone();
+let user_tz = null
+const metas = document.getElementsByTagName("META")
+for (let i = 0; i < metas.length; i++) {
+    const meta = metas[i];
+    if(meta.name==='user-timezone'){
+        user_tz = meta.content
+    }
+}
+
 dayjs.extend(utc);
 dayjs.extend(timezone);
-dayjs.tz.setDefault(tz);
+dayjs.tz.setDefault(user_tz ? user_tz : tz);
 
 export const _inArray = (needle, haystack) => {
     var length = haystack.length;
