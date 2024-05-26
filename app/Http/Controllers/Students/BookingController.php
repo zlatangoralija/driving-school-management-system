@@ -445,8 +445,8 @@ class BookingController extends Controller
 
 
             $data['customer_email'] = Auth::user()->email;
-            $data['success_url'] = 'https://example.com/success';
-            $data['cancel_url'] = 'https://example.com/cancel'; //TODO: pass booking ID to cancel, so we can reset the booking data again
+            $data['success_url'] = route('students.bookings.show', ['booking' => $booking]);
+            $data['cancel_url'] = route('students.bookings.index');
             $data['payment_intent_data'] = [
                 'application_fee_amount' => $this->stripeService->getStripeFeeAmount($course->price),
                 'on_behalf_of' => $this->stripeService->getConnectedAccountID($course),
@@ -555,8 +555,8 @@ class BookingController extends Controller
 
 
             $data['customer_email'] = Auth::user()->email;
-            $data['success_url'] = 'https://example.com/success';
-            $data['cancel_url'] = 'https://example.com/cancel'; //TODO: pass booking ID to cancel, so we can reset the booking data again
+            $data['success_url'] = route('students.bookings.show', ['booking' => $booking]);
+            $data['cancel_url'] = route('students.cancel-booking-payment', ['booking' => $booking]);
             $data['payment_intent_data'] = [
                 'application_fee_amount' => $this->stripeService->getStripeFeeAmount($course->price),
                 'on_behalf_of' => $this->stripeService->getConnectedAccountID($course),
@@ -580,6 +580,72 @@ class BookingController extends Controller
             return redirect()->back()
                 ->with('error', isset($exception->validator) ? [$exception->getMessage()] :  ['There was an error creating a booking.']);
         }
+    }
+
+    public function payForBooking(Booking $booking){
+        $course = $booking->course;
+        //Create a stripe checkout session
+
+        if($course->payment_option == CoursePaymentOption::Pre_Paid){
+            $items = [];
+            for ($i=0;$i<$course->number_of_lessons;$i++){
+                $items[] = [
+                    'price_data' => [
+                        'currency' => 'usd',
+                        'product_data' => [
+                            'name' => 'Lesson #' . $i + 1 . ' for course: ' . $course->name,
+                        ],
+                        'unit_amount' => $this->stripeService->getStripePrice($course->price),
+                    ],
+                    'quantity' => 1,
+                ];
+            }
+
+            $data['items'] = $items;
+            $data['metadata'] = [
+                'course_uuid' => $booking->uuid,
+                'booked_id' => $booking->id
+            ];
+        }else{
+            $data['items'] = [[
+                'price_data' => [
+                    'currency' => 'usd',
+                    'product_data' => [
+                        'name' => 'Lesson for course: ' . $course->name,
+                    ],
+                    'unit_amount' => $this->stripeService->getStripePrice($course->price),
+                ],
+                'quantity' => 1,
+            ]];
+
+            $data['metadata'] = [
+                'booking_id' => $booking->id
+            ];
+        }
+
+
+        $data['customer_email'] = Auth::user()->email;
+        $data['success_url'] = route('students.bookings.show', ['booking' => $booking]);
+        $data['cancel_url'] = route('students.bookings.index');
+        $data['payment_intent_data'] = [
+            'application_fee_amount' => $this->stripeService->getStripeFeeAmount($course->price),
+            'on_behalf_of' => $this->stripeService->getConnectedAccountID($course),
+            'transfer_data' => [
+                'destination' => $this->stripeService->getConnectedAccountID($course),
+            ],
+        ];
+
+        $checkoutUrl = $this->stripeService->checkout($data);
+        return Inertia::location($checkoutUrl);
+    }
+
+    public function cancelBooking(Booking $booking){
+        $booking->update([
+            'start_time' => null,
+            'end_time' => null,
+        ]);
+
+        return redirect()->route('students.bookings.index');
     }
 
     /**

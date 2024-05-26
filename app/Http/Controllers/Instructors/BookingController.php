@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Instructors;
 
+use App\Enums\BookingStatus;
 use App\Http\Controllers\Controller;
 use App\Models\AvailabilityBreak;
 use App\Models\Booking;
@@ -290,6 +291,7 @@ class BookingController extends Controller
             $booking->update([
                 'start_time' => $startTime,
                 'end_time' => $endTime,
+                'status' => BookingStatus::Booked,
                 'note' => $request->input('note'),
             ]);
 

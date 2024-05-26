@@ -55,6 +55,12 @@ export default function Index(props) {
             sortField: 'status_label',
         },
         {
+            name: 'Paid',
+            selector: row => <>{row.payment_status ? 'Yes' : 'No'}</>,
+            sortable: true,
+            sortField: 'status_label',
+        },
+        {
             name: 'Instructor',
             selector: row => <>{row.instructor ? row.instructor.name : ''}</>,
             sortable: true,
@@ -75,6 +81,10 @@ export default function Index(props) {
                             <Link href={route('students.bookings.show', {booking: row.id})} className="link">View</Link>
                             {!row.status &&
                                 <Link href={route('students.bookings.edit', {booking: row.id})} className="link">Book</Link>
+                            }
+                            {row.status && !row.payment_status
+                                ? <Link href={route('students.bookings.pay', {booking: row.id})} className="link">Pay</Link>
+                                : ''
                             }
                         </div>
                     </>
