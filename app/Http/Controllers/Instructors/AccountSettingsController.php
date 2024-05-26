@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Instructors;
 
 use App\Http\Controllers\Controller;
 use App\Models\StripeUserIntegration;
+use App\Models\Timezone;
 use App\Services\StripeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,6 +21,15 @@ class AccountSettingsController extends Controller
 
     public function accountSettings(){
         $data['account'] = Auth::user();
+        $data['timezones'] = Timezone::select(
+            DB::raw("CONCAT(name,' - ',value) AS label, value",), 'id')
+            ->pluck('label', 'id');
+
+        $currentTimezone = Timezone::where('name', Auth::user()->timezone)->first();
+        if($currentTimezone){
+            $data['current_timezone'] = $currentTimezone->id;
+        }
+
         return Inertia::render('Users/Instructors/Settings/Account', $data);
     }
 
@@ -27,7 +37,11 @@ class AccountSettingsController extends Controller
         try {
             DB::beginTransaction();
 
-            Auth::user()->update($request->except('password'));
+            $input = $request->except('password');
+            if($request->input('timezone')){
+                $input['timezone'] = Timezone::find($request->input('timezone'))->name;
+            }
+            Auth::user()->update($input);
 
             if($request->input('password')){
                 Auth::user()->update([

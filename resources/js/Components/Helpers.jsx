@@ -6,6 +6,7 @@ import utc from "dayjs/plugin/utc.js";
 import timezone from "dayjs/plugin/timezone.js";
 
 const tz = moment.tz.guess();
+const user_timezone = this.userTimezone();
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.tz.setDefault(tz);
@@ -142,5 +143,18 @@ export const _navItem = (data, index, active_page=[]) => {
 }
 
 export const timezoneDate = function(date) {
-    return dayjs.utc(date).tz(tz)
+    return dayjs.utc(date).tz(user_timezone ? user_timezone : tz)
+}
+
+export const userTimezone = function() {
+    let user_timezone = null
+    const metas = document.getElementsByTagName("META")
+    for (let i = 0; i < metas.length; i++) {
+        const meta = metas[i];
+        if(meta.name==='user-timezone'){
+            user_timezone = meta.content
+        }
+    }
+
+    return user_timezone;
 }

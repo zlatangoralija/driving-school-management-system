@@ -8,7 +8,7 @@ import moment from 'moment-timezone';
 import momentTimezonePlugin from '@fullcalendar/moment-timezone'
 import utc from "dayjs/plugin/utc.js";
 import timezone from "dayjs/plugin/timezone.js";
-import {timezoneDate} from "@/Components/Helpers.jsx";
+import {timezoneDate, userTimezone} from "@/Components/Helpers.jsx";
 
 const roundMinutesToNearestTen = (time) => {
     const minutes = time.minute(); // Get the minutes
@@ -19,11 +19,11 @@ const roundMinutesToNearestTen = (time) => {
 export default function Calendar(props) {
     const [eventModal, setEventModal] = React.useState(null);
 
-    const tz = moment.tz.guess();
-
+    const guess_tz = moment.tz.guess();
+    const user_timezone = userTimezone();
     dayjs.extend(utc);
     dayjs.extend(timezone);
-    dayjs.tz.setDefault(tz);
+    dayjs.tz.setDefault(user_timezone ? user_timezone : guess_tz);
 
     const formatter = new Intl.DateTimeFormat('en-GB', {
         timeZone: tz, // Set the desired timezone

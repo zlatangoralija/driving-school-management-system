@@ -27,6 +27,7 @@ export default function Account(props) {
             const schema = Yup.object().shape({
                 name: Yup.string().required('Name is required.'),
                 email: Yup.string().required('Email is required.'),
+                timezone: Yup.array().required('Please select your timezone.').min(1, 'Please select your timezone'),
                 password: Yup.string().nullable(),
                 password_confirmation: Yup.string()
                     .oneOf([Yup.ref('password'), null], 'Passwords must match')
@@ -41,7 +42,12 @@ export default function Account(props) {
                 abortEarly: false,
             });
 
-            router.put(route('instructors.update-account-settings'), formData, {
+            let finalData = {
+                ...formData,
+                timezone: formData.timezone.length>0 ? formData.timezone[0].value : null,
+            }
+
+            router.put(route('instructors.update-account-settings'), finalData, {
                 onError: (errors) => {
                     formRef.current.setErrors(errors);
                 }
@@ -69,6 +75,7 @@ export default function Account(props) {
         if (formRef.current && props.account) {
             formRef.current.setFieldValue('name', props.account.name);
             formRef.current.setFieldValue('email', props.account.email);
+            formRef.current.setFieldValue('timezone', props.account.timezone);
         }
     },[props.account])
 
@@ -120,6 +127,12 @@ export default function Account(props) {
 
                     <InputText name="name" label="Name*"/>
                     <InputText name="email" label="Email*"/>
+                    <SelectDefault
+                        name="timezone"
+                        label="Timezone*"
+                        options={Object.entries(props.timezones).map(([value, label]) => ({ value, label }))}
+                        defaultValue={(props.timezones && props.current_timezone) ? Object.entries(props.timezones).map(([value, label]) => ({ value, label })).find(x => x.value==props.current_timezone) : ''}
+                    />
                     <InputText name="password" type="password" label="Password*"/>
                     <InputText name="password_confirmation" type="password" label="Password confirmation*"/>
 

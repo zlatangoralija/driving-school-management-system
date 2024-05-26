@@ -28,6 +28,7 @@ export default function Account(props) {
                 name: Yup.string().required('Name is required.'),
                 email: Yup.string().required('Email is required.'),
                 password: Yup.string().nullable(),
+                timezone: Yup.array().required('Please select your timezone.').min(1, 'Please select your timezone'),
                 password_confirmation: Yup.string()
                     .oneOf([Yup.ref('password'), null], 'Passwords must match')
                     .when('password', {
@@ -41,14 +42,16 @@ export default function Account(props) {
                 abortEarly: false,
             });
 
-            router.put(route('students.update-account-settings'), formData, {
+            let finalData = {
+                ...formData,
+                timezone: formData.timezone.length>0 ? formData.timezone[0].value : null,
+            }
+
+            return router.put(route('students.update-account-settings'), finalData, {
                 onError: (errors) => {
                     formRef.current.setErrors(errors);
                 }
             })
-
-
-            return
 
         } catch (err) {
             console.log(err)
@@ -120,6 +123,12 @@ export default function Account(props) {
 
                     <InputText name="name" label="Name*"/>
                     <InputText name="email" label="Email*"/>
+                    <SelectDefault
+                        name="timezone"
+                        label="Timezone*"
+                        options={Object.entries(props.timezones).map(([value, label]) => ({ value, label }))}
+                        defaultValue={(props.timezones && props.current_timezone) ? Object.entries(props.timezones).map(([value, label]) => ({ value, label })).find(x => x.value==props.current_timezone) : ''}
+                    />
                     <InputText name="password" type="password" label="Password*"/>
                     <InputText name="password_confirmation" type="password" label="Password confirmation*"/>
 

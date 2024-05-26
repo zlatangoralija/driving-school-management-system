@@ -9,9 +9,11 @@ import moment from "moment-timezone";
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
-import {timezoneDate} from "@/Components/Helpers.jsx";
+import {timezoneDate, userTimezone} from "@/Components/Helpers.jsx";
 
-const tz = moment.tz.guess();
+const guess_tz = moment.tz.guess();
+const user_timezone = userTimezone();
+const tz = user_timezone ? user_timezone : guess_tz;
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.tz.setDefault(tz);

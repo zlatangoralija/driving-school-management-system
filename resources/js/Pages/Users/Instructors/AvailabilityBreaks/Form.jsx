@@ -11,6 +11,7 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc.js";
 import timezone from "dayjs/plugin/timezone.js";
 import {addHours, setHours, setMilliseconds, setMinutes, setSeconds} from "date-fns";
+import {userTimezone} from "@/Components/Helpers.jsx";
 
 export default function CreateForm(props) {
     const formRef = React.useRef(null);
@@ -21,11 +22,12 @@ export default function CreateForm(props) {
     const [ successNotice, setSuccessNotice ] = React.useState(null)
     const [ errorNotice, setErrorNotice ] = React.useState(null)
 
-    const tz = moment.tz.guess();
-
+    const guess_tz = moment.tz.guess();
+    const user_timezone = userTimezone();
+    const tz = user_timezone ? user_timezone : guess_tz;
     dayjs.extend(utc);
     dayjs.extend(timezone);
-    dayjs.tz.setDefault(tz);
+    dayjs.tz.setDefault(user_timezone ? user_timezone : tz);
 
     const [startDate, setStartDate] = React.useState(() => {
 

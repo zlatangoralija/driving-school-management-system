@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import Modal from "@/Components/Modal.jsx";
 import moment from 'moment-timezone';
 import momentTimezonePlugin from '@fullcalendar/moment-timezone'
-import {timezoneDate} from "@/Components/Helpers.jsx";
+import {timezoneDate, userTimezone} from "@/Components/Helpers.jsx";
 
 const roundMinutesToNearestTen = (time) => {
     const minutes = time.minute(); // Get the minutes
@@ -14,7 +14,9 @@ const roundMinutesToNearestTen = (time) => {
     return time.minute(0).second(0); // Set rounded minutes and reset seconds
 };
 
-const tz = moment.tz.guess();
+const guess_tz = moment.tz.guess();
+const user_timezone = userTimezone();
+const tz = user_timezone ? user_timezone : guess_tz;
 
 export default function Calendar(props) {
     const [eventModal, setEventModal] = React.useState(null);

@@ -258,11 +258,11 @@ class UserService
         return [
             [
                 'name' => 'Account settings',
-                'url' => route('instructors.account-settings'),
+                'url' => route('students.account-settings'),
             ],
             [
                 'name' => 'Booking settings',
-                'url' => route('instructors.booking-settings'),
+                'url' => route('students.booking-settings'),
             ],
         ];
     }
