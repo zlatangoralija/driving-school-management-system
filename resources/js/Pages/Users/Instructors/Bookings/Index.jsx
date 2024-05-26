@@ -74,7 +74,7 @@ export default function Index(props) {
                         <div className="flex justify-between gap-3">
                             <Link href={route('instructors.bookings.show', {booking: row.id})} className="link">View</Link>
                             {!row.status &&
-                                <Link href={route('students.bookings.show', {booking: row.id})} className="link">Book</Link>
+                                <Link href={route('instructors.bookings.edit', {booking: row.id, user:row.student.id})} className="link">Book</Link>
                             }
                         </div>
                     </>

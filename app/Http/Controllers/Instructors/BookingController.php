@@ -7,8 +7,10 @@ use App\Models\AvailabilityBreak;
 use App\Models\Booking;
 use App\Models\BookingInvitation;
 use App\Models\Course;
+use App\Models\User;
 use App\Notifications\NewBookingInstructor;
 use App\Notifications\NewBookingStudent;
+use App\Services\UserService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -219,17 +221,101 @@ class BookingController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Booking $booking)
     {
-        //
+        $breadcrumbs = [
+            0 => [
+                'page' => 'Dashboard',
+                'url' => route('instructors.dashboard'),
+            ],
+            1 => [
+                'page' => 'Bookings',
+                'url' => route('instructors.bookings.index'),
+            ],
+            2 => [
+                'page' => 'Confirm booking for:  ' . $booking->course->name,
+                'url' => route('instructors.confirm-booking', ['booking' => $booking]),
+                'active' => true,
+            ],
+        ];
+        Inertia::share('layout.breadcrumbs', $breadcrumbs);
+        Inertia::share('layout.active_page', ['Bookings']);
+
+        $data['booking'] = $booking;
+        $data['course'] = $booking->course;
+        $data['excluded_slots'] = UserService::getStudentUnavailableSlots($booking->course->student_id);
+
+        return Inertia::render('Users/Instructors/Bookings/Book', $data);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Booking $booking)
     {
-        //
+        try {
+            DB::beginTransaction();
+
+            $input = $request->input();
+            $course = $booking->course;
+
+            $startTime = Carbon::parse($request->input('start_time'));
+            $endTime = $startTime->copy()->addMinutes($course->duration);
+
+            //TODO: do this in service!
+            //First check that there are no other events booked at this timeslot
+            $existing = Booking::where('student_id', $course->student_id)
+                ->where('start_time', $startTime)
+                ->orWhere('end_time', $startTime)
+                ->first();
+
+            if($existing){
+                throw ValidationException::withMessages([
+                    'start_time' => ['Booking slot already taken. Please select another slot.'],
+                ]);
+            }
+
+            //Then check if there is break on this timeslot
+            $break = AvailabilityBreak::where('user_id', $course->student_id)
+                ->where('start_time', $startTime)
+                ->orWhere('end_time', $startTime)
+                ->first();
+
+            if($break){
+                throw ValidationException::withMessages([
+                    'start_time' => ['Student is not available at the selected slot. Please select another slot.'],
+                ]);
+            }
+
+            $booking->update([
+                'start_time' => $startTime,
+                'end_time' => $endTime,
+                'note' => $request->input('note'),
+            ]);
+
+            DB::commit();
+
+            //TODO: booking should be pending state still, until instructor approves it
+            if($booking->instructor){
+                $booking->instructor->notify(new NewBookingInstructor($booking));
+            }
+
+            if($booking->student){
+                $booking->student->notify(new NewBookingStudent($booking));
+            }
+
+            return redirect()->route('instructors.bookings.index')
+                ->with('success', 'Booked successfully!');
+
+        } catch (\Exception $exception){
+            DB::rollBack();
+            Log::info('Booking update error');
+            Log::info($exception->getMessage());
+            Log::info($exception->getTraceAsString());
+
+            return redirect()->back()
+                ->with('error', isset($exception->validator) ? [$exception->getMessage()] :  ['There was an error creating a booking.']);
+        }
     }
 
     /**
