@@ -262,7 +262,7 @@ class UserService
             ],
             [
                 'name' => 'Booking settings',
-                'url' => route('students.booking-settings'),
+                'url' => route('students.availability-breaks.index'),
             ],
         ];
     }

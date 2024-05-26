@@ -38,6 +38,7 @@ Route::middleware([
         Route::resource('/invitations', \App\Http\Controllers\Students\InvitationController::class);
         Route::resource('/courses', \App\Http\Controllers\Students\CourseController::class);
         Route::resource('/invoices', \App\Http\Controllers\Students\InvoiceController::class);
+        Route::resource('/availability-breaks', \App\Http\Controllers\Students\AvailabilityBreakController::class);
 
         //Booking calendar view
         Route::get('/bookings-calendar', [\App\Http\Controllers\Students\BookingController::class, 'calendar'])->name('bookings-calendar');
@@ -54,8 +55,6 @@ Route::middleware([
         Route::put('/update-account-settings', [\App\Http\Controllers\Students\AccountSettingsController::class, 'updateAccountSettings'])->name('update-account-settings');
         Route::get('/payment-settings', [\App\Http\Controllers\Students\AccountSettingsController::class, 'paymentSettings'])->name('payment-settings');
         Route::put('/update-payment-settings', [\App\Http\Controllers\Students\AccountSettingsController::class, 'updatePaymentSettings'])->name('update-payment-settings');
-        Route::get('/booking-settings', [\App\Http\Controllers\Students\AccountSettingsController::class, 'bookingSettings'])->name('booking-settings');
-        Route::put('/update-booking-settings', [\App\Http\Controllers\Students\AccountSettingsController::class, 'updateBookingSettings'])->name('update-booking-settings');
 
         //Ajax routes
         Route::get('/get-bookings', [\App\Http\Controllers\Students\BookingController::class, 'getBookings'])->name('get-bookings');
@@ -63,6 +62,7 @@ Route::middleware([
         Route::get('/get-courses', [\App\Http\Controllers\Students\CourseController::class, 'getCourses'])->name('get-student-courses');
         Route::get('/get-course-bookings/{uuid}', [\App\Http\Controllers\Students\CourseController::class, 'getCourseBookings'])->name('get-course-bookings');
         Route::get('/get-student-invoices', [\App\Http\Controllers\Students\InvoiceController::class, 'getInvoices'])->name('get-student-invoices');
+        Route::get('/get-availability-breaks', [\App\Http\Controllers\Students\AvailabilityBreakController::class, 'getBreaks'])->name('get-availability-breaks');
 
     });
 
