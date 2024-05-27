@@ -42,6 +42,11 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        if(Auth::user() && !Auth::user()->timezone && $request->input('tz')){
+            Auth::user()->timezone = $request->input('tz');
+            Auth::user()->save();
+        }
+
         if(Auth::user() && Auth::user()->tenant){
             $domainPrefix = Auth::user()->tenant->domain_prefix . '.';
             $fullDomain = str_replace('https://', 'https://' . $domainPrefix, config('app.url'));

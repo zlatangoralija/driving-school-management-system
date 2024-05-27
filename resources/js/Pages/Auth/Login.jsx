@@ -7,13 +7,17 @@ import TextInput from '@/Components/TextInput';
 import {Head, Link, useForm, usePage} from '@inertiajs/react';
 import Logo from "../../../images/full-logo-vertical.png";
 import FlashNotification from "@/Components/FlashNotification.jsx";
+import moment from "moment-timezone";
 
 export default function Login({ status, canResetPassword }) {
+
+    const tz = moment.tz.guess();
 
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
         remember: false,
+        tz: tz,
     });
 
     useEffect(() => {
