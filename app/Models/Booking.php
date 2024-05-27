@@ -25,6 +25,10 @@ class Booking extends Model
         'instructor_id',
         'admin_id',
         'uuid',
+        'reminder_1hr_student',
+        'reminder_24hr_student',
+        'reminder_1hr_instructor',
+        'reminder_24hr_instructor',
     ];
 
     protected $casts = [
