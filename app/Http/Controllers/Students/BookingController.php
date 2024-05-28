@@ -321,6 +321,7 @@ class BookingController extends Controller
                 'start_time' => $startTime,
                 'end_time' => $endTime,
                 'note' => $request->input('note'),
+                'status' => BookingStatus::Booked,
             ]);
 
             DB::commit();

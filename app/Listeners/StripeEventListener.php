@@ -69,10 +69,10 @@ class StripeEventListener
 
                     Invoice::create([
                         'amount' => (float) $event->payload['data']['object']['amount_subtotal'] / 100,
-                        'description' => 'Payment for course: ' . $booking->course->name,
-                        'student_id' => $booking->student_id,
-                        'instructor_id' => $booking->instructor_id,
-                        'course_id' => $booking->course->id,
+                        'description' => 'Payment for course: ' . $booked->course->name,
+                        'student_id' => $booked->student_id,
+                        'instructor_id' => $booked->instructor_id,
+                        'course_id' => $booked->course->id,
                     ]);
 
                     //TODO: booking should be pending state still, until instructor approves it
