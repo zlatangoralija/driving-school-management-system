@@ -58,6 +58,7 @@ class User extends Authenticatable implements FilamentUser
     {
         return [
             'email_verified_at' => 'datetime',
+            'driving_test_booked' => 'datetime',
             'password' => 'hashed',
             'type' => UserType::class,
             'status' => UserStatus::class,

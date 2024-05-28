@@ -48,6 +48,7 @@ Route::middleware([
         Route::post('/book-and-pay', [\App\Http\Controllers\Students\BookingController::class, 'storeBookAndPay'])->name('store-book-and-pay');
         Route::put('/book-and-pay/{booking}', [\App\Http\Controllers\Students\BookingController::class, 'updateBookAndPay'])->name('update-book-and-pay');
         Route::get('/cancel-booking/{booking}', [App\Http\Controllers\Students\BookingController::class, 'cancelBooking'])->name('cancel-booking-payment');
+        Route::post('/book-driving-test', [App\Http\Controllers\Students\BookingController::class, 'drivingTest'])->name('book-driving-test');
 
         //Settings
         Route::get('/account-settings', [\App\Http\Controllers\Students\AccountSettingsController::class, 'accountSettings'])->name('account-settings');

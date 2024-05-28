@@ -1,5 +1,6 @@
 import {Head} from "@inertiajs/react";
 import React from "react";
+import {timezoneDate} from "@/Components/Helpers.jsx";
 
 export default function Show(props) {
     return (
@@ -17,6 +18,7 @@ export default function Show(props) {
                 <p>Name: {props.student.name}</p>
                 <p>Email: {props.student.email}</p>
                 <p>Status: {props.student.status}</p>
+                <p>Driving test: {props.student.driving_test_booked ? timezoneDate(props.student.driving_test_booked).format('DD/MM/YYYY H:mm') : 'Not booked yet'}</p>
             </div>
         </>
     );

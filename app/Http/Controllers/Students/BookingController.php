@@ -648,6 +648,15 @@ class BookingController extends Controller
         return redirect()->route('students.bookings.index');
     }
 
+    public function drivingTest(Request $request){
+        Auth::user()->driving_test_booked = $request->input('start_time');
+        Auth::user()->save();
+
+        return redirect()->back()
+            ->with('success', 'Driving test booked successfully!');
+
+    }
+
     /**
      * Remove the specified resource from storage.
      */
