@@ -13,8 +13,6 @@ export default function Register(props) {
     const [ errorNotice, setErrorNotice ] = React.useState(null)
     const wrapperRef = React.useRef(null)
 
-    console.log(successNotice, errorNotice);
-
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         school_name: '',
@@ -47,8 +45,6 @@ export default function Register(props) {
             }
         })
     };
-
-    console.log(flash, props);
 
     React.useEffect(()=>{
         if(flash && Object.keys(flash).length){
