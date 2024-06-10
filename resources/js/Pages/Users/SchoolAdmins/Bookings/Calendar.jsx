@@ -21,6 +21,8 @@ export default function Calendar(props) {
 
     const guess_tz = moment.tz.guess();
     const user_timezone = userTimezone();
+    const tz = user_timezone ? user_timezone : guess_tz;
+    
     dayjs.extend(utc);
     dayjs.extend(timezone);
     dayjs.tz.setDefault(user_timezone ? user_timezone : guess_tz);
