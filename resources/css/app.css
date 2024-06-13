@@ -3,323 +3,424 @@
 @tailwind utilities;
 
 /* LAYOUT */
-body > .main{
-    @apply w-full min-h-full max-w-full
+body > .main {
+  @apply w-full min-h-full max-w-full;
 }
-body > .main > #app{
-    @apply min-h-full max-w-full;
+body > .main > #app {
+  @apply min-h-full max-w-full;
 }
-.mainWrapper{
-    @apply w-full min-h-[100vh] flex flex-1 flex-col max-w-full
+.mainWrapper {
+  @apply w-full min-h-[100vh] flex flex-1 flex-col max-w-full;
 }
-.mainWrapper .layout{
-    @apply mx-auto max-w-full md:max-w-7xl w-full flex flex-1 relative z-[996];
+.mainWrapper .layout {
+  @apply mx-auto max-w-full md:max-w-7xl w-full flex flex-1 relative z-[996];
 }
-.mainWrapper .layout.full{
-    @apply max-w-none w-full
+.mainWrapper .layout.full {
+  @apply max-w-none w-full;
 }
-.mainWrapper .layout .sidebar{
-    @apply py-7 border-r-2 border-r-gray-100 relative transition-all ease-in-out hidden lg:block
+.mainWrapper .layout .sidebar {
+  @apply py-7 border-r-2 border-r-gray-100 relative transition-all ease-in-out hidden lg:block;
 }
-.mainWrapper .layout .sidebar.expanded{
-    @apply w-1/5 pr-6 pl-4
+.mainWrapper .layout .sidebar.expanded {
+  @apply w-1/5 pr-6 pl-4;
 }
-.mainWrapper .layout .sidebar.collapsed{
-    @apply w-0 pr-0
+.mainWrapper .layout .sidebar.collapsed {
+  @apply w-0 pr-0;
 }
-.mainWrapper .layout .sidebar .expandSidebar{
-    @apply absolute top-10 -right-5 w-10 h-10 rounded-full bg-white shadow-md flex justify-center items-center text-primary hover:text-secondary
+.mainWrapper .layout .sidebar .expandSidebar {
+  @apply absolute top-10 -right-5 w-10 h-10 rounded-full bg-white shadow-md flex justify-center items-center text-primary hover:text-secondary;
 }
-.mainWrapper .layout .sidebar > div{
-    @apply w-full overflow-hidden
+.mainWrapper .layout .sidebar > div {
+  @apply w-full overflow-hidden;
 }
-.mainWrapper .layout .mainContent{
-    @apply px-4 pl-4 lg:pl-8 transition-all ease-in-out max-w-full w-full
+.mainWrapper .layout .mainContent {
+  @apply px-4 pl-4 lg:pl-8 transition-all ease-in-out max-w-full w-full;
 }
-.mainWrapper .layout .mainContent.regular{
-    @apply w-full lg:w-4/5 pt-6  xl:pl-8
+.mainWrapper .layout .mainContent.regular {
+  @apply w-full lg:w-4/5 pt-6  xl:pl-8;
 }
-.mainWrapper .layout .mainContent.full{
-    @apply w-full pt-6 xl:pl-8
+.mainWrapper .layout .mainContent.full {
+  @apply w-full pt-6 xl:pl-8;
 }
-.mainWrapper .layout .mainContent.no-sidebar{
-    @apply w-full pl-4 !pt-0
+.mainWrapper .layout .mainContent.no-sidebar {
+  @apply w-full pl-4 !pt-0;
 }
 
-.container{
-    @apply max-w-7xl mx-auto px-4
+.container {
+  @apply max-w-7xl mx-auto px-4;
 }
-.mainWrapper .layout .mainContent.no-sidebar .container{
-    @apply !px-0
+.mainWrapper .layout .mainContent.no-sidebar .container {
+  @apply !px-0;
 }
 
 /* NAVIGATION VERTICAL */
-._navigationVertical > ul{
-    @apply min-w-[210px] flex flex-col gap-4 w-full
+._navigationVertical > ul {
+  @apply min-w-[210px] flex flex-col gap-4 w-full;
 }
-._navigationVertical > ul li{
-    @apply flex flex-wrap justify-between items-center gap-3 w-full
+._navigationVertical > ul li {
+  @apply flex flex-wrap justify-between items-center gap-3 w-full;
 }
-._navigationVertical > ul li button:not(.aItem){
-    @apply text-xs opacity-40 hover:opacity-100
+._navigationVertical > ul li button:not(.aItem) {
+  @apply text-xs opacity-40 hover:opacity-100;
 }
 ._navigationVertical > ul > li > a {
-    @apply w-full
+  @apply w-full;
 }
 ._navigationVertical > ul > li > a,
-._navigationVertical > ul > li > .aItem{
-    @apply flex justify-start items-center gap-3 text-[#50555b] hover:text-primary text-base uppercase tracking-[1px] font-bold
+._navigationVertical > ul > li > .aItem {
+  @apply flex justify-start items-center gap-3 text-[#50555b] hover:text-primary text-base uppercase tracking-[1px] font-bold;
 }
 ._navigationVertical > ul > li.active > a,
-._navigationVertical > ul > li.active > .aItem{
-    @apply text-primary
+._navigationVertical > ul > li.active > .aItem {
+  @apply text-primary;
 }
 ._navigationVertical > ul > li > ul > li a,
-._navigationVertical > ul > li > ul > li .aItem{
-    @apply flex justify-start items-center gap-3 text-[#7e22ce] hover:text-primary text-base normal-case tracking-[.5px] font-bold py-1
+._navigationVertical > ul > li > ul > li .aItem {
+  @apply flex justify-start items-center gap-3 text-[#7e22ce] hover:text-primary text-base normal-case tracking-[.5px] font-bold py-1;
 }
 ._navigationVertical > ul > li > a > [class^="icon-"],
-._navigationVertical > ul > li > .aItem > [class^="icon-"]{
-    @apply text-[22px]
+._navigationVertical > ul > li > .aItem > [class^="icon-"] {
+  @apply text-[22px];
 }
 ._navigationVertical > ul > li > a > span,
-._navigationVertical > ul > li > .aItem > span{
-    @apply max-w-[calc(100%-20px)]
+._navigationVertical > ul > li > .aItem > span {
+  @apply max-w-[calc(100%-20px)];
 }
 ._navigationVertical > ul > li > a ._badge,
-._navigationVertical > ul > li > .aItem ._badge{
-    @apply self-end;
+._navigationVertical > ul > li > .aItem ._badge {
+  @apply self-end;
 }
-._navigationVertical > ul > li > ul{
-    @apply pl-[38px] hidden w-full
+._navigationVertical > ul > li > ul {
+  @apply pl-[38px] hidden w-full;
 }
-._navigationVertical > ul > li > ul.expanded{
-    @apply block
+._navigationVertical > ul > li > ul.expanded {
+  @apply block;
 }
-._navigationVertical > ul > li > ul > li > ul{
-    @apply pl-[20px] hidden w-full
+._navigationVertical > ul > li > ul > li > ul {
+  @apply pl-[20px] hidden w-full;
 }
-._navigationVertical > ul > li > ul > li > ul.expanded{
-    @apply block
-}
-
-.tableWrapper{
-    @apply bg-white shadow-box rounded-md overflow-hidden border border-[#E9ECEF] w-full max-w-full
-}
-.rdt_TableRow{
-    @apply border-[#E9ECEF]
-}
-.rdt_TableCol{
-    @apply !bg-[#FBFBFB]
-}
-.rdt_TableCol_Sortable{
-    @apply !bg-transparent !uppercase !text-sm tracking-[1px] !font-bold !text-[#50555B]
-}
-.rdt_Pagination{
-    @apply !bg-[#FBFBFB] !font-medium !text-[#35353D]
-}
-.rdt_TableCell{
-    @apply !font-medium !text-base !text-[#50555b]
+._navigationVertical > ul > li > ul > li > ul.expanded {
+  @apply block;
 }
 
-.card{
-    @apply shadow-box hover:shadow-box-hover rounded-md bg-white transition-all ease-in-out duration-200;
+.tableWrapper {
+  @apply bg-white shadow-box rounded-md overflow-hidden border border-[#E9ECEF] w-full max-w-full;
+}
+.rdt_TableRow {
+  @apply border-[#E9ECEF];
+}
+.rdt_TableCol {
+  @apply !bg-[#FBFBFB];
+}
+.rdt_TableCol_Sortable {
+  @apply !bg-transparent !uppercase !text-sm tracking-[1px] !font-bold !text-[#50555B];
+}
+.rdt_Pagination {
+  @apply !bg-[#FBFBFB] !font-medium !text-[#35353D];
+}
+.rdt_TableCell {
+  @apply !font-medium !text-base !text-[#50555b];
+}
+
+.card {
+  @apply shadow-box hover:shadow-box-hover rounded-md bg-white transition-all ease-in-out duration-200;
+}
+
+/* BUTTONS */
+.button {
+  @apply flex justify-center items-center px-2 md:px-4 h-10 md:!min-w-[118px] rounded-md border uppercase transition ease-in-out;
+}
+.button-blue {
+  @apply border-blue bg-blue-gradient hover:bg-purple-gradient text-white;
+}
+.button-big {
+  @apply md:w-1/3 w-2/3;
+}
+.button-green {
+  @apply border-green bg-green hover:opacity-80 text-white;
+}
+.button-purple-gradient {
+  @apply bg-purple-gradient border-transparent hover:bg-blue-gradient text-white;
 }
 
 /* FORMS MATERIAL */
-.form-group.material input, .form-group.material select, .form-group.material textarea {
-    z-index: 0 !important;
+.form-group.material input,
+.form-group.material select,
+.form-group.material textarea {
+  z-index: 0 !important;
 }
 
-.formGroupMaterial{
-    @apply relative my-4 w-full;
+.formGroupMaterial {
+  @apply relative my-4 w-full;
 }
-.formGroupMaterial > label{
-    @apply absolute top-6 left-0 text-base text-gray-800 transition-all ease-in-out z-0
+.formGroupMaterial > label {
+  @apply absolute top-6 left-0 text-base text-gray-800 transition-all ease-in-out z-0;
 }
 .formGroupMaterial.filled > label,
-.formGroupMaterial.focused > label{
-    @apply top-0 text-xs
+.formGroupMaterial.focused > label {
+  @apply top-0 text-xs;
 }
-.formGroupMaterial > div .formControlMaterial{
-    @apply mt-4 w-full border-none text-base min-h-[40px] py-2 text-gray-800 outline-none relative z-[1] font-semibold placeholder:text-gray-800 placeholder:font-semibold placeholder:text-opacity-50 bg-transparent disabled:opacity-70
-}
-
-.formGroupMaterial > div{
-    @apply border-b-[2px] border-b-gray-300
+.formGroupMaterial > div .formControlMaterial {
+  @apply mt-4 w-full border-none text-base min-h-[40px] py-2 text-gray-800 outline-none relative z-[1] font-semibold placeholder:text-gray-800 placeholder:font-semibold placeholder:text-opacity-50 bg-transparent disabled:opacity-70;
 }
 
-.formGroupMaterial > div:after{
-    content: "";
-    @apply w-0 h-[2px] bg-primary block transition-all ease-in-out duration-200 -mb-[2px]
-}
-.formGroupMaterial.focused > div:after{
-    @apply w-full
-}
-.formGroupMaterial > span.error{
-    @apply text-xs text-red-500 py-2
-}
-.formGroupMaterial.error > label{
-    @apply text-red-500
-}
-.formGroupMaterial.error > div:after{
-    @apply w-full bg-red-500
+.formGroupMaterial > div {
+  @apply border-b-[2px] border-b-gray-300;
 }
 
-.formGroupMaterial._select > div{
-    @apply !pt-4 relative block
+.formGroupMaterial > div:after {
+  content: "";
+  @apply w-0 h-[2px] bg-primary block transition-all ease-in-out duration-200 -mb-[2px];
 }
-.formGroupMaterial._select > div > .react-select__control{
-    @apply !border-0 !h-auto !min-h-[40px] z-[0] !bg-transparent
+.formGroupMaterial.focused > div:after {
+  @apply w-full;
 }
-.formGroupMaterial._select > div .react-select__value-container{
-    @apply !pl-0 !pr-1
+.formGroupMaterial > span.error {
+  @apply text-xs text-red-500 py-2;
 }
-.formGroupMaterial._select > div .react-select__control--is-focused{
-    @apply !border-0 !shadow-none
+.formGroupMaterial.error > label {
+  @apply text-red-500;
 }
-.formGroupMaterial._select > div .react-select__indicator-separator{
-    @apply !hidden
+.formGroupMaterial.error > div:after {
+  @apply w-full bg-red-500;
 }
-.formGroupMaterial._select > div .react-select__dropdown-indicator{
-    @apply !pr-0
+
+.formGroupMaterial._select > div {
+  @apply !pt-4 relative block;
 }
-.formGroupMaterial._select > div .react-select__menu{
-    @apply !rounded-t-none !border-0 !mt-[2px] !shadow-lg z-[9]
+.formGroupMaterial._select > div > .react-select__control {
+  @apply !border-0 !h-auto !min-h-[40px] z-[0] !bg-transparent;
 }
-.formGroupMaterial._select > div .react-select__menu .react-select__option--is-selected{
-    @apply bg-primary
+.formGroupMaterial._select > div .react-select__value-container {
+  @apply !pl-0 !pr-1;
 }
-.formGroupMaterial._select > div .react-select__single-value{
-    @apply text-gray-800 font-semibold text-base
+.formGroupMaterial._select > div .react-select__control--is-focused {
+  @apply !border-0 !shadow-none;
+}
+.formGroupMaterial._select > div .react-select__indicator-separator {
+  @apply !hidden;
+}
+.formGroupMaterial._select > div .react-select__dropdown-indicator {
+  @apply !pr-0;
+}
+.formGroupMaterial._select > div .react-select__menu {
+  @apply !rounded-t-none !border-0 !mt-[2px] !shadow-lg z-[9];
+}
+.formGroupMaterial._select
+  > div
+  .react-select__menu
+  .react-select__option--is-selected {
+  @apply bg-primary;
+}
+.formGroupMaterial._select > div .react-select__single-value {
+  @apply text-gray-800 font-semibold text-base;
 }
 .formGroupMaterial._select .react-select__multi-value {
-    @apply !shadow-box !bg-white !rounded-full border border-gray-50 !pl-2
+  @apply !shadow-box !bg-white !rounded-full border border-gray-50 !pl-2;
 }
-.formGroupMaterial._select .react-select__multi-value .react-select__multi-value__remove{
-    @apply border-l ml-2 pl-1 pr-2 rounded-r-full
+.formGroupMaterial._select
+  .react-select__multi-value
+  .react-select__multi-value__remove {
+  @apply border-l ml-2 pl-1 pr-2 rounded-r-full;
 }
 
 .react-select__input {
-    @apply border-none focus:ring-0
+  @apply border-none focus:ring-0;
 }
 
+.formGroupMaterial._checkbox {
+  @apply w-auto;
+}
+.formGroupMaterial._checkbox > div {
+  @apply !border-none pl-8 relative;
+}
+.formGroupMaterial._checkbox > div > input {
+  @apply absolute top-0 left-0  w-6 h-6 opacity-0 z-[5] cursor-pointer;
+}
+.formGroupMaterial._checkbox > div > label {
+  @apply relative text-gray-800 text-base;
+}
+.formGroupMaterial._checkbox > div > label:before {
+  content: "";
+  @apply w-5 h-5 absolute -top-[2px] -left-8 border-2 border-gray-300 rounded;
+}
+.formGroupMaterial._checkbox > div > input:checked + label:before {
+  @apply border-primary;
+}
+.formGroupMaterial._checkbox > div > input:checked + label:after {
+  content: "\e929";
+  @apply text-primary absolute -top-[2px] -left-7 text-[13px];
+}
+.formGroupMaterial._checkbox > div:after {
+  @apply !hidden;
+}
+.formGroupMaterial._checkbox > span.error {
+  @apply pl-8;
+}
+.formGroupMaterial.error._checkbox > div > label:before {
+  @apply border-red-500;
+}
 
-.formGroupMaterial._checkbox{
-    @apply w-auto
+.dropDown {
+  @apply absolute top-4 right-4;
 }
-.formGroupMaterial._checkbox > div{
-    @apply !border-none pl-8 relative
+.dropDown > button {
+  @apply py-2 cursor-pointer;
 }
-.formGroupMaterial._checkbox > div > input{
-    @apply absolute top-0 left-0  w-6 h-6 opacity-0 z-[5] cursor-pointer
+.dropDown > ul {
+  @apply absolute top-8 -right-2 bg-white shadow-2xl rounded-md w-[200px];
 }
-.formGroupMaterial._checkbox > div > label{
-    @apply relative text-gray-800 text-base
+.dropDown > ul:before {
+  content: "";
+  @apply border-transparent border-[8px] border-b-[#ccc] absolute -top-[16px] right-[7px];
 }
-.formGroupMaterial._checkbox > div > label:before{
-    content: "";
-    @apply w-5 h-5 absolute -top-[2px] -left-8 border-2 border-gray-300 rounded
-}
-.formGroupMaterial._checkbox > div > input:checked + label:before{
-    @apply border-primary
-}
-.formGroupMaterial._checkbox > div > input:checked + label:after{
-    content: "\e929";
-    @apply text-primary absolute -top-[2px] -left-7 text-[13px]
-}
-.formGroupMaterial._checkbox > div:after{
-    @apply !hidden
-}
-.formGroupMaterial._checkbox > span.error{
-    @apply pl-8
-}
-.formGroupMaterial.error._checkbox > div > label:before{
-    @apply border-red-500
-}
-
-.dropDown{
-    @apply absolute top-4 right-4
-}
-.dropDown > button{
-    @apply py-2 cursor-pointer
-}
-.dropDown > ul{
-    @apply absolute top-8 -right-2 bg-white shadow-2xl rounded-md w-[200px]
-}
-.dropDown > ul:before{
-    content: "";
-    @apply border-transparent border-[8px] border-b-[#ccc] absolute -top-[16px] right-[7px]
-}
-.dropDown > ul > li{
-    @apply w-full
+.dropDown > ul > li {
+  @apply w-full;
 }
 .dropDown > ul > li > a,
-.dropDown > ul > li > button{
-    @apply appearance-none cursor-pointer py-2 border-b px-4 flex justify-start items-center gap-2
+.dropDown > ul > li > button {
+  @apply appearance-none cursor-pointer py-2 border-b px-4 flex justify-start items-center gap-2;
 }
 
-._modal{
-    @apply fixed inset-0 bg-black bg-opacity-70 z-[99999] p-4 overflow-y-auto lg:flex lg:justify-center lg:items-center;
+._modal {
+  @apply fixed inset-0 bg-black bg-opacity-70 z-[99999] p-4 overflow-y-auto lg:flex lg:justify-center lg:items-center;
 }
 ._modal > div {
-    @apply bg-white rounded-lg relative w-full mx-auto block;
+  @apply bg-white rounded-lg relative w-full mx-auto block;
 }
-._modal > div .title{
-    @apply p-6 lg:p-10 !pb-0 !pr-20
+._modal > div .title {
+  @apply p-6 lg:p-10 !pb-0 !pr-20;
 }
-._modal > div .content{
-    @apply p-6 lg:p-10
+._modal > div .content {
+  @apply p-6 lg:p-10;
 }
-._modal > div .footer{
-    @apply bg-gray-50 px-6 lg:px-10 py-4 lg:py-6 flex justify-end items-center gap-2 w-full;
+._modal > div .footer {
+  @apply bg-gray-50 px-6 lg:px-10 py-4 lg:py-6 flex justify-end items-center gap-2 w-full;
 }
-._modal .icon-close{
-    @apply text-primary absolute top-7 lg:top-12 right-6 lg:right-10
+._modal .icon-close {
+  @apply text-primary absolute top-7 lg:top-12 right-6 lg:right-10;
 }
 
-.dropZone{
-    @apply p-10 border-2 border-dashed rounded-md flex justify-center items-center flex-col cursor-pointer hover:border-primary w-full
+.dropZone {
+  @apply p-10 border-2 border-dashed rounded-md flex justify-center items-center flex-col cursor-pointer hover:border-primary w-full;
 }
-.dropZoneWrapper{
-    @apply flex flex-col justify-center items-center
+.dropZoneWrapper {
+  @apply flex flex-col justify-center items-center;
 }
-.dropZoneWrapper .dropZoneSinglePreview{
-    @apply flex flex-col justify-center items-center relative max-w-[125px]
+.dropZoneWrapper .dropZoneSinglePreview {
+  @apply flex flex-col justify-center items-center relative max-w-[125px];
 }
-.dropZoneWrapper .dropZoneSinglePreview > div{
-    @apply shadow-md rounded-md bg-gray-100 overflow-hidden w-[125px] h-[125px] min-w-[125px] flex justify-center items-center;
+.dropZoneWrapper .dropZoneSinglePreview > div {
+  @apply shadow-md rounded-md bg-gray-100 overflow-hidden w-[125px] h-[125px] min-w-[125px] flex justify-center items-center;
 }
-.dropZoneWrapper .dropZoneSinglePreview > div > img{
-    @apply w-full h-full object-cover object-center;
+.dropZoneWrapper .dropZoneSinglePreview > div > img {
+  @apply w-full h-full object-cover object-center;
 }
-.dropZoneWrapper .dropZoneSinglePreview > div > div{
-    @apply text-center text-2xl font-semibold uppercase;
+.dropZoneWrapper .dropZoneSinglePreview > div > div {
+  @apply text-center text-2xl font-semibold uppercase;
 }
-.dropZoneWrapper .dropZoneSinglePreview > .dropZoneDeleteSingle{
-    @apply absolute -top-3 -right-3 w-8 h-8 rounded-full bg-white flex justify-center items-center text-2xl text-secondary shadow-md;
+.dropZoneWrapper .dropZoneSinglePreview > .dropZoneDeleteSingle {
+  @apply absolute -top-3 -right-3 w-8 h-8 rounded-full bg-white flex justify-center items-center text-2xl text-secondary shadow-md;
 }
-.dropZoneWrapper .dropZoneSinglePreview > span{
-    @apply text-xs mt-2 block w-full
+.dropZoneWrapper .dropZoneSinglePreview > span {
+  @apply text-xs mt-2 block w-full;
 }
 
 /* StepperNav */
-.stepperNav{
-    @apply bg-white transition-all ease-in-out duration-200 flex justify-center items-center py-4 lg:px-6 relative overflow-x-auto gap-3 lg:gap-0 mb-5;
+.stepperNav {
+  @apply bg-white transition-all ease-in-out duration-200 flex justify-center items-center py-4 lg:px-6 relative overflow-x-auto gap-3 lg:gap-0 mb-5;
 }
-.stepperNav .line{
-    @apply hidden lg:block w-[68%] h-[1px] bg-gray-200 absolute top-7 left-[16%] z-[0]
+.stepperNav .line {
+  @apply hidden lg:block w-[68%] h-[1px] bg-gray-200 absolute top-7 left-[16%] z-[0];
 }
-.stepperNav .item{
-    @apply flex flex-row lg:flex-col justify-center items-center gap-2 relative min-w-[130px];
+.stepperNav .item {
+  @apply flex flex-row lg:flex-col justify-center items-center gap-2 relative min-w-[130px];
 }
-.stepperNav .item.current:after{
-    content: '';
-    @apply h-[3px] bg-primary -bottom-2 -left-2 -right-2 rounded-full absolute;
+.stepperNav .item.current:after {
+  content: "";
+  @apply h-[3px] bg-primary -bottom-2 -left-2 -right-2 rounded-full absolute;
 }
-.stepperNav .item .title{
-    @apply uppercase font-bold text-sm leading-[15px] text-gray-900;
+.stepperNav .item .title {
+  @apply uppercase font-bold text-sm leading-[15px] text-gray-900;
 }
-.stepperNav .item.current .title{
-    @apply text-primary;
+.stepperNav .item.current .title {
+  @apply text-primary;
+}
+
+/* DATE PICKER */
+.react-datepicker {
+  @apply border-transparent flex flex-col md:flex-row items-center !important;
+}
+.react-datepicker__month-container {
+  @apply w-full md:w-1/2;
+}
+.react-datepicker__current-month,
+.react-datepicker-time__header,
+.react-datepicker-year-header {
+  @apply text-base !important;
+}
+.react-datepicker__header.react-datepicker__header--has-time-select {
+  @apply w-full bg-transparent;
+}
+.react-datepicker__header.react-datepicker__header--time {
+  @apply md:hidden block bg-transparent mt-8 border-b-transparent;
+}
+/* .react-datepicker-time__header {
+  @apply mb-12;
+} */
+.react-datepicker__time-container {
+  @apply border-l-transparent;
+}
+.react-datepicker__day-names,
+.react-datepicker__week {
+  @apply flex justify-between mt-6 text-sm;
+}
+.react-datepicker__time-container.react-datepicker__time-container--with-today-button {
+  @apply md:w-1/2 w-full;
+}
+.react-datepicker__time-container {
+  @apply md:w-1/2 w-full;
+}
+.react-datepicker__navigation.react-datepicker__navigation--next.react-datepicker__navigation--next--with-time {
+  @apply md:right-[50%] right-[20%];
+}
+.react-datepicker__navigation.react-datepicker__navigation--previous {
+  @apply md:left-[42%] left-[20%];
+}
+.react-datepicker__day {
+  @apply text-sm py-1 px-3 flex justify-center items-center;
+}
+.react-datepicker__time-box {
+  @apply w-full !important;
+}
+.react-datepicker__time-list-item {
+  @apply w-2/3 h-[40px] border border-blue rounded-md my-3 mx-12 py-2 flex justify-center items-center text-sm !important;
+}
+ul.react-datepicker__time-list {
+  @apply flex flex-col items-center !important;
+}
+.react-datepicker__day--selected,
+.react-datepicker__day--in-selecting-range,
+.react-datepicker__day--in-range,
+.react-datepicker__month-text--selected,
+.react-datepicker__month-text--in-selecting-range,
+.react-datepicker__month-text--in-range,
+.react-datepicker__quarter-text--selected,
+.react-datepicker__quarter-text--in-selecting-range,
+.react-datepicker__quarter-text--in-range,
+.react-datepicker__year-text--selected,
+.react-datepicker__year-text--in-selecting-range,
+.react-datepicker__year-text--in-range,
+.react-datepicker__time-container
+  .react-datepicker__time
+  .react-datepicker__time-box
+  ul.react-datepicker__time-list
+  li.react-datepicker__time-list-item--selected {
+  @apply bg-blue;
+}
+.react-datepicker__day--keyboard-selected,
+.react-datepicker__month-text--keyboard-selected,
+.react-datepicker__quarter-text--keyboard-selected,
+.react-datepicker__year-text--keyboard-selected {
+  @apply bg-purple text-white;
 }
