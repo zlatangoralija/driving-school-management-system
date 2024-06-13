@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 use Stancl\Tenancy\Database\Models\Domain;
@@ -59,6 +60,27 @@ class RegisteredUserController extends Controller
             $domainPrefix = Str::snake($request->school_name, '-');
             $domain =  $domainPrefix . '.' . config('app.root_url');
             $fullDomain = str_replace('https://', 'https://' . $domainPrefix . '.', config('app.url'));
+
+            //See if tenant name or domain name already exists
+            $existingTenant = Tenant::where('data->name', $request->school_name)
+                ->orWhere('data->domain_prefix', $domainPrefix)
+                ->exists();
+
+            $existingDomain = Domain::where('domain', $domain)
+                ->exists();
+
+            if($existingTenant){
+                throw ValidationException::withMessages([
+                    'school_name' => 'School name already exists. Please use another one.',
+                ]);
+            }
+
+            if($existingDomain){
+                throw ValidationException::withMessages([
+                    'domain_prefix' => 'Domain already exists. Please use another one.',
+                ]);
+            }
+
 
             $school = Tenant::create([
                 'name' => $request->school_name,
@@ -115,8 +137,8 @@ class RegisteredUserController extends Controller
 
         } catch (\Exception $exception){
             DB::rollBack();
-            dd($exception);
-            return redirect()->back()->with('error', 'Something went wrong, please try again');
+            return redirect()->back()
+                ->with('error', isset($exception->validator) ? [$exception->getMessage()] :  ['Something went wrong, please try again.']);
         }
     }
 }

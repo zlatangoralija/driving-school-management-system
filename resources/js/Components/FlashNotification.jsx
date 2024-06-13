@@ -4,7 +4,7 @@ const CardFlashNotification = (props) => {
     return(
         <div className={`text-white p-6 rounded-lg shadow-box mb-3 ${props.type==='success' ? 'bg-primary' : 'bg-secondary'}`}>
             <div className="w-full flex justify-between items-start">
-                <div className="w-full pl-10 relative">
+                <div className="w-full relative">
                     <p className="font-bold">{props.title}</p>
                     {props.list &&
                         <ul className="pl-3 list-disc">

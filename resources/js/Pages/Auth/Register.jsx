@@ -1,12 +1,18 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import { Head, Link, useForm } from '@inertiajs/react';
+import {Head, Link, router, useForm, usePage} from '@inertiajs/react';
 import Logo from "../../../images/full-logo-vertical.png";
+import FlashNotification from "@/Components/FlashNotification.jsx";
 
 export default function Register(props) {
+    const { flash } = usePage().props
+    const [ successNotice, setSuccessNotice ] = React.useState(null)
+    const [ errorNotice, setErrorNotice ] = React.useState(null)
+    const wrapperRef = React.useRef(null)
+
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         school_name: '',
@@ -30,21 +36,60 @@ export default function Register(props) {
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('register'));
+        router.post(route('register'), data, {
+            onSuccess: (res) => {
+                console.log(res)
+            },
+            onError: (errors) => {
+                console.log(errors);
+            }
+        })
     };
+
+    React.useEffect(()=>{
+        if(flash && Object.keys(flash).length){
+            if(flash.success){
+                setSuccessNotice(flash.success)
+            }
+
+            if(flash.errors){
+                setErrorNotice(flash.errors)
+            }
+
+            if(successNotice || errorNotice){
+                wrapperRef.current.scrollIntoView({ behavior: 'smooth' })
+            }
+        }
+    },[flash])
 
     return (
         <>
             <Head title="Register" />
 
             <div className="min-h-screen min-w-full flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
-                <div>
+                <div ref={wrapperRef}>
                     <Link href="/">
                         <img src={Logo} className="h-20 mr-3 sm:h-40" alt="Landwind Logo"/>
                     </Link>
                 </div>
 
                 <p>Register Driving School: Instructors and Owners Only</p>
+
+                {successNotice && flash.success &&
+                    <FlashNotification
+                        type="success"
+                        title={flash.success}
+                    />
+                }
+
+                {errorNotice && flash &&
+                    <FlashNotification
+                        type="error"
+                        title="Please fix the following errors"
+                        list={errorNotice}
+                        button={<button type="button" className="_button small !whitespace-nowrap" onClick={()=>setErrorNotice(null)}>close</button>}
+                    />
+                }
 
                 <div className="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
                     <form onSubmit={submit}>
@@ -74,7 +119,6 @@ export default function Register(props) {
                                 value={data.name}
                                 className="mt-1 block w-full"
                                 autoComplete="name"
-                                isFocused={true}
                                 onChange={(e) => setData('name', e.target.value)}
                                 required
                             />
