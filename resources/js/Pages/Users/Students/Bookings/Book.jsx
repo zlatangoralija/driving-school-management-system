@@ -15,7 +15,11 @@ import moment from "moment-timezone";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
-import { timezoneDate, userTimezone } from "@/Components/Helpers.jsx";
+import {
+  timezoneDate,
+  userTimezone,
+  scrollToTime,
+} from "@/Components/Helpers.jsx";
 
 const guess_tz = moment.tz.guess();
 const user_timezone = userTimezone();
@@ -40,14 +44,7 @@ export default function Book(props) {
 
   const handleDateSelect = (date) => {
     setStartDate(date);
-    if (window.innerWidth < 768) {
-      const timePickerElement = document.querySelector(
-        ".react-datepicker__time-container"
-      );
-      if (timePickerElement) {
-        timePickerElement.scrollIntoView({ behavior: "smooth" });
-      }
-    }
+    scrollToTime();
   };
 
   let isTimeInArray = false;
@@ -253,7 +250,7 @@ export default function Book(props) {
         />
       )}
 
-      <div className="card md:p-3 p-6">
+      <div className="card datepicker-wrapper big md:p-3 p-6">
         <DatePicker
           selected={startDate}
           onChange={(date) => setStartDate(date)}

@@ -1,5 +1,8 @@
 import React from "react";
 import { Head, Link, router, usePage } from "@inertiajs/react";
+import { FiArrowRight } from "react-icons/fi";
+
+// components
 import DataTableComponent from "@/Components/DataTable.jsx";
 import FlashNotification from "@/Components/FlashNotification.jsx";
 import { timezoneDate } from "@/Components/Helpers.jsx";
@@ -34,59 +37,55 @@ export default function Index(props) {
     {
       name: "Course",
       selector: (row) => <>{row.course.name}</>,
-      sortable: true,
       sortField: "name",
     },
-    {
-      name: "Start time",
-      selector: (row) => (
-        <>
-          {row.start_time
-            ? timezoneDate(row.start_time).format("DD/MM/YYYY H:mm")
-            : "/"}
-        </>
-      ),
-      sortable: true,
-      sortField: "start_time",
-    },
-    {
-      name: "End time",
-      selector: (row) => (
-        <>
-          {row.end_time
-            ? timezoneDate(row.end_time).format("DD/MM/YYYY H:mm")
-            : "/"}
-        </>
-      ),
-      sortable: true,
-      sortField: "end_time",
-    },
+    // {
+    //   name: "Start time",
+    //   selector: (row) => (
+    //     <>
+    //       {row.start_time
+    //         ? timezoneDate(row.start_time).format("DD/MM/YYYY H:mm")
+    //         : "/"}
+    //     </>
+    //   ),
+    //   sortable: true,
+    //   sortField: "start_time",
+    // },
+    // {
+    //   name: "End time",
+    //   selector: (row) => (
+    //     <>
+    //       {row.end_time
+    //         ? timezoneDate(row.end_time).format("DD/MM/YYYY H:mm")
+    //         : "/"}
+    //     </>
+    //   ),
+    //   sortable: true,
+    //   sortField: "end_time",
+    // },
     {
       name: "Status",
       selector: (row) => <>{row.status_label}</>,
-      sortable: true,
       sortField: "status_label",
     },
     {
       name: "Paid",
       selector: (row) => <>{row.payment_status ? "Yes" : "No"}</>,
-      sortable: true,
       sortField: "status_label",
     },
     {
       name: "Instructor",
       selector: (row) => <>{row.instructor ? row.instructor.name : ""}</>,
-      sortable: true,
       sortField: "instructor.name",
     },
-    {
-      name: "Date created",
-      selector: (row) => (
-        <>{timezoneDate(row.created_at).format("DD/MM/YYYY HH:mm")}</>
-      ),
-      sortable: true,
-      sortField: "created_at",
-    },
+    // {
+    //   name: "Date created",
+    //   selector: (row) => (
+    //     <>{timezoneDate(row.created_at).format("DD/MM/YYYY HH:mm")}</>
+    //   ),
+    //   sortable: true,
+    //   sortField: "created_at",
+    // },
     // {
     //     name: 'Action',
     //     selector: row => {
@@ -115,6 +114,39 @@ export default function Index(props) {
     },
   ];
 
+  const ExpandableRowComponent = ({ data }) => {
+    return (
+      <div className="table-details">
+        {data && (
+          <div className="grid grid-cols-5 gap-4 table-details-wrapper">
+            <div className="flex flex-col">
+              <span className="title">Start time</span>
+              <span className="data">
+                {data.start_time
+                  ? timezoneDate(data.start_time).format("DD/MM/YYYY H:mm")
+                  : "/"}
+              </span>
+            </div>
+            <div className="flex flex-col">
+              <span className="title">End time</span>
+              <span className="data">
+                {data.end_time
+                  ? timezoneDate(data.end_time).format("DD/MM/YYYY H:mm")
+                  : "/"}
+              </span>
+            </div>
+            <div className="flex flex-col">
+              <span className="title">Date created</span>
+              <span className="data">
+                {timezoneDate(data.created_at).format("DD/MM/YYYY HH:mm")}
+              </span>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
   return (
     <>
       <Head title="Bookings" />
@@ -127,8 +159,16 @@ export default function Index(props) {
             </h1>
             <p className="mt-2 text-sm">Lorem ipsum text</p>
           </div>
-          <Link href={route("students.bookings-calendar")}>Calendar view</Link>
         </div>
+      </div>
+      <div className="flex justify-end w-full mb-8">
+        <Link
+          className="button-plain"
+          href={route("students.bookings-calendar")}
+        >
+          Calendar view
+          <FiArrowRight className="arrow" />
+        </Link>
       </div>
 
       {successNotice && flash.success && (
@@ -160,6 +200,8 @@ export default function Index(props) {
         pagination={true}
         filters={filters}
         onlyReload="bookings"
+        expandableRows
+        expandableRowsComponent={ExpandableRowComponent}
       />
     </>
   );

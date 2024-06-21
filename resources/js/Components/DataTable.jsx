@@ -43,8 +43,30 @@ const DataTableComponent = (props) => {
     });
   };
 
+  // React.useEffect(() => {
+  //   const _fetch = (data, options = {}) => {
+  //     if (props.path) {
+  //       axios
+  //         .get(props.path, { params: requestData })
+  //         .then((res) => {
+  //           setResponseData(res.data[props.object].data);
+  //           setDefaultOptions({ totalRows: res.data[props.object].total });
+  //         })
+  //         .catch((err) => {
+  //           console.log("error", err);
+  //         });
+  //     }
+
+  //     if (props.data) {
+  //       setResponseData(props.data);
+  //     }
+  //   };
+
+  //   _fetch();
+  // }, [requestData]);
+
   React.useEffect(() => {
-    const _fetch = (data, options = {}) => {
+    const _fetch = () => {
       if (props.path) {
         axios
           .get(props.path, { params: requestData })
@@ -63,7 +85,7 @@ const DataTableComponent = (props) => {
     };
 
     _fetch();
-  }, [requestData]);
+  }, [requestData, props.path, props.data, props.object]);
 
   React.useEffect(() => {
     if (isInit.current === true) {
@@ -74,7 +96,7 @@ const DataTableComponent = (props) => {
   }, [props?.search]);
 
   return (
-    <div className="tableWrapper overflow-auto relative">
+    <div className="tableWrapper overflow-auto relative max-w-full">
       <DataTable
         columns={props.columns}
         progressPending={pending}
@@ -91,6 +113,8 @@ const DataTableComponent = (props) => {
         onChangePage={(page) => _handlePageChange(page, props.options)}
         sortServer={props.path ? true : false}
         onSort={_handleSort}
+        expandableRows={props.expandableRows}
+        expandableRowsComponent={props.expandableRowsComponent}
       />
     </div>
   );

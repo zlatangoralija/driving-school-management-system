@@ -2,15 +2,42 @@
 @tailwind components;
 @tailwind utilities;
 
+/* global */
+h1 {
+  @apply md:text-2xl xl:text-4xl text-3xl;
+}
+h2 {
+  @apply xl:text-3xl text-2xl;
+}
+h3 {
+  @apply xl:text-2xl text-xl;
+}
+h4 {
+  @apply xl:text-xl text-lg;
+}
+h5 {
+  @apply xl:text-lg text-base;
+}
+h6 {
+  @apply xl:text-base text-sm;
+}
+img {
+  @apply w-full max-w-full h-auto;
+}
+
+#app {
+  @apply flex h-screen flex-col justify-between;
+}
+
 /* LAYOUT */
 body > .main {
-  @apply w-full min-h-full max-w-full;
+  @apply w-full max-w-full;
 }
-body > .main > #app {
+/* body > .main > #app {
   @apply min-h-full max-w-full;
-}
+} */
 .mainWrapper {
-  @apply w-full min-h-[100vh] flex flex-1 flex-col max-w-full;
+  @apply w-full flex flex-1 flex-col max-w-full;
 }
 .mainWrapper .layout {
   @apply mx-auto max-w-full md:max-w-7xl w-full flex flex-1 relative z-[996];
@@ -103,8 +130,9 @@ body > .main > #app {
   @apply block;
 }
 
+/* tables */
 .tableWrapper {
-  @apply bg-white shadow-box rounded-md overflow-hidden border border-[#E9ECEF] w-full max-w-full;
+  @apply bg-white shadow-box rounded-md border border-[#E9ECEF];
 }
 .rdt_TableRow {
   @apply border-[#E9ECEF];
@@ -121,17 +149,88 @@ body > .main > #app {
 .rdt_TableCell {
   @apply !font-medium !text-base !text-[#50555b];
 }
+.fc-today-button.fc-button.fc-button-primary {
+  @apply bg-purple-gradient bg-transparent !important;
+}
+.fc .fc-button:disabled {
+  opacity: 0.6;
+}
+.fc .fc-button-primary {
+  @apply bg-blue border-transparent hover:bg-purple-gradient hover:border-blue outline-none focus:shadow-none;
+}
+.fc-toolbar-chunk {
+  @apply flex;
+}
+.YgTtW svg {
+  @apply hidden !important;
+}
+.sc-cwHqhk.kzZBXj {
+  @apply whitespace-nowrap;
+}
+.table-details {
+  @apply py-3 px-6 bg-gray-300;
+}
+.table-details .title {
+  @apply font-light;
+}
+.table-details .data {
+  @apply font-bold;
+}
+.table-details .data.link {
+  @apply hover:underline;
+}
 
+/* cards */
 .card {
-  @apply shadow-box hover:shadow-box-hover rounded-md bg-white transition-all ease-in-out duration-200;
+  @apply hover:shadow-box-hover bg-white shadow-box rounded-md transition-all ease-in-out duration-200 p-6;
+}
+.card-blue {
+  @apply bg-blue !important;
+}
+.card-green {
+  @apply bg-green !important;
+}
+.card-gray {
+  @apply bg-gray-300 !important;
+}
+.card-orange {
+  @apply bg-orange-600 !important;
+}
+.card-red {
+  @apply bg-red-600 !important;
+}
+.card-gradiant {
+  @apply bg-purple-gradient !important;
+}
+.card-blue *,
+.card-green *,
+.card-gradiant *,
+.card-orange *,
+.card-red * {
+  @apply text-white !important;
+}
+.card-gray-label {
+  @apply bg-gray-500 hover:shadow-box-hover shadow-box rounded-t-md px-6 py-4;
+}
+.card-gray-label .data {
+  @apply font-bold;
+}
+.card.card-gray .title {
+  @apply text-gray-600;
+}
+.card.card-gray .data {
+  @apply font-medium;
 }
 
 /* BUTTONS */
 .button {
-  @apply flex justify-center items-center px-2 md:px-4 h-10 md:!min-w-[118px] rounded-md border uppercase transition ease-in-out;
+  @apply flex justify-center items-center px-2 md:px-4 h-10 !min-w-[90px] rounded-md border text-sm uppercase transition ease-in-out;
 }
 .button-blue {
   @apply border-blue bg-blue-gradient hover:bg-purple-gradient text-white;
+}
+.button-blue-outline {
+  @apply border-blue border text-blue hover:border-purple hover:text-purple;
 }
 .button-big {
   @apply md:w-1/3 w-2/3;
@@ -139,8 +238,43 @@ body > .main > #app {
 .button-green {
   @apply border-green bg-green hover:opacity-80 text-white;
 }
+.button-red {
+  @apply border-red-600 bg-red-600 hover:opacity-80 text-white;
+}
 .button-purple-gradient {
   @apply bg-purple-gradient border-transparent hover:bg-blue-gradient text-white;
+}
+
+.button-plain {
+  @apply text-black uppercase font-medium transition ease-in-out flex items-center gap-1;
+}
+.button-plain svg {
+  @apply w-4 h-4;
+}
+.button-plain:hover svg {
+  transform: translateX(15%);
+}
+
+.button-pill {
+  @apply flex justify-center items-center rounded-2xl min-w-[100px] w-fit px-5 py-1 transition ease-in-out text-sm hover:opacity-80 overflow-x-auto whitespace-nowrap;
+}
+.button-pill-blue {
+  @apply bg-blue text-white !important;
+}
+.button-pill-green {
+  @apply bg-green text-white !important;
+}
+.button-pill-gray {
+  @apply bg-gray-300 !important;
+}
+.button-pill-orange {
+  @apply bg-orange-600 text-white !important;
+}
+.button-pill-red {
+  @apply bg-red-600 text-white !important;
+}
+.button-pill-gradiant {
+  @apply bg-purple-gradient text-white !important;
 }
 
 /* FORMS MATERIAL */
@@ -261,6 +395,13 @@ body > .main > #app {
   @apply border-red-500;
 }
 
+input {
+  @apply !rounded-md;
+}
+
+label {
+  @apply text-sm mb-[6px] text-gray-500 !important;
+}
 .dropDown {
   @apply absolute top-4 right-4;
 }
@@ -283,22 +424,25 @@ body > .main > #app {
 }
 
 ._modal {
-  @apply fixed inset-0 bg-black bg-opacity-70 z-[99999] p-4 overflow-y-auto lg:flex lg:justify-center lg:items-center;
+  @apply fixed inset-0 bg-black bg-opacity-70 z-[99999] overflow-y-auto lg:flex lg:justify-center lg:items-center;
 }
 ._modal > div {
   @apply bg-white rounded-lg relative w-full mx-auto block;
 }
 ._modal > div .title {
-  @apply p-6 lg:p-10 !pb-0 !pr-20;
+  @apply text-center;
 }
 ._modal > div .content {
   @apply p-6 lg:p-10;
 }
 ._modal > div .footer {
-  @apply bg-gray-50 px-6 lg:px-10 py-4 lg:py-6 flex justify-end items-center gap-2 w-full;
+  @apply bg-white py-4 lg:py-6 flex justify-end items-center gap-2 w-full rounded-lg;
 }
 ._modal .icon-close {
-  @apply text-primary absolute top-7 lg:top-12 right-6 lg:right-10;
+  @apply text-black;
+}
+.footer-modal {
+  @apply w-full flex justify-between items-center px-3 gap-3;
 }
 
 .dropZone {
@@ -348,79 +492,121 @@ body > .main > #app {
 }
 
 /* DATE PICKER */
-.react-datepicker {
+.datepicker-wrapper.big .react-datepicker {
   @apply border-transparent flex flex-col md:flex-row items-center !important;
 }
-.react-datepicker__month-container {
+.datepicker-wrapper.small .react-datepicker {
+  @apply border-transparent flex flex-col md:flex-row !important;
+}
+.datepicker-wrapper.small .react-datepicker {
+  @apply shadow-box hover:shadow-box-hover rounded-md p-2;
+}
+.datepicker-wrapper.big .react-datepicker__month-container {
   @apply w-full md:w-1/2;
 }
-.react-datepicker__current-month,
-.react-datepicker-time__header,
-.react-datepicker-year-header {
+.datepicker-wrapper .react-datepicker__current-month,
+.datepicker-wrapper .react-datepicker-time__header,
+.datepicker-wrapper .react-datepicker-year-header {
   @apply text-base !important;
 }
-.react-datepicker__header.react-datepicker__header--has-time-select {
+.datepicker-wrapper
+  .react-datepicker__header.react-datepicker__header--has-time-select {
   @apply w-full bg-transparent;
 }
-.react-datepicker__header.react-datepicker__header--time {
+.datepicker-wrapper .react-datepicker__header.react-datepicker__header--time {
   @apply md:hidden block bg-transparent mt-8 border-b-transparent;
 }
 /* .react-datepicker-time__header {
   @apply mb-12;
 } */
-.react-datepicker__time-container {
+.datepicker-wrapper .react-datepicker__time-container {
   @apply border-l-transparent;
 }
-.react-datepicker__day-names,
-.react-datepicker__week {
+.datepicker-wrapper .react-datepicker__day-names,
+.datepicker-wrapper .react-datepicker__week {
   @apply flex justify-between mt-6 text-sm;
 }
-.react-datepicker__time-container.react-datepicker__time-container--with-today-button {
+.datepicker-wrapper
+  .react-datepicker__time-container.react-datepicker__time-container--with-today-button {
   @apply md:w-1/2 w-full;
 }
-.react-datepicker__time-container {
+.datepicker-wrapper .react-datepicker__time-container {
   @apply md:w-1/2 w-full;
 }
-.react-datepicker__navigation.react-datepicker__navigation--next.react-datepicker__navigation--next--with-time {
+.datepicker-wrapper.big
+  .react-datepicker__navigation.react-datepicker__navigation--next.react-datepicker__navigation--next--with-time {
   @apply md:right-[50%] right-[20%];
 }
-.react-datepicker__navigation.react-datepicker__navigation--previous {
+.datepicker-wrapper.small
+  .react-datepicker__navigation.react-datepicker__navigation--next.react-datepicker__navigation--next--with-time {
+  @apply md:right-[41%] right-0;
+}
+.datepicker-wrapper
+  .react-datepicker__navigation.react-datepicker__navigation--previous {
   @apply md:left-[42%] left-[20%];
 }
-.react-datepicker__day {
+.datepicker-wrapper.small
+  .react-datepicker__navigation.react-datepicker__navigation--previous {
+  @apply md:left-[45%] left-0;
+}
+
+.datepicker-wrapper .react-datepicker__day {
   @apply text-sm py-1 px-3 flex justify-center items-center;
 }
-.react-datepicker__time-box {
+.datepicker-wrapper .react-datepicker__time-box {
   @apply w-full !important;
 }
-.react-datepicker__time-list-item {
+.datepicker-wrapper.big .react-datepicker__time-list-item {
   @apply w-2/3 h-[40px] border border-blue rounded-md my-3 mx-12 py-2 flex justify-center items-center text-sm !important;
 }
-ul.react-datepicker__time-list {
+.datepicker-wrapper.small .react-datepicker__time-list-item {
+  @apply w-2/3 h-[40px] border border-blue rounded-md my-3 md:mx-12 mx-1 py-2 flex justify-center items-center text-sm !important;
+}
+.datepicker-wrapper ul.react-datepicker__time-list {
   @apply flex flex-col items-center !important;
 }
-.react-datepicker__day--selected,
-.react-datepicker__day--in-selecting-range,
-.react-datepicker__day--in-range,
-.react-datepicker__month-text--selected,
-.react-datepicker__month-text--in-selecting-range,
-.react-datepicker__month-text--in-range,
-.react-datepicker__quarter-text--selected,
-.react-datepicker__quarter-text--in-selecting-range,
-.react-datepicker__quarter-text--in-range,
-.react-datepicker__year-text--selected,
-.react-datepicker__year-text--in-selecting-range,
-.react-datepicker__year-text--in-range,
-.react-datepicker__time-container
+.datepicker-wrapper .react-datepicker__day--selected,
+.datepicker-wrapper .react-datepicker__day--in-selecting-range,
+.datepicker-wrapper .react-datepicker__day--in-range,
+.datepicker-wrapper .react-datepicker__month-text--selected,
+.datepicker-wrapper .react-datepicker__month-text--in-selecting-range,
+.datepicker-wrapper .react-datepicker__month-text--in-range,
+.datepicker-wrapper .react-datepicker__quarter-text--selected,
+.datepicker-wrapper .react-datepicker__quarter-text--in-selecting-range,
+.datepicker-wrapper .react-datepicker__quarter-text--in-range,
+.datepicker-wrapper .react-datepicker__year-text--selected,
+.datepicker-wrapper .react-datepicker__year-text--in-selecting-range,
+.datepicker-wrapper .react-datepicker__year-text--in-range,
+.datepicker-wrapper
+  .react-datepicker__time-container
+  .datepicker-wrapper
   .react-datepicker__time
+  .datepicker-wrapper
   .react-datepicker__time-box
+  .datepicker-wrapper
   ul.react-datepicker__time-list
+  .datepicker-wrapper
   li.react-datepicker__time-list-item--selected {
   @apply bg-blue;
 }
-.react-datepicker__day--keyboard-selected,
-.react-datepicker__month-text--keyboard-selected,
-.react-datepicker__quarter-text--keyboard-selected,
-.react-datepicker__year-text--keyboard-selected {
+.datepicker-wrapper .react-datepicker__day--keyboard-selected,
+.datepicker-wrapper .react-datepicker__month-text--keyboard-selected,
+.datepicker-wrapper .react-datepicker__quarter-text--keyboard-selected,
+.datepicker-wrapper .react-datepicker__year-text--keyboard-selected {
   @apply bg-purple text-white;
+}
+.datepicker-wrapper.small
+  .react-datepicker__time-container
+  .react-datepicker__time
+  .react-datepicker__time-box {
+  @apply overflow-y-auto;
+}
+.datepicker-wrapper.small .react-datepicker__input-container input {
+  @apply w-full;
+}
+.datepicker-wrapper.small .react-datepicker-popper {
+  left: auto !important;
+  transform: none !important;
+  top: auto !important;
+  right: auto !important;
 }

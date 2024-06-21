@@ -17,7 +17,7 @@ export default {
       },
       backgroundImage: {
         "purple-gradient": "linear-gradient(180deg, #2256AD 0%, #B754D0 100%)",
-        "blue-gradient": "linear-gradient(180deg, #2256AD 0%, #2256AD 100%)",
+        "blue-gradient": "linear-gradient(#2256AD 0%, #2256AD 0%)",
       },
       colors: {
         primary: {
@@ -35,7 +35,7 @@ export default {
           light: "#CBE0FD",
         },
         green: {
-          DEFAULT: "#38EF7D",
+          DEFAULT: "#8BC24A",
           light: "#B6E2B3",
         },
         gray: {
@@ -44,6 +44,7 @@ export default {
           700: "#686D71",
           500: "#B4B7BC",
           400: "#DADBDD",
+          300: "#EEEEEE",
           200: "#E9ECEF",
           100: "#FBFBFB",
         },
