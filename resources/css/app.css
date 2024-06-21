@@ -610,3 +610,20 @@ label {
   top: auto !important;
   right: auto !important;
 }
+.datepicker-wrapper.small
+  .react-datepicker__time-container
+  .react-datepicker__time
+  .react-datepicker__time-box
+  ul.react-datepicker__time-list {
+  overflow-y: unset;
+}
+@media (max-width: 767px) {
+  .datepicker-wrapper.small
+    .react-datepicker__time
+    .react-datepicker__time-box {
+    height: inherit;
+  }
+  .datepicker-wrapper.small .react-datepicker__time {
+    @apply h-[300px];
+  }
+}
