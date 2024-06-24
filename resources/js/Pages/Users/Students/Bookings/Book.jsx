@@ -140,7 +140,6 @@ export default function Book(props) {
     const bookAndPay = async (data) => {
         try {
             const bookingResponse = await initPendingBooking(data);
-            console.log(bookingResponse);
 
             //Handle errors
             if (!bookingResponse) {
@@ -283,21 +282,21 @@ export default function Book(props) {
                 title={"Confirm booking"}
                 content={
                     <div className="flex flex-col justify-center items-center">
-                        <p className="text-lg">You're about to book {props.course.name}</p>
-                        <p>Booking details:</p>
+                        <h4>You're about to book a lesson for: <strong>{props.course.name}</strong></h4>
+                        <h5 className="mt-3">Booking details:</h5>
                         <ul>
                             <li>
-                                Start: {timezoneDate(startDate).format("DD/MM/YYYY H:mm")}
+                                Start: <strong>{timezoneDate(startDate).format("DD/MM/YYYY H:mm")}</strong>
                             </li>
                         </ul>
                     </div>
                 }
                 footer={
-                    <div className="w-full flex justify-between items-center">
+                    <div className="footer-modal">
                         <button
                             type="button"
                             onClick={() => setBookingModal(false)}
-                            className="_button white w-full md:w-auto min-w-[150px]"
+                            className="button button-blue-outline w-full"
                         >
                             Cancel
                         </button>
@@ -308,7 +307,7 @@ export default function Book(props) {
                                     ? book(startDate)
                                     : bookAndPay(startDate)
                             }
-                            className="_button w-full md:w-auto min-w-[150px]"
+                            className="button button-blue w-full"
                         >
                             Confirm
                         </button>
