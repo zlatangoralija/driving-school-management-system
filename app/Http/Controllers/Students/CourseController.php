@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers\Students;
 
+use App\Enums\BookingPaymentStatus;
+use App\Enums\BookingStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use App\Models\Course;
 use App\Models\CourseStudent;
 use App\Models\CourseUser;
+use App\Models\Invoice;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -33,7 +37,12 @@ class CourseController extends Controller
         Inertia::share('layout.breadcrumbs', $breadcrumbs);
         Inertia::share('layout.active_page', ['Courses']);
 
-        return Inertia::render('Users/Students/Courses/Index');
+        $data['courses'] = CourseUser::with(['course', 'course.instructor'])
+            ->where('user_id', Auth::id())
+            ->orderBy('created_at', 'DESC')
+            ->get();
+
+        return Inertia::render('Users/Students/Courses/Index', $data);
     }
 
     public function getCourses(Request $request){
@@ -95,6 +104,37 @@ class CourseController extends Controller
         $data['uuid'] = $course->uuid;
         $data['course'] = $course->course;
         $data['bookings'] = Booking::where('uuid', $course->uuid)->paginate(10);
+
+        $bookingsCount = Booking::where('student_id', Auth::id())
+            ->where('uuid', $course->uuid)
+            ->count();
+
+        $paidBookingsCount = Booking::where('uuid', $course->uuid)
+            ->where('student_id', Auth::id())
+            ->where('payment_status', BookingPaymentStatus::Paid)
+            ->count();
+
+        $finishedBookingsCount = Booking::where('student_id', Auth::id())
+            ->where('status', BookingStatus::Booked)
+            ->where('start_time', '<=', Carbon::now())
+            ->count();
+
+        if($bookingsCount){
+            $data['paid_courses_percentage'] = round(($paidBookingsCount / $bookingsCount) * 100, 2);
+            $data['finished_courses_percentage'] = round(($finishedBookingsCount / $bookingsCount) * 100, 2);
+        }
+
+        $data['upcoming_booking'] = Booking::where('uuid', $course->uuid)
+            ->where('student_id', Auth::id())
+            ->where('status', BookingStatus::Booked)
+            ->where('start_time', '>=', Carbon::now())
+            ->orderBy('start_time', 'ASC')
+            ->first();
+
+        $data['latest_invoice'] = Invoice::where('student_id', Auth::id())
+            ->where('course_id', $course->course_id)
+            ->orderBy('created_at', 'DESC')
+            ->first();
 
         return Inertia::render('Users/Students/Courses/Show', $data);
     }

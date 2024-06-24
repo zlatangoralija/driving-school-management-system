@@ -9,6 +9,7 @@ import SelectDefault from "@/Components/SelectDefault.jsx";
 import * as Yup from "yup";
 import InputText from "@/Components/InputText.jsx";
 import {timezoneDate} from "@/Components/Helpers.jsx";
+import {FcApproval, FcCalendar, FcMoneyTransfer, FcReadingEbook} from "react-icons/fc";
 
 export default function Index(props) {
     const wrapperRef = React.useRef(null)
@@ -117,15 +118,65 @@ export default function Index(props) {
                 />
             }
 
-            <DataTableComponent
-                columns={columns}
-                path={route('students.get-student-courses')}
-                search={search}
-                object={"courses"}
-                pagination={true}
-                filters={filters}
-                onlyReload="courses"
-            />
+
+            {props.courses && props.courses.length ?
+                <>
+                    {props.courses.map((item, i) => {
+                        return <Link href={route('students.courses.show', {course: item.id})} key={item.id}>
+                            <div className="card mb-8">
+                                <div className="mb-6">
+                                    <h2>{item.course.name}</h2>
+                                    <small>{item.course.description}</small>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                                    <div className="flex gap-4">
+                                        <FcApproval className="w-10 h-10"/>
+                                        <div>
+                                            <h4>Booked lessons</h4>
+                                            <span>{item.booked_lessons}</span>
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-4">
+                                        <FcMoneyTransfer className="w-10 h-10"/>
+                                        <div>
+                                            <h4>Lessons paid</h4>
+                                            <span>{item.paid_courses}</span>
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-4">
+                                        <FcReadingEbook className="w-10 h-10"/>
+                                        <div>
+                                            <h4>Instructor</h4>
+                                            <span>{item.course.admin ? item.course.admin.name : item.course.instructor.name}</span>
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-4">
+                                        <FcCalendar className="w-10 h-10"/>
+                                        <div>
+                                            <h4>Date started</h4>
+                                            <span>{timezoneDate(item.created_at).format('DD/MM/YYYY HH:mm')}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </Link>
+                    })}
+                </>
+                :
+
+                <p>nema</p>
+            }
+
+
+            {/*<DataTableComponent*/}
+            {/*    columns={columns}*/}
+            {/*    path={route('students.get-student-courses')}*/}
+            {/*    search={search}*/}
+            {/*    object={"courses"}*/}
+            {/*    pagination={true}*/}
+            {/*    filters={filters}*/}
+            {/*    onlyReload="courses"*/}
+            {/*/>*/}
         </>
     );
 }

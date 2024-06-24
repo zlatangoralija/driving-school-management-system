@@ -14,7 +14,7 @@ export default function Show(props) {
         <p className="mt-2 text-sm">Lorem ipsum text</p>
       </div>
 
-      <div className="md:w-2/3 w-full">
+      <div className="w-full">
         <div className="card-gray-label flex gap-2">
           <span className="title">Instructor:</span>
           <span className="data">{props.booking.instructor.name}</span>

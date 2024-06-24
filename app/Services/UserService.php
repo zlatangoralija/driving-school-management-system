@@ -242,11 +242,6 @@ class UserService
                 'nested' => null
             ],
             [
-                'name' => 'Invitations',
-                'url' => route('students.invitations.index'),
-                'nested' => null
-            ],
-            [
                 'name' => 'Invoices',
                 'url' => route('students.invoices.index'),
                 'nested' => null
