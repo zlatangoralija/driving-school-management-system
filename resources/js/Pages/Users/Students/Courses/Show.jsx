@@ -177,7 +177,7 @@ export default function Show(props) {
                             </div>
                         }
                         {props.latest_invoice &&
-                            <div className="card min-h-44">
+                            <div className="card">
                                 <div className="flex items-center gap-4">
                                     <FcMoneyTransfer className="w-10 h-10"/>
                                     <div className="flex flex-col">
