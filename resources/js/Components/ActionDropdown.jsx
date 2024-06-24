@@ -3,40 +3,7 @@ import { Menu } from "@headlessui/react";
 import { Link } from "@inertiajs/react";
 import { FiMoreVertical } from "react-icons/fi";
 
-const ActionDropdown = ({ row, index, setDeleteModal, auth }) => {
-  const items = [
-    {
-      label: "View",
-      href: route("students.bookings.show", { booking: row.id }),
-    },
-    ...(!row.status
-      ? [
-          {
-            label: "Book",
-            href: route("students.bookings.edit", { booking: row.id }),
-          },
-        ]
-      : []),
-    ...(row.status && !row.payment_status
-      ? [
-          {
-            label: "Pay",
-            href: route("students.bookings.pay", { booking: row.id }),
-          },
-        ]
-      : []),
-    ...(row.instructor_id === auth
-      ? [
-          {
-            label: "Delete",
-            action: () => {
-              setDeleteModal(row.id);
-            },
-          },
-        ]
-      : []),
-  ];
-
+const ActionDropdown = ({ items, index }) => {
   return (
     <div className="relative">
       <Menu>
