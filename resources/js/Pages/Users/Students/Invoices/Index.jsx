@@ -3,6 +3,7 @@ import {Head, Link, usePage} from "@inertiajs/react";
 import DataTableComponent from "@/Components/DataTable.jsx";
 import FlashNotification from "@/Components/FlashNotification.jsx";
 import {timezoneDate} from "@/Components/Helpers.jsx";
+import ActionDropdown from "@/Components/ActionDropdown.jsx";
 
 export default function Index(props) {
     const wrapperRef = React.useRef(null)
@@ -30,6 +31,20 @@ export default function Index(props) {
         }
     },[flash])
 
+    const createActionItems = (row, setDeleteModal, auth) => {
+        return [
+            {
+                label: "View",
+                href: route('students.invoices.show', {invoice: row.id}),
+            },
+            {
+                label: "Download",
+                href: route('students.download-invoice', {'invoice': row.id}),
+                blank: true,
+            },
+        ];
+    };
+
     const columns = [
         {
             name: 'description',
@@ -39,7 +54,7 @@ export default function Index(props) {
         },
         {
             name: 'Amount',
-            selector: row => <>${row.amount}</>,
+            selector: row => <>{row.amount} EUR</>,
             sortable: false,
             sortField: 'amount',
         },
@@ -62,17 +77,13 @@ export default function Index(props) {
             sortField: 'created_at',
         },
         {
-            name: 'Action',
-            selector: row => {
-                return(
-                    <>
-                        <div className="flex justify-between gap-3">
-                            <Link href={route('students.invoices.show', {invoice: row.id})} className="link">View</Link>
-                            <Link href={'#'} className="link">Download</Link>
-                        </div>
-                    </>
-                )
-            },
+            name: "Action",
+            cell: (row, index) => (
+                <ActionDropdown items={createActionItems(row)} index={index}/>
+            ),
+            ignoreRowClick: true,
+            allowOverflow: true,
+            button: true,
         },
     ];
 

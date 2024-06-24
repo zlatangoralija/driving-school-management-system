@@ -1,17 +1,5 @@
 import {Head, Link, router} from "@inertiajs/react";
 import React from "react";
-import {Menu, Transition} from "@headlessui/react";
-import {
-    ArchiveBoxIcon, ArrowRightCircleIcon,
-    ChevronDownIcon,
-    DocumentDuplicateIcon, HeartIcon,
-    PencilSquareIcon, TrashIcon, UserPlusIcon
-} from "@heroicons/react/16/solid/index.js";
-import { Fragment } from 'react'
-import {Form} from "@unform/web";
-import SelectDefault from "@/Components/SelectDefault.jsx";
-import Modal from "@/Components/Modal.jsx";
-import * as Yup from "yup";
 import DataTableComponent from "@/Components/DataTable.jsx";
 import {timezoneDate} from "@/Components/Helpers.jsx";
 import ProgressBarOutside from "@/Components/ProgressOutside.jsx";
@@ -25,62 +13,25 @@ function classNames(...classes) {
 
 export default function Show(props) {
 
-    const [ search, setSearch ] = React.useState('')
-    const [ filters, setFilters ] = React.useState()
+    const [search, setSearch] = React.useState('')
+    const [filters, setFilters] = React.useState()
 
-    // const columns = [
-    //     {
-    //         name: 'Start time',
-    //         selector: row => <>{row.start_time ? timezoneDate(row.start_time).format('DD/MM/YYYY H:mm') : '/'}</>,
-    //         sortable: true,
-    //         sortField: 'start_time',
-    //     },
-    //     {
-    //         name: 'End time',
-    //         selector: row => <>{row.end_time ? timezoneDate(row.end_time).format('DD/MM/YYYY H:mm') : '/'}</>,
-    //         sortable: true,
-    //         sortField: 'end_time',
-    //     },
-    //     {
-    //         name: 'Status',
-    //         selector: row => <>{row.status_label}</>,
-    //         sortable: true,
-    //         sortField: 'status_label',
-    //     },
-    //     {
-    //         name: 'Paid',
-    //         selector: row => <>{row.payment_status ? 'Yes' : 'No'}</>,
-    //         sortable: true,
-    //         sortField: 'payment_status',
-    //     },
-    //     {
-    //         name: 'Instructor',
-    //         selector: row => <>{row.instructor ? row.instructor.name : ''}</>,
-    //         sortable: true,
-    //         sortField: 'instructor.name',
-    //     },
-    //     {
-    //         name: 'Date created',
-    //         selector: row => <>{timezoneDate(row.created_at).format('DD/MM/YYYY HH:mm')}</>,
-    //         sortable: true,
-    //         sortField: 'created_at',
-    //     },
-    //     {
-    //         name: 'Action',
-    //         selector: row => {
-    //             return(
-    //                 <>
-    //                     <div className="flex justify-between gap-3">
-    //                         <Link href={route('students.bookings.show', {booking: row.id})} className="link">View</Link>
-    //                         {!row.status &&
-    //                             <Link href={route('students.bookings.edit', {booking: row.id})} className="link">Book</Link>
-    //                         }
-    //                     </div>
-    //                 </>
-    //             )
-    //         },
-    //     },
-    // ];
+    const createActionItems = (row) => {
+        return [
+            {
+                label: "View",
+                href: route("students.bookings.show", { booking: row.id }),
+            },
+            ...(!row.status
+                ? [
+                    {
+                        label: "Book",
+                        href: route('students.bookings.edit', {booking: row.id})
+                    },
+                ]
+                : []),
+        ];
+    };
 
 
     const columns = [
@@ -96,12 +47,18 @@ export default function Show(props) {
         },
         {
             name: "Status",
-            selector: (row) => <><div className={`button-pill button-${row.status ? 'pill-green' : "pill-blue"}`  }>{row.status_label}</div></>,
+            selector: (row) => <>
+                <div
+                    className={`button-pill button-${row.status ? 'pill-green' : "pill-blue"}`}>{row.status_label}</div>
+            </>,
             sortField: "status_label",
         },
         {
             name: "Paid",
-            selector: (row) => <><div className={`button-pill button-${row.payment_status ? 'pill-green' : "pill-blue"}`  }>{row.payment_status ? 'Paid' : 'Not paid'}</div></>,
+            selector: (row) => <>
+                <div
+                    className={`button-pill button-${row.payment_status ? 'pill-green' : "pill-blue"}`}>{row.payment_status ? 'Paid' : 'Not paid'}</div>
+            </>,
             sortField: "status_label",
         },
         {
@@ -111,7 +68,9 @@ export default function Show(props) {
         },
         {
             name: "Action",
-            cell: (row, index) => <ActionDropdown row={row} index={index}/>,
+            cell: (row, index) => (
+                <ActionDropdown items={createActionItems(row)} index={index} />
+            ),
             ignoreRowClick: true,
             allowOverflow: true,
             button: true,
@@ -120,7 +79,7 @@ export default function Show(props) {
 
     return (
         <>
-            <Head title={props.course.name} />
+            <Head title={props.course.name}/>
 
             <div className="mx-auto mt-6 mb-10 flex justify-between">
                 <div>
