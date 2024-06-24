@@ -206,16 +206,6 @@ export default function Index(props) {
                     </div>
                 </div>
             )}
-
-            {/*<DataTableComponent*/}
-            {/*    columns={columns}*/}
-            {/*    path={route('students.get-student-courses')}*/}
-            {/*    search={search}*/}
-            {/*    object={"courses"}*/}
-            {/*    pagination={true}*/}
-            {/*    filters={filters}*/}
-            {/*    onlyReload="courses"*/}
-            {/*/>*/}
         </>
     );
 }
