@@ -10,14 +10,14 @@ export default function Show(props) {
         <>
             <Head title={"Invoices"} />
 
-            <div className="mx-auto mt-6 mb-10 flex justify-between">
+            <div className="mx-auto mt-6 mb-10 flex justify-between items-center">
                 <div>
                     <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">Invoices</h1>
                     <p className="mt-2 text-sm">
                         Lorem ipsum text
                     </p>
                 </div>
-                <a href="#" className="button button-blue">Download</a>
+                <a href={route('students.download-invoice', {'invoice': props.invoice})} target="_blank" className="button button-blue">Download</a>
             </div>
 
             <div class="bg-white rounded-lg shadow-lg px-8 py-10 mx-auto">
@@ -30,7 +30,7 @@ export default function Show(props) {
                     <div class="text-gray-700">
                         <div class="font-bold text-xl mb-2">INVOICE</div>
                         <div class="text-sm">Date: {timezoneDate(props.invoice.created_at).format("DD/MM/YYYY")}</div>
-                        <div class="text-sm">Invoice #{props.invoice.id}</div>
+                        <div class="text-sm">Invoice #DPX-{props.invoice.id}</div>
                     </div>
                 </div>
                 <div class="border-b-2 border-gray-300 pb-8 mb-8">

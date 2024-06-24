@@ -56,6 +56,9 @@ Route::middleware([
         Route::get('/payment-settings', [\App\Http\Controllers\Students\AccountSettingsController::class, 'paymentSettings'])->name('payment-settings');
         Route::put('/update-payment-settings', [\App\Http\Controllers\Students\AccountSettingsController::class, 'updatePaymentSettings'])->name('update-payment-settings');
 
+        //Invoices
+        Route::get('download-invoice/{invoice}', [\App\Http\Controllers\Students\InvoiceController::class, 'download'])->name('download-invoice');
+
         //Ajax routes
         Route::get('/get-bookings', [\App\Http\Controllers\Students\BookingController::class, 'getBookings'])->name('get-bookings');
         Route::get('/get-invitations', [\App\Http\Controllers\Students\InvitationController::class, 'getInvitations'])->name('get-invitations');
