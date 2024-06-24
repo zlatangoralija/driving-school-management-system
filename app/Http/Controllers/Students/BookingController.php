@@ -86,7 +86,7 @@ class BookingController extends Controller
 
     public function getBookings(Request $request){
         $data['bookings'] = Booking::where('student_id', Auth::id())
-            ->select('id', 'start_time', 'end_time', 'status', 'course_id', 'student_id', 'instructor_id', 'created_at')
+            ->select('id', 'start_time', 'end_time', 'status', 'course_id', 'student_id', 'instructor_id', 'created_at', 'payment_status')
             ->with('course', 'student', 'instructor')
             ->when($request->input('sort_by') && $request->input('sort_directions'), function ($q) use ($request){
                 return $q->orderBy($request->input('sort_by'), $request->input('sort_directions'));

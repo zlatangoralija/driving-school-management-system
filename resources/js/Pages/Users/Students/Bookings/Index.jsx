@@ -84,14 +84,14 @@ export default function Index(props) {
                 <>
                     <div
                         className={`button-pill button-${
-                            row.payment_status ? "pill-green" : "pill-blue"
+                            row.payment_status ? "pill-green" : "pill-red"
                         }`}
                     >
                         {row.payment_status ? "Paid" : "Not paid"}
                     </div>
                 </>
             ),
-            sortField: "status_label",
+            sortField: "payment_status",
         },
         {
             name: "Instructor",
