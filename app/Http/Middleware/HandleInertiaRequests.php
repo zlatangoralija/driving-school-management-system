@@ -41,6 +41,7 @@ class HandleInertiaRequests extends Middleware
                 'errors' => fn () => $request->session()->get('error')
             ],
             'layout' => [
+                'is_homepage' => false,
                 'hide_sidebar' => true,
                 'logo' => UserService::getHeaderLogo(),
                 'sidebar_menu' => UserService::getSidebarMenu(),
