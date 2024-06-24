@@ -32,7 +32,7 @@ export default function Index(props) {
         }
     }, [flash]);
 
-    const createActionItems = (row, setDeleteModal, auth) => {
+    const createActionItems = (row) => {
         return [
             {
                 label: "View",
