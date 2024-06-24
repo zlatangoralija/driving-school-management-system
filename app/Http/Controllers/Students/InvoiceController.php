@@ -7,6 +7,7 @@ use App\Models\Invoice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Spatie\LaravelPdf\Facades\Pdf;
 
 class InvoiceController extends Controller
 {
@@ -46,6 +47,12 @@ class InvoiceController extends Controller
             ->paginate($request->input('per_page') ?: 10);
 
         return $data;
+    }
+
+    public function download(Invoice $invoice){
+        return Pdf::view('pdfs.invoice', ['invoice' => $invoice])
+            ->format('a4')
+            ->name('DPX-' . $invoice->id . '.pdf');
     }
 
     /**
