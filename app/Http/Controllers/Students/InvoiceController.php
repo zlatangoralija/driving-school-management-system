@@ -87,7 +87,7 @@ class InvoiceController extends Controller
         Inertia::share('layout.breadcrumbs', $breadcrumbs);
         Inertia::share('layout.active_page', ['Invoices']);
 
-        $data['invoice'] = $invoice;
+        $data['invoice'] = $invoice->load('student');
         return Inertia::render('Users/Students/Invoices/Show', $data);
     }
 
