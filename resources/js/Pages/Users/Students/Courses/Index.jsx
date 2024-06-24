@@ -197,7 +197,14 @@ export default function Index(props) {
                     })}
                 </>
             ) : (
-                <p>nema</p>
+                <div className="card text-center">
+                    <div className="flex flex-col gap-4">
+                        <div className="flex flex-col">
+                            <span className="font-bold text-2xl">No data</span>
+                            <span className="text-gray-600">Please check back later.</span>
+                        </div>
+                    </div>
+                </div>
             )}
 
             {/*<DataTableComponent*/}
