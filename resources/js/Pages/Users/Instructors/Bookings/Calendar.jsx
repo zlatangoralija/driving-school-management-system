@@ -129,17 +129,25 @@ export default function Calendar(props) {
         <>
             <Head title="Bookings" />
 
-            <div className="mx-auto mt-6 mb-10">
+            <div className="mx-auto mt-6 mb-10" ref={wrapperRef}>
                 <div className="flex justify-between">
                     <div>
-                        <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">Bookings</h1>
-                        <p className="mt-2 text-sm">
-                            Lorem ipsum text
-                        </p>
+                        <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
+                            Bookings
+                        </h1>
+                        <p className="mt-2 text-sm">Lorem ipsum text</p>
                     </div>
-                    <Link href={route('instructors.bookings.index')}>Table view</Link>
-
                 </div>
+            </div>
+
+
+            <div className="flex justify-center w-full mb-8 gap-3">
+                <Link href={route("instructors.bookings-calendar")}>
+                    <div className="button-pill button-pill-blue">Calendar view</div>
+                </Link>
+                <Link href={route("instructors.bookings.index")}>
+                    <div className="button-pill button-pill-gray">Table view</div>
+                </Link>
             </div>
 
             <div ref={wrapperRef}>

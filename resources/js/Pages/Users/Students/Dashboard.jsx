@@ -120,7 +120,7 @@ export default function Dashboard(props) {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="card mb-8">
-                    <ProgressBarOutside label="Finished courses" percentage={props.finished_courses_percentage}/>
+                    <ProgressBarOutside label="Lessons finished" percentage={props.finished_courses_percentage}/>
                 </div>
                 <div className="card mb-8">
                     <ProgressBarOutside label="Lessons paid" percentage={props.paid_courses_percentage}/>

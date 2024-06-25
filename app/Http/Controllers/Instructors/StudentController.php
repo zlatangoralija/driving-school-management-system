@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Instructors;
 
+use App\Enums\BookingStatus;
 use App\Enums\UserStatus;
 use App\Enums\UserType;
 use App\Http\Controllers\Controller;
+use App\Models\Booking;
 use App\Models\Course;
+use App\Models\CourseUser;
 use App\Models\User;
 use App\Notifications\StudentCreated;
 use App\Notifications\StudentUpdated;
@@ -50,6 +53,111 @@ class StudentController extends Controller
             ->when($request->input('search') && $request->input('search') != '', function ($query) use ($request){
                 return $query->where('name', 'like', '%'.$request->input('search').'%')
                     ->orWhere('email', 'like', '%'.$request->input('search').'%');
+            })
+            ->paginate($request->input('per_page') ?: 10);
+
+        return $data;
+    }
+
+    public function studentBookings(User $student){
+        $breadcrumbs = [
+            0 => [
+                'page' => 'Dashboard',
+                'url' => route('instructors.dashboard'),
+            ],
+            1 => [
+                'page' => 'Students',
+                'url' => route('instructors.students.index'),
+            ],
+            2 => [
+                'page' => $student->name,
+                'url' => route('instructors.students.show', ['student' => $student]),
+                'active' => true,
+            ],
+        ];
+        Inertia::share('layout.breadcrumbs', $breadcrumbs);
+        Inertia::share('layout.active_page', ['Students']);
+
+        $data['student'] = $student;
+        return Inertia::render('Users/Instructors/Students/Bookings', $data);
+    }
+
+    public function studentCourses(User $student){
+        $breadcrumbs = [
+            0 => [
+                'page' => 'Dashboard',
+                'url' => route('instructors.dashboard'),
+            ],
+            1 => [
+                'page' => 'Students',
+                'url' => route('instructors.students.index'),
+            ],
+            2 => [
+                'page' => $student->name,
+                'url' => route('instructors.students.show', ['student' => $student]),
+                'active' => true,
+            ],
+        ];
+        Inertia::share('layout.breadcrumbs', $breadcrumbs);
+        Inertia::share('layout.active_page', ['Students']);
+        $data['student'] = $student;
+
+        $data['courses'] = CourseUser::with(['course', 'course.instructor'])
+            ->select('id', 'user_id', 'course_id', 'uuid')
+            ->where('user_id', $student->id)
+            ->whereHas('course.instructor', function ($instructor){
+                return $instructor->where('id', Auth::id());
+            })
+            ->get();
+
+        return Inertia::render('Users/Instructors/Students/Courses', $data);
+    }
+
+    public function studentDrivingTest(User $student){
+        $breadcrumbs = [
+            0 => [
+                'page' => 'Dashboard',
+                'url' => route('instructors.dashboard'),
+            ],
+            1 => [
+                'page' => 'Students',
+                'url' => route('instructors.students.index'),
+            ],
+            2 => [
+                'page' => $student->name,
+                'url' => route('instructors.students.show', ['student' => $student]),
+                'active' => true,
+            ],
+        ];
+        Inertia::share('layout.breadcrumbs', $breadcrumbs);
+        Inertia::share('layout.active_page', ['Students']);
+        $data['student'] = $student;
+
+        return Inertia::render('Users/Instructors/Students/DrivingTest', $data);
+    }
+
+    public function bookDrivingTest(Request $request){
+        $student = User::findOrFail($request->input('student'));
+        $student->driving_test_booked = $request->input('start_time');
+        $student->save();
+
+        return redirect()->back()
+            ->with('success', 'Driving test booked successfully!');
+    }
+
+    public function getStudentBookings(User $student, Request $request){
+        $data['bookings'] = Booking::where('student_id', $student->id)
+            ->where('instructor_id', Auth::id())
+            ->select('id', 'start_time', 'end_time', 'status', 'course_id', 'student_id', 'instructor_id', 'created_at', 'payment_status')
+            ->with('course', 'student', 'instructor')
+            ->when($request->input('sort_by') && $request->input('sort_directions'), function ($q) use ($request){
+                return $q->orderBy($request->input('sort_by'), $request->input('sort_directions'));
+            }, function ($q) {
+                return $q->orderBy('created_at', 'desc');
+            })
+            ->when($request->input('search') && $request->input('search') != '', function ($query) use ($request){
+                return $query->where('course.name', 'like', '%'.$request->input('search').'%')
+                    ->orWhere('instructor.name', 'like', '%'.$request->input('search').'%');
             })
             ->paginate($request->input('per_page') ?: 10);
 
@@ -146,6 +254,16 @@ class StudentController extends Controller
         Inertia::share('layout.breadcrumbs', $breadcrumbs);
         Inertia::share('layout.active_page', ['Students']);
         $data['student'] = $student;
+
+        $data['number_of_courses'] = CourseUser::with(['course', 'course.instructor'])
+            ->select('id', 'user_id', 'course_id', 'uuid')
+            ->where('user_id', $student->id)
+            ->count();
+
+        $data['number_of_lessons_booked'] = Booking::where('student_id', $student->id)
+            ->where('status', BookingStatus::Booked)
+            ->count();
+
         return Inertia::render('Users/Instructors/Students/Show', $data);
     }
 

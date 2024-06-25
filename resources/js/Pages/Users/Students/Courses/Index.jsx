@@ -8,6 +8,7 @@ import {
     FcMoneyTransfer,
     FcReadingEbook,
 } from "react-icons/fc";
+import ProgressBarInside from "@/Components/ProgressInside.jsx";
 
 export default function Index(props) {
     const wrapperRef = React.useRef(null);
@@ -158,14 +159,20 @@ export default function Index(props) {
                                             <FcApproval className="w-10 h-10"/>
                                             <div>
                                                 <h4>Booked lessons</h4>
-                                                <span>{item.booked_lessons}</span>
+                                                <div className="flex justify-center flex-col items-center">
+                                                    <ProgressBarInside percentage={item.booked_lessons_percentage}/>
+                                                    <small>{item.booked_lessons}</small>
+                                                </div>
                                             </div>
                                         </div>
                                         <div className="flex gap-4">
                                             <FcMoneyTransfer className="w-10 h-10"/>
                                             <div>
                                                 <h4>Lessons paid</h4>
-                                                <span>{item.paid_courses}</span>
+                                                <div className="flex justify-center flex-col items-center">
+                                                    <ProgressBarInside percentage={item.paid_courses_percentage}/>
+                                                    <small>{item.paid_courses}</small>
+                                                </div>
                                             </div>
                                         </div>
                                         <div className="flex gap-4">
@@ -173,10 +180,10 @@ export default function Index(props) {
                                             <div>
                                                 <h4>Instructor</h4>
                                                 <span>
-                          {item.course.admin
-                              ? item.course.admin.name
-                              : item.course.instructor.name}
-                        </span>
+                                                  {item.course.admin
+                                                      ? item.course.admin.name
+                                                      : item.course.instructor.name}
+                                                </span>
                                             </div>
                                         </div>
                                         <div className="flex gap-4">
@@ -184,10 +191,10 @@ export default function Index(props) {
                                             <div>
                                                 <h4>Date started</h4>
                                                 <span>
-                          {timezoneDate(item.created_at).format(
-                              "DD/MM/YYYY HH:mm"
-                          )}
-                        </span>
+                                                  {timezoneDate(item.created_at).format(
+                                                      "DD/MM/YYYY HH:mm"
+                                                  )}
+                                                </span>
                                             </div>
                                         </div>
                                     </div>

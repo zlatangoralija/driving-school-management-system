@@ -1,4 +1,4 @@
-import {Head} from "@inertiajs/react";
+import {Head, Link} from "@inertiajs/react";
 import React from "react";
 import {timezoneDate} from "@/Components/Helpers.jsx";
 
@@ -14,11 +14,45 @@ export default function Show(props) {
                 </p>
             </div>
 
-            <div className="card grid grid-cols-0 md:grid-cols-0 gap-6 p-5 mb-3">
-                <p>Name: {props.student.name}</p>
-                <p>Email: {props.student.email}</p>
-                <p>Status: {props.student.status}</p>
-                <p>Driving test: {props.student.driving_test_booked ? timezoneDate(props.student.driving_test_booked).format('DD/MM/YYYY H:mm') : 'Not booked yet'}</p>
+            <div className="flex justify-center w-full mb-8 gap-3">
+                <Link href={route('instructors.students.show', {'student': props.student})}>
+                    <div className="button-pill button-pill-blue">Personal information</div>
+                </Link>
+                <Link href={route('instructors.student-bookings', {'student': props.student})}>
+                    <div className="button-pill button-pill-gray">Bookings</div>
+                </Link>
+                <Link href={route('instructors.student-courses', {'student': props.student})}>
+                    <div className="button-pill button-pill-gray">Courses</div>
+                </Link>
+                <Link href={route('instructors.student-driving-test', {'student': props.student})}>
+                    <div className="button-pill button-pill-gray">Driving test</div>
+                </Link>
+            </div>
+
+
+            <div className="w-full mb-6">
+                <div className="card-gray-label flex gap-2">
+                    <span className="title">Student:</span>
+                    <span className="data">{props.student.name}</span>
+                </div>
+                <div className="card card-gray">
+                    <div className="flex gap-2">
+                        <span className="title">Email:</span>
+                        <span className="data">{props.student.email}</span>
+                    </div>
+                    <div className="flex gap-2">
+                        <span className="title">Status:</span>
+                        <span className="data">{props.student.status_label}</span>
+                    </div>
+                    <div className="flex gap-2">
+                        <span className="title">Number of courses:</span>
+                        <span className="data">{props.number_of_courses}</span>
+                    </div>
+                    <div className="flex gap-2">
+                        <span className="title">Number of lessons booked:</span>
+                        <span className="data">{props.number_of_lessons_booked}</span>
+                    </div>
+                </div>
             </div>
         </>
     );

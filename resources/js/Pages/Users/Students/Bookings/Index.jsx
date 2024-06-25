@@ -107,13 +107,6 @@ export default function Index(props) {
             allowOverflow: true,
             button: true,
         },
-        // {
-        //   name: "Action",
-        //   cell: (row, index) => <ActionDropdown row={row} index={index} />,
-        //   ignoreRowClick: true,
-        //   allowOverflow: true,
-        //   button: true,
-        // },
     ];
 
     const ExpandableRowComponent = ({data}) => {

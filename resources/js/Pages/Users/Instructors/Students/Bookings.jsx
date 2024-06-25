@@ -1,34 +1,12 @@
+import {Head, Link} from "@inertiajs/react";
 import React from "react";
-import {Head, Link, router, usePage} from "@inertiajs/react";
-import DataTableComponent from "@/Components/DataTable.jsx";
-import FlashNotification from "@/Components/FlashNotification.jsx";
 import {timezoneDate} from "@/Components/Helpers.jsx";
+import DataTableComponent from "@/Components/DataTable.jsx";
 import ActionDropdown from "@/Components/ActionDropdown.jsx";
 
-export default function Index(props) {
-    const wrapperRef = React.useRef(null)
-    const { flash } = usePage().props
-    const [ successNotice, setSuccessNotice ] = React.useState(null)
-    const [ errorNotice, setErrorNotice ] = React.useState(null)
-
-    const [ search, setSearch ] = React.useState('')
-    const [ filters, setFilters ] = React.useState()
-
-    React.useEffect(()=>{
-        if(flash && Object.keys(flash).length){
-            if(flash.success){
-                setSuccessNotice(flash.success)
-            }
-
-            if(flash.errors){
-                setErrorNotice(flash.errors)
-            }
-
-            if(successNotice || errorNotice){
-                wrapperRef.current.scrollIntoView({ behavior: 'smooth' })
-            }
-        }
-    },[flash])
+export default function Show(props) {
+    const [search, setSearch] = React.useState("");
+    const [filters, setFilters] = React.useState();
 
     const createActionItems = (row) => {
         return [
@@ -36,14 +14,6 @@ export default function Index(props) {
                 label: "View",
                 href: route("instructors.bookings.show", {booking: row.id}),
             },
-            ...(!row.status
-                ? [
-                    {
-                        label: "Book",
-                        href: route("instructors.bookings.edit", {booking: row.id}),
-                    },
-                ]
-                : []),
         ];
     };
 
@@ -82,11 +52,6 @@ export default function Index(props) {
                 </>
             ),
             sortField: "payment_status",
-        },
-        {
-            name: "Student",
-            selector: (row) => <>{row.student ? row.student.name : ""}</>,
-            sortField: "student.name",
         },
         {
             name: "Action",
@@ -134,48 +99,34 @@ export default function Index(props) {
 
     return (
         <>
-            <Head title="Bookings" />
+            <Head title="Students" />
 
-            <div className="mx-auto mt-6 mb-10" ref={wrapperRef}>
-                <div className="flex justify-between">
-                    <div>
-                        <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
-                            Bookings
-                        </h1>
-                        <p className="mt-2 text-sm">Lorem ipsum text</p>
-                    </div>
-                </div>
+            <div className="mx-auto mt-6 mb-10">
+                <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">Students</h1>
+                <p className="mt-2 text-sm">
+                    Lorem ipsum text
+                </p>
             </div>
-
 
             <div className="flex justify-center w-full mb-8 gap-3">
-                <Link href={route("instructors.bookings-calendar")}>
-                    <div className="button-pill button-pill-gray">Calendar view</div>
+                <Link href={route('instructors.students.show', {'student': props.student})}>
+                    <div className="button-pill button-pill-gray">Personal information</div>
                 </Link>
-                <Link href={route("instructors.bookings.index")}>
-                    <div className="button-pill button-pill-blue">Table view</div>
+                <Link href={route('instructors.student-bookings', {'student': props.student})}>
+                    <div className="button-pill button-pill-blue">Bookings</div>
+                </Link>
+                <Link href={route('instructors.student-courses', {'student': props.student})}>
+                    <div className="button-pill button-pill-gray">Courses</div>
+                </Link>
+                <Link href={route('instructors.student-driving-test', {'student': props.student})}>
+                    <div className="button-pill button-pill-gray">Driving test</div>
                 </Link>
             </div>
 
-            {successNotice && flash.success &&
-                <FlashNotification
-                    type="success"
-                    title={flash.success}
-                />
-            }
-
-            {errorNotice && flash &&
-                <FlashNotification
-                    type="error"
-                    title="Please fix the following errors"
-                    list={errorNotice}
-                    button={<button type="button" className="_button small !whitespace-nowrap" onClick={()=>setErrorNotice(null)}>close</button>}
-                />
-            }
 
             <DataTableComponent
                 columns={columns}
-                path={route('instructors.get-instructor-bookings')}
+                path={route("instructors.get-student-bookings", {'student': props.student})}
                 search={search}
                 object={"bookings"}
                 pagination={true}

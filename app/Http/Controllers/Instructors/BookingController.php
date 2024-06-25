@@ -242,7 +242,7 @@ class BookingController extends Controller
         Inertia::share('layout.breadcrumbs', $breadcrumbs);
         Inertia::share('layout.active_page', ['Bookings']);
 
-        $data['booking'] = $booking;
+        $data['booking'] = $booking->load('student');;
         $data['course'] = $booking->course;
         $data['excluded_slots'] = UserService::getStudentUnavailableSlots($booking->course->student_id);
 

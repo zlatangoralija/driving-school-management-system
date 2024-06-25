@@ -111,10 +111,10 @@ export default function Book(props) {
 
     return (
         <>
-            <Head title={"Book " + props.course.name}/>
+            <Head title={"Book: " + props.course.name}/>
 
             <div className="mx-auto mt-6 mb-10" ref={wrapperRef}>
-                <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{"Book " + props.course.name}</h1>
+                <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{"Book: " + props.course.name}</h1>
                 <p className="mt-2 text-sm">
                     {props.course.description}
                 </p>
@@ -137,19 +137,24 @@ export default function Book(props) {
                 />
             }
 
-            <div>
-                <DatePicker
-                    selected={startDate}
-                    onChange={(date) => setStartDate(date)}
-                    showTimeSelect
-                    todayButton="Today"
-                    filterTime={filterPassedTime}
-                    dateFormat="MMMM d, yyyy h:mm aa"
-                    form="external-form"
-                />
-            </div>
+            <div className="card mb-8">
+                <div className="grid grid-cols-1 md:grid-cols-1 gap-3">
+                    <div className="datepicker-wrapper small flex flex-col">
+                        <label htmlFor="start_time">Start time</label>
+                        <DatePicker
+                            selected={startDate}
+                            onChange={(date) => setStartDate(date)}
+                            showTimeSelect
+                            todayButton="Today"
+                            filterTime={filterPassedTime}
+                            dateFormat="MMMM d, yyyy h:mm aa"
+                            form="external-form"
+                        />
+                    </div>
+                </div>
 
-            <button type="button" onClick={() => setBookingModal(true)}>Book now</button>
+                <button type="button" className="button button-blue mt-3" onClick={() => setBookingModal(true)}>Book now</button>
+            </div>
 
 
             <Modal
@@ -159,17 +164,30 @@ export default function Book(props) {
                 title={"Confirm booking"}
                 content={
                     <div className='flex flex-col justify-center items-center'>
-                        <p className="text-lg">You're about to book {props.course.name}</p>
+                        <p className="text-lg mb-5">You're about to book a lesson for: {props.course.name}</p>
                         <p>Booking details:</p>
                         <ul>
-                            <li>Start: {timezoneDate(startDate).format('DD/MM/YYYY H:mm')}</li>
+                            <li>Student: <strong>{props.booking.student.name}</strong></li>
+                            <li>Start: <strong>{timezoneDate(startDate).format('DD/MM/YYYY H:mm')}</strong></li>
                         </ul>
                     </div>
                 }
                 footer={
-                    <div className="w-full flex justify-between items-center">
-                        <button type="button" onClick={()=>setBookingModal(false)} className="_button white w-full md:w-auto min-w-[150px]">Cancel</button>
-                        <button type="button" onClick={()=> book(startDate)} className="_button w-full md:w-auto min-w-[150px]">Confirm</button>
+                    <div className="footer-modal">
+                        <button
+                            type="button"
+                            onClick={()=>setBookingModal(false)}
+                            className="button button-blue-outline w-full"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            type="button"
+                            onClick={()=> book(startDate)}
+                            className="button button-blue w-full"
+                        >
+                            Confirm
+                        </button>
                     </div>
                 }
             />

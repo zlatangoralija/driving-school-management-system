@@ -1,6 +1,6 @@
 import React from "react";
 
-const ProgressBarOutside = ({ label, percentage }) => {
+const ProgressBarOutside = ({ label, percentage, text }) => {
   let colorClass = "";
 
   if (percentage < 45) {
@@ -15,7 +15,7 @@ const ProgressBarOutside = ({ label, percentage }) => {
     <>
       <div className="flex justify-between mb-2">
         <span className="text-base font-medium text-gray-600">{label}</span>
-        <span className="text-gray-600 text-xl font-medium">{percentage}%</span>
+        <span className="text-gray-600 text-xl font-medium">{percentage}% {text}</span>
       </div>
       <div className="w-full bg-gray-300 rounded-full h-2.5">
         <div

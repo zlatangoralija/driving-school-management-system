@@ -48,7 +48,6 @@ Route::middleware([
         Route::post('/book-and-pay', [\App\Http\Controllers\Students\BookingController::class, 'storeBookAndPay'])->name('store-book-and-pay');
         Route::put('/book-and-pay/{booking}', [\App\Http\Controllers\Students\BookingController::class, 'updateBookAndPay'])->name('update-book-and-pay');
         Route::get('/cancel-booking/{booking}', [App\Http\Controllers\Students\BookingController::class, 'cancelBooking'])->name('cancel-booking-payment');
-        Route::post('/book-driving-test', [App\Http\Controllers\Students\BookingController::class, 'drivingTest'])->name('book-driving-test');
 
         //Settings
         Route::get('/account-settings', [\App\Http\Controllers\Students\AccountSettingsController::class, 'accountSettings'])->name('account-settings');
@@ -90,13 +89,23 @@ Route::middleware([
         Route::get('/payment-settings', [\App\Http\Controllers\Instructors\AccountSettingsController::class, 'paymentSettings'])->name('payment-settings');
         Route::put('/update-payment-settings', [\App\Http\Controllers\Instructors\AccountSettingsController::class, 'updatePaymentSettings'])->name('update-payment-settings');
 
+        //Students
+        Route::get('student-bookings/{student}', [\App\Http\Controllers\Instructors\StudentController::class, 'studentBookings'])->name('student-bookings');
+        Route::get('student-courses/{student}', [\App\Http\Controllers\Instructors\StudentController::class, 'studentCourses'])->name('student-courses');
+        Route::get('student-driving-test/{student}', [\App\Http\Controllers\Instructors\StudentController::class, 'studentDrivingTest'])->name('student-driving-test');
+        Route::post('/book-driving-test', [App\Http\Controllers\Instructors\StudentController::class, 'bookDrivingTest'])->name('book-driving-test');
+
+        //Invoices
+        Route::get('download-invoice/{invoice}', [\App\Http\Controllers\Instructors\InvoiceController::class, 'download'])->name('download-invoice');
+
         //Ajax routes
         Route::get('/get-students', [\App\Http\Controllers\Instructors\StudentController::class, 'getStudents'])->name('get-instructor-students');
         Route::get('/get-bookings', [\App\Http\Controllers\Instructors\BookingController::class, 'getBookings'])->name('get-instructor-bookings');
         Route::get('/get-courses', [\App\Http\Controllers\Instructors\CourseController::class, 'getCourses'])->name('get-instructor-courses');
         Route::get('/get-availability-breaks', [\App\Http\Controllers\Instructors\AvailabilityBreakController::class, 'getBreaks'])->name('get-availability-breaks');
         Route::get('/get-instructor-invoices', [\App\Http\Controllers\Instructors\InvoiceController::class, 'getInvoices'])->name('get-invoices');
-
+        Route::get('/get-student-bookings/{student}', [\App\Http\Controllers\Instructors\StudentController::class, 'getStudentBookings'])->name('get-student-bookings');
+        Route::get('/get-student-courses/{student}', [\App\Http\Controllers\Instructors\StudentController::class, 'getStudentCourses'])->name('get-student-courses');
     });
 
     Route::prefix('school-administrators')->middleware(['auth', 'dashboard-middleware'])->name('school-administrators.')->group(function () {
