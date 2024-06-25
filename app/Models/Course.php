@@ -35,9 +35,14 @@ class Course extends Model
 
     protected function paymentOptionLabel(): Attribute
     {
-        return new Attribute(
-            get: fn () => str_replace('_', ' ', $this->payment_option->name)
-        );
+        if($this->payment_option){
+            return new Attribute(
+                get: fn () => str_replace('_', ' ', $this->payment_option->name)
+            );
+        }
+
+        dd($this);
+        return 0;
     }
 
     protected function invitationUrl(): Attribute

@@ -168,6 +168,11 @@ class UserService
                 'url' => route('instructors.invoices.index'),
                 'nested' => null
             ],
+            [
+                'name' => 'Reviews',
+                'url' => route('instructors.reviews.index'),
+                'nested' => null
+            ],
         ];
     }
 

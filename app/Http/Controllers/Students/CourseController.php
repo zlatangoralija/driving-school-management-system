@@ -10,6 +10,7 @@ use App\Models\Course;
 use App\Models\CourseStudent;
 use App\Models\CourseUser;
 use App\Models\Invoice;
+use App\Models\Review;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -102,7 +103,7 @@ class CourseController extends Controller
         Inertia::share('layout.active_page', ['Courses']);
 
         $data['uuid'] = $course->uuid;
-        $data['course'] = $course->course;
+        $data['course'] = $course->course->load('instructor');
         $data['bookings'] = Booking::where('uuid', $course->uuid)->paginate(10);
 
         $bookingsCount = Booking::where('student_id', Auth::id())
@@ -115,6 +116,7 @@ class CourseController extends Controller
             ->count();
 
         $finishedBookingsCount = Booking::where('student_id', Auth::id())
+            ->where('uuid', $course->uuid)
             ->where('status', BookingStatus::Booked)
             ->where('start_time', '<=', Carbon::now())
             ->count();
@@ -135,6 +137,12 @@ class CourseController extends Controller
             ->where('course_id', $course->course_id)
             ->orderBy('created_at', 'DESC')
             ->first();
+
+        $data['has_feedback'] = Review::where('student_id', Auth::id())
+            ->where('course_id', $course->course_id)
+            ->exists();
+
+        $data['pivot_id'] = $course->id;
 
         return Inertia::render('Users/Students/Courses/Show', $data);
     }

@@ -37,6 +37,7 @@ Route::middleware([
         Route::resource('/courses', \App\Http\Controllers\Students\CourseController::class);
         Route::resource('/invoices', \App\Http\Controllers\Students\InvoiceController::class);
         Route::resource('/availability-breaks', \App\Http\Controllers\Students\AvailabilityBreakController::class);
+        Route::resource('/reviews', \App\Http\Controllers\Students\ReviewController::class);
 
         //Booking calendar view
         Route::get('/bookings-calendar', [\App\Http\Controllers\Students\BookingController::class, 'calendar'])->name('bookings-calendar');
@@ -75,6 +76,8 @@ Route::middleware([
         Route::resource('/bookings', \App\Http\Controllers\Instructors\BookingController::class);
         Route::resource('/availability-breaks', \App\Http\Controllers\Instructors\AvailabilityBreakController::class);
         Route::resource('/invoices', \App\Http\Controllers\Instructors\InvoiceController::class);
+        Route::resource('/reviews', \App\Http\Controllers\Instructors\ReviewController::class);
+
 
         //Booking calendar view
         Route::get('/bookings-calendar/{course_id?}/{student_id?}', [\App\Http\Controllers\Instructors\BookingController::class, 'calendar'])->name('bookings-calendar');
@@ -106,6 +109,7 @@ Route::middleware([
         Route::get('/get-instructor-invoices', [\App\Http\Controllers\Instructors\InvoiceController::class, 'getInvoices'])->name('get-invoices');
         Route::get('/get-student-bookings/{student}', [\App\Http\Controllers\Instructors\StudentController::class, 'getStudentBookings'])->name('get-student-bookings');
         Route::get('/get-student-courses/{student}', [\App\Http\Controllers\Instructors\StudentController::class, 'getStudentCourses'])->name('get-student-courses');
+        Route::get('/get-reviews', [\App\Http\Controllers\Instructors\ReviewController::class, 'getReviews'])->name('get-reviews');
     });
 
     Route::prefix('school-administrators')->middleware(['auth', 'dashboard-middleware'])->name('school-administrators.')->group(function () {

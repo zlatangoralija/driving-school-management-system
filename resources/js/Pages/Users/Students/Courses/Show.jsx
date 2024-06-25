@@ -1,10 +1,11 @@
-import {Head, Link, router} from "@inertiajs/react";
+import {Head, Link, router, usePage} from "@inertiajs/react";
 import React from "react";
 import DataTableComponent from "@/Components/DataTable.jsx";
 import {timezoneDate} from "@/Components/Helpers.jsx";
 import ProgressBarOutside from "@/Components/ProgressOutside.jsx";
-import {FcAlarmClock, FcMoneyTransfer} from "react-icons/fc";
+import {FcAlarmClock, FcApproval, FcCalendar, FcMoneyTransfer} from "react-icons/fc";
 import ActionDropdown from "@/Components/ActionDropdown.jsx";
+import FlashNotification from "@/Components/FlashNotification.jsx";
 
 
 function classNames(...classes) {
@@ -15,6 +16,28 @@ export default function Show(props) {
 
     const [search, setSearch] = React.useState('')
     const [filters, setFilters] = React.useState()
+
+    const [successNotice, setSuccessNotice] = React.useState(null);
+    const [errorNotice, setErrorNotice] = React.useState(null);
+
+    const wrapperRef = React.useRef(null);
+    const {flash} = usePage().props;
+
+    React.useEffect(() => {
+        if (flash && Object.keys(flash).length) {
+            if (flash.success) {
+                setSuccessNotice(flash.success);
+            }
+
+            if (flash.errors) {
+                setErrorNotice(flash.errors);
+            }
+
+            if (successNotice || errorNotice) {
+                wrapperRef.current.scrollIntoView({behavior: "smooth"});
+            }
+        }
+    }, [flash]);
 
     const createActionItems = (row) => {
         return [
@@ -32,7 +55,6 @@ export default function Show(props) {
                 : []),
         ];
     };
-
 
     const columns = [
         {
@@ -81,7 +103,7 @@ export default function Show(props) {
         <>
             <Head title={props.course.name}/>
 
-            <div className="mx-auto mt-6 mb-10 flex justify-between">
+            <div className="mx-auto mt-6 mb-10 flex justify-between" ref={wrapperRef}>
                 <div>
                     <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{props.course.name}</h1>
                     <p className="mt-2 text-sm">
@@ -89,6 +111,47 @@ export default function Show(props) {
                     </p>
                 </div>
             </div>
+
+            {successNotice && flash.success && (
+                <FlashNotification type="success" title={flash.success}/>
+            )}
+
+            {errorNotice && flash && (
+                <FlashNotification
+                    type="error"
+                    title="Please fix the following errors"
+                    list={errorNotice}
+                    button={
+                        <button
+                            type="button"
+                            className="_button small !whitespace-nowrap"
+                            onClick={() => setErrorNotice(null)}
+                        >
+                            close
+                        </button>
+                    }
+                />
+            )}
+
+            {props.finished_courses_percentage == 100 && !props.has_feedback &&
+                <div className="card mb-8">
+                    <div className="flex justify-center">
+                        <FcApproval className="w-10 h-10"/>
+                        <h2 className="mb-6">Congratulations!</h2>
+                    </div>
+
+                    <div className="flex justify-center items-center flex-col">
+                        <h4>You succesfully completed this course. Please, leave a review for the instructor.</h4>
+                        <Link className={"text-center button button-blue mt-5"} href={route('students.reviews.create', {_query: {
+                                course: props.course.id,
+                                instructor: props.course.instructor.id,
+                                pivot_id: props.pivot_id
+                            },})}>
+                            Leave a review
+                        </Link>
+                    </div>
+                </div>
+            }
 
 
             <div className="w-full mb-6">
