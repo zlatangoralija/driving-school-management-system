@@ -38,7 +38,7 @@ class CourseController extends Controller
     }
 
     public function getCourses(Request $request){
-        $data['courses'] = Course::with('instructor',  'admin')->select('id', 'name', 'description', 'number_of_lessons', 'payment_option', 'instructor_id', 'price', 'admin_id')
+        $data['courses'] = Course::with('instructor',  'admin')->select('id', 'name', 'description', 'number_of_lessons', 'payment_option', 'duration', 'instructor_id', 'price', 'admin_id', 'created_at')
             ->whereHas('instructor', function ($instructor){
                 return $instructor->where('tenant_id', Auth::user()->tenant_id);
             })

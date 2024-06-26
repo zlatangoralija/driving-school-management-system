@@ -32,12 +32,29 @@ export default function Show(props) {
                 </div>
             </div>
 
-            <div className="card grid grid-cols-0 md:grid-cols-0 gap-6 p-5 mb-3">
-                <p>Name: {props.course.name}</p>
-                <p>Description: {props.course.description}</p>
-                <p>Number of lessons: {props.course.number_of_lessons}</p>
-                <p>Payment option: {props.course.payment_option_label}</p>
-                <p>Price: ${props.course.price}</p>
+            <div className="w-full mb-6">
+                <div className="card-gray-label flex gap-2">
+                    <span className="title">Course:</span>
+                    <span className="data">{props.course.name}</span>
+                </div>
+                <div className="card card-gray">
+                    <div className="flex gap-2">
+                        <span className="title">Description:</span>
+                        <span className="data">{props.course.description}</span>
+                    </div>
+                    <div className="flex gap-2">
+                        <span className="title">Number of lessons:</span>
+                        <span className="data">{props.course.number_of_lessons}</span>
+                    </div>
+                    <div className="flex gap-2">
+                        <span className="title">Payment option:</span>
+                        <span className="data">{props.course.payment_option_label}</span>
+                    </div>
+                    <div className="flex gap-2">
+                        <span className="title">Price:</span>
+                        <span className="data">{props.course.price} EUR</span>
+                    </div>
+                </div>
             </div>
 
         </>

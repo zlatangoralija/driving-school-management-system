@@ -25,7 +25,7 @@ export default function Show(props) {
                 </div>
                 <div className="card card-gray flex flex-col gap-y-3">
                     <div className="flex gap-2">
-                        <span className="title">Instructor:</span>
+                        <span className="title">Student:</span>
                         <span className="data">{props.booking.student.name}</span>
                     </div>
                     <div className="flex gap-2">

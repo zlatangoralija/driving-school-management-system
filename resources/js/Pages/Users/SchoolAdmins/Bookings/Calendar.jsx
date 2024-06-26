@@ -55,9 +55,16 @@ export default function Calendar(props) {
                             Lorem ipsum text
                         </p>
                     </div>
-                    <Link href={route('school-administrators.bookings.index')}>Table view</Link>
-
                 </div>
+            </div>
+
+            <div className="flex justify-center w-full mb-8 gap-3">
+                <Link href={route("school-administrators.bookings-calendar")}>
+                    <div className="button-pill button-pill-blue">Calendar view</div>
+                </Link>
+                <Link href={route("school-administrators.bookings.index")}>
+                    <div className="button-pill button-pill-gray">Table view</div>
+                </Link>
             </div>
 
             <FullCalendar

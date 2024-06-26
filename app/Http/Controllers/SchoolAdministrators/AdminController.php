@@ -192,6 +192,7 @@ class AdminController extends Controller
             $administrator->update([
                 'name' => $input['name'],
                 'email' => $input['email'],
+                'status' => $input['status'],
             ]);
 
             if($input['password']){

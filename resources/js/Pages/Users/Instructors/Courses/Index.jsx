@@ -342,20 +342,20 @@ export default function Index(props) {
                     </div>
                 }
                 footer={
-                    <div className="flex flex-col md:flex-row !justify-between items-center gap-2 w-full">
+                    <div className="footer-modal">
                         <button
                             type="button"
-                            onClick={() => setAssignCourseModal(false)}
-                            className="_button white w-full md:w-auto min-w-[150px]"
+                            onClick={()=>setAssignCourseModal(false)}
+                            className="button button-blue-outline w-full"
                         >
                             Cancel
                         </button>
                         <button
                             type="button"
                             onClick={() => bookingInviteForm.current.submitForm()}
-                            className="_button white w-full md:w-auto min-w-[150px]"
+                            className="button button-blue w-full"
                         >
-                            Assing
+                            Assign
                         </button>
                     </div>
                 }

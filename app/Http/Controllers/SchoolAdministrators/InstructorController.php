@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers\SchoolAdministrators;
 
+use App\Enums\BookingStatus;
 use App\Enums\UserStatus;
 use App\Enums\UserType;
 use App\Http\Controllers\Controller;
+use App\Models\Booking;
+use App\Models\CourseUser;
 use App\Models\User;
 use App\Notifications\InstructorCreated;
 use App\Notifications\InstructorUpdated;
 use App\Notifications\SchoolAdminCreated;
 use App\Notifications\SchoolAdminUpdated;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
@@ -145,7 +149,90 @@ class InstructorController extends Controller
         Inertia::share('layout.active_page', ['Instructors']);
 
         $data['instructor'] = $instructor;
+
+        $data['number_of_courses'] = CourseUser::with(['course', 'course.instructor'])
+            ->select('id', 'user_id', 'course_id', 'uuid')
+            ->whereHas('course', function ($course) use ($instructor){
+                return $course->where('instructor_id', $instructor->id);
+            })
+            ->count();
+
+        $data['number_of_lessons_booked'] = Booking::where('instructor_id', $instructor->id)
+            ->where('status', BookingStatus::Booked)
+            ->count();
+
         return Inertia::render('Users/SchoolAdmins/Instructors/Show', $data);
+    }
+
+    public function instructorBookings(User $instructor){
+        $breadcrumbs = [
+            0 => [
+                'page' => 'Dashboard',
+                'url' => route('school-administrators.dashboard'),
+            ],
+            1 => [
+                'page' => 'Instructors',
+                'url' => route('school-administrators.instructors.index'),
+            ],
+            2 => [
+                'page' => $instructor->name,
+                'url' => route('school-administrators.instructors.show', ['instructor' => $instructor]),
+                'active' => true,
+            ],
+        ];
+        Inertia::share('layout.breadcrumbs', $breadcrumbs);
+        Inertia::share('layout.active_page', ['Instructors']);
+
+        $data['instructor'] = $instructor;
+        return Inertia::render('Users/SchoolAdmins/Instructors/Bookings', $data);
+    }
+
+    public function instructorCourses(User $instructor){
+        $breadcrumbs = [
+            0 => [
+                'page' => 'Dashboard',
+                'url' => route('school-administrators.dashboard'),
+            ],
+            1 => [
+                'page' => 'Students',
+                'url' => route('school-administrators.instructors.index'),
+            ],
+            2 => [
+                'page' => $instructor->name,
+                'url' => route('school-administrators.instructors.show', ['instructor' => $instructor]),
+                'active' => true,
+            ],
+        ];
+        Inertia::share('layout.breadcrumbs', $breadcrumbs);
+        Inertia::share('layout.active_page', ['Instructors']);
+        $data['instructor'] = $instructor;
+
+        $data['courses'] = CourseUser::with(['course', 'course.instructor', 'student'])
+            ->select('id', 'user_id', 'course_id', 'uuid')
+            ->whereHas('course', function ($course) use($instructor){
+                return $course->where('instructor_id', $instructor->id);
+            })
+            ->get();
+
+        return Inertia::render('Users/SchoolAdmins/Instructors/Courses', $data);
+    }
+
+    public function getInstructorBookings(User $instructor, Request $request){
+        $data['bookings'] = Booking::where('instructor_id', $instructor->id)
+            ->select('id', 'start_time', 'end_time', 'status', 'course_id', 'student_id', 'instructor_id', 'created_at', 'payment_status')
+            ->with('course', 'student', 'instructor')
+            ->when($request->input('sort_by') && $request->input('sort_directions'), function ($q) use ($request){
+                return $q->orderBy($request->input('sort_by'), $request->input('sort_directions'));
+            }, function ($q) {
+                return $q->orderBy('created_at', 'desc');
+            })
+            ->when($request->input('search') && $request->input('search') != '', function ($query) use ($request){
+                return $query->where('course.name', 'like', '%'.$request->input('search').'%')
+                    ->orWhere('instructor.name', 'like', '%'.$request->input('search').'%');
+            })
+            ->paginate($request->input('per_page') ?: 10);
+
+        return $data;
     }
 
     /**
@@ -194,6 +281,7 @@ class InstructorController extends Controller
             $instructor->update([
                 'name' => $input['name'],
                 'email' => $input['email'],
+                'status' => $input['status'],
             ]);
 
             if($input['password']){

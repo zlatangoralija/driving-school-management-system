@@ -1,7 +1,7 @@
 import {Head, Link} from "@inertiajs/react";
 import React from "react";
 import {timezoneDate} from "@/Components/Helpers.jsx";
-import {FcApproval, FcCalendar, FcMoneyTransfer, FcReadingEbook} from "react-icons/fc";
+import {FcApproval, FcBusinessman, FcCalendar, FcMoneyTransfer, FcReadingEbook} from "react-icons/fc";
 import ProgressBarInside from "@/Components/ProgressInside.jsx";
 
 export default function Show(props) {
@@ -17,16 +17,16 @@ export default function Show(props) {
             </div>
 
             <div className="flex justify-center w-full mb-8 gap-3">
-                <Link href={route('instructors.students.show', {'student': props.student})}>
+                <Link href={route('school-administrators.students.show', {'student': props.student})}>
                     <div className="button-pill button-pill-gray">Personal information</div>
                 </Link>
-                <Link href={route('instructors.student-bookings', {'student': props.student})}>
+                <Link href={route('school-administrators.student-bookings', {'student': props.student})}>
                     <div className="button-pill button-pill-gray">Bookings</div>
                 </Link>
-                <Link href={route('instructors.student-courses', {'student': props.student})}>
+                <Link href={route('school-administrators.student-courses', {'student': props.student})}>
                     <div className="button-pill button-pill-blue">Courses</div>
                 </Link>
-                <Link href={route('instructors.student-driving-test', {'student': props.student})}>
+                <Link href={route('school-administrators.student-driving-test', {'student': props.student})}>
                     <div className="button-pill button-pill-gray">Driving test</div>
                 </Link>
             </div>
@@ -37,7 +37,7 @@ export default function Show(props) {
                     {props.courses.map((item, i) => {
                         return (
                             <Link
-                                href={route("instructors.courses.show", {course: item.id})}
+                                href={route("school-administrators.courses.show", {course: item.id})}
                                 key={item.id}
                             >
                                 <div className="card mb-8">
@@ -45,7 +45,7 @@ export default function Show(props) {
                                         <h2>{item.course.name}</h2>
                                         <small>{item.course.description}</small>
                                     </div>
-                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                    <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                                         <div className="flex gap-4">
                                             <FcApproval className="w-10 h-10"/>
                                             <div>
@@ -63,6 +63,15 @@ export default function Show(props) {
                                                 <div className="flex justify-center flex-col items-center">
                                                     <ProgressBarInside percentage={item.paid_courses_percentage}/>
                                                     <small>{item.paid_courses}</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="flex gap-4">
+                                            <FcBusinessman className="w-10 h-10"/>
+                                            <div>
+                                                <h4>Instructor</h4>
+                                                <div className="flex justify-center flex-col items-center">
+                                                    <span>{item.course.instructor.name}</span>
                                                 </div>
                                             </div>
                                         </div>
