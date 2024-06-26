@@ -10,6 +10,7 @@ use App\Models\Booking;
 use App\Models\Course;
 use App\Models\CourseUser;
 use App\Models\User;
+use App\Notifications\DrivingTestBooked;
 use App\Notifications\StudentCreated;
 use App\Notifications\StudentUpdated;
 use Illuminate\Http\Request;
@@ -140,6 +141,8 @@ class StudentController extends Controller
         $student = User::findOrFail($request->input('student'));
         $student->driving_test_booked = $request->input('start_time');
         $student->save();
+
+        $student->notify(new DrivingTestBooked($student->driving_test_booked, $student));
 
         return redirect()->back()
             ->with('success', 'Driving test booked successfully!');

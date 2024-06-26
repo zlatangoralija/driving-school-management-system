@@ -63,11 +63,13 @@ export default function Login({ status, canResetPassword }) {
           </Link>
         </div>
 
-        {status && <FlashNotification type="success" title={status} />}
+        <div className="mt-5 mb-5">
+            {status && <FlashNotification type="success" title={status} />}
 
-        {successNotice && flash.success && (
-          <FlashNotification type="success" title={flash.success} />
-        )}
+            {successNotice && flash.success && (
+                <FlashNotification type="success" title={flash.success} />
+            )}
+        </div>
 
         {errorNotice && flash && (
           <FlashNotification

@@ -59,7 +59,7 @@ export default function ResetPassword({ token, email }) {
           </Link>
         </div>
 
-        <p>Reset your account password</p>
+        <p className="mt-10 mb-10">Reset your account password</p>
 
         {successNotice && flash.success && (
           <FlashNotification type="success" title={flash.success} />
