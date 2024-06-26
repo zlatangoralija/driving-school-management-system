@@ -123,6 +123,18 @@ Route::middleware([
         //Booking calendar view
         Route::get('/bookings-calendar', [\App\Http\Controllers\SchoolAdministrators\BookingController::class, 'calendar'])->name('bookings-calendar');
 
+        //Instructors
+        Route::get('instructor-bookings/{instructor}', [\App\Http\Controllers\SchoolAdministrators\InstructorController::class, 'instructorBookings'])->name('instructor-bookings');
+        Route::get('instructor-courses/{instructor}', [\App\Http\Controllers\SchoolAdministrators\InstructorController::class, 'instructorCourses'])->name('instructor-courses');
+        Route::get('/get-instructor-bookings/{instructor}', [\App\Http\Controllers\SchoolAdministrators\InstructorController::class, 'getInstructorBookings'])->name('get-instructor-bookings');
+
+        //Students
+        Route::get('student-bookings/{student}', [\App\Http\Controllers\SchoolAdministrators\StudentController::class, 'studentBookings'])->name('student-bookings');
+        Route::get('student-courses/{student}', [\App\Http\Controllers\SchoolAdministrators\StudentController::class, 'studentCourses'])->name('student-courses');
+        Route::get('/get-student-bookings/{student}', [\App\Http\Controllers\SchoolAdministrators\StudentController::class, 'getStudentBookings'])->name('get-student-bookings');
+        Route::get('student-driving-test/{student}', [\App\Http\Controllers\SchoolAdministrators\StudentController::class, 'studentDrivingTest'])->name('student-driving-test');
+
+
         //Settings
         Route::get('/account-settings', [\App\Http\Controllers\SchoolAdministrators\AccountSettingsController::class, 'accountSettings'])->name('account-settings');
         Route::put('/update-account-settings', [\App\Http\Controllers\SchoolAdministrators\AccountSettingsController::class, 'updateAccountSettings'])->name('update-account-settings');

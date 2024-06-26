@@ -113,7 +113,7 @@ class UserService
             ],
             [
                 'name' => 'Bookings',
-                'url' => route('school-administrators.bookings.index'),
+                'url' => route('school-administrators.bookings-calendar'),
                 'nested' => null
             ],
         ];

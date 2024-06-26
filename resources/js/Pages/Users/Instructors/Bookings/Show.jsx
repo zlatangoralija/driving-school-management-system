@@ -23,11 +23,11 @@ export default function Show(props) {
           <span className="data">{props.booking.course.name}</span>
         </div>
         <div className="card card-gray flex flex-col gap-y-3">
-          <div className="flex gap-2">
-            <span className="title">Instructor:</span>
+          <div className="flex items-center gap-2">
+            <span className="title">Student:</span>
             <span className="data">{props.booking.student.name}</span>
           </div>
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2">
             <span className="title">Start time:</span>
             <span className="data">
               {props.booking.start_time
@@ -37,7 +37,7 @@ export default function Show(props) {
                 : "/"}
             </span>
           </div>
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2">
             <span className="title">End time:</span>
             <span className="data">
               {props.booking.end_time
@@ -46,13 +46,15 @@ export default function Show(props) {
             </span>
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2">
             <span className="title">Status</span>
             <span className="data">
               {
                 <div
                   className={`button-pill button-${
-                    props.booking.status ? "pill-green" : "pill-blue"
+                    props.booking.status
+                      ? "pill-green-status"
+                      : "pill-blue-status"
                   }`}
                 >
                   {props.booking.status_label}
@@ -61,13 +63,15 @@ export default function Show(props) {
             </span>
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2">
             <span className="title">Payment status:</span>
             <span className="data">
               {
                 <div
                   className={`button-pill button-${
-                    props.booking.payment_status ? "pill-green" : "pill-red"
+                    props.booking.payment_status
+                      ? "pill-green-status"
+                      : "pill-red-status"
                   }`}
                 >
                   {props.booking.payment_status ? "Paid" : "Not paid"}

@@ -13,10 +13,21 @@ export default function Show(props) {
                 </p>
             </div>
 
-            <div className="card grid grid-cols-0 md:grid-cols-0 gap-6 p-5 mb-3">
-                <p>Name: {props.administrator.name}</p>
-                <p>Email: {props.administrator.email}</p>
-                <p>Status: {props.administrator.status}</p>
+            <div className="w-full mb-6">
+                <div className="card-gray-label flex gap-2">
+                    <span className="title">Administrator:</span>
+                    <span className="data">{props.administrator.name}</span>
+                </div>
+                <div className="card card-gray">
+                    <div className="flex gap-2">
+                        <span className="title">Email:</span>
+                        <span className="data">{props.administrator.email}</span>
+                    </div>
+                    <div className="flex gap-2">
+                        <span className="title">Status:</span>
+                        <span className="data">{props.administrator.status_label}</span>
+                    </div>
+                </div>
             </div>
         </>
     );
