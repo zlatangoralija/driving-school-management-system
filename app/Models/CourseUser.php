@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\BookingPaymentStatus;
 use App\Enums\BookingStatus;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -19,6 +20,7 @@ class CourseUser extends Model
         'paid_courses',
         'booked_lessons',
         'booked_lessons_percentage',
+        'finished_lessons_percentage',
     ];
 
     public function course(){
@@ -26,7 +28,7 @@ class CourseUser extends Model
     }
 
     public function student(){
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     protected function paidCourses(): Attribute
@@ -75,6 +77,25 @@ class CourseUser extends Model
             get: function (){
                 $bookingsCount = Booking::where('uuid', $this->uuid)->count();
                 $bookedCount = Booking::where('uuid', $this->uuid)->where('status', BookingStatus::Booked)->count();
+
+                if($bookingsCount){
+                    return ($bookedCount / $bookingsCount) * 100;
+                }
+
+                return 0;
+            },
+        );
+    }
+
+    protected function finishedLessonsPercentage(): Attribute
+    {
+        return new Attribute(
+            get: function (){
+                $bookingsCount = Booking::where('uuid', $this->uuid)
+                    ->where('start_time', '<=', Carbon::now())
+                    ->count();
+                $bookedCount = Booking::where('uuid', $this->uuid)
+                    ->where('status', BookingStatus::Booked)->count();
 
                 if($bookingsCount){
                     return ($bookedCount / $bookingsCount) * 100;

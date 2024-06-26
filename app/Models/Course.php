@@ -41,7 +41,6 @@ class Course extends Model
             );
         }
 
-        dd($this);
         return 0;
     }
 

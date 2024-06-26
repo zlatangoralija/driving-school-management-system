@@ -18,7 +18,9 @@ class StudentController extends Controller
         Inertia::share('layout.active_page', ['Dashboard']);
 
         $data['courses_count'] = Auth::user()->courses()->count();
-        $data['total_booking_count'] = Booking::where('student_id', Auth::id())->count();
+        $data['total_booking_count'] = Booking::where('student_id', Auth::id())
+            ->where('status', BookingStatus::Booked)
+            ->count();
         $data['upcoming_booking_count'] = Booking::where('student_id', Auth::id())
             ->where('start_time', '>=', Carbon::now())
             ->count();
