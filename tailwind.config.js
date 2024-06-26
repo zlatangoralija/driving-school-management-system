@@ -29,6 +29,7 @@ export default {
         },
         blue: {
           DEFAULT: "#2256AD",
+          light: "#DEE6F3",
         },
         purple: {
           DEFAULT: "#B754D0",
@@ -36,7 +37,7 @@ export default {
         },
         green: {
           DEFAULT: "#8BC24A",
-          light: "#B6E2B3",
+          light: "#EEF6E4",
         },
         gray: {
           DEFAULT: "#ccc",
@@ -47,6 +48,10 @@ export default {
           300: "#EEEEEE",
           200: "#E9ECEF",
           100: "#FBFBFB",
+        },
+        red: {
+          DEFAULT: "#DC2626",
+          light: "#FADEDE",
         },
       },
       boxShadow: {

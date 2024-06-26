@@ -140,6 +140,9 @@ body > .main {
 .rdt_TableCol {
   @apply !bg-[#FBFBFB];
 }
+.sc-fqkwJk.sc-fHjqbK.gjoprN.fXCAyl {
+  @apply !bg-[#FBFBFB];
+}
 .rdt_TableCol_Sortable {
   @apply !bg-transparent !uppercase !text-sm tracking-[1px] !font-bold !text-[#50555B];
 }
@@ -179,6 +182,15 @@ body > .main {
 .table-details .data.link {
   @apply hover:underline;
 }
+.sc-gEvDqW.jDljLp.rdt_TableHead {
+  @apply h-[70px];
+}
+.sc-dhKdPU.eYzbsH.rdt_TableRow {
+  @apply h-[60px];
+}
+/* .sc-feUYzb.Nfhbm {
+  @apply min-h-[180px];
+} */
 
 /* cards */
 .card {
@@ -186,6 +198,9 @@ body > .main {
 }
 .card-blue {
   @apply bg-blue !important;
+}
+.card-blue-light {
+  @apply bg-blue-light !important;
 }
 .card-green {
   @apply bg-green !important;
@@ -275,6 +290,19 @@ body > .main {
 }
 .button-pill-gradiant {
   @apply bg-purple-gradient text-white !important;
+}
+
+.button-pill-blue-status {
+  @apply bg-blue-light text-blue border-blue border-[0.5px];
+}
+.button-pill-green-status {
+  @apply bg-green-light text-green border-green border-[0.5px];
+}
+.button-pill-red-status {
+  @apply bg-red-light text-red border-red border-[0.5px];
+}
+.button-pill-gray-status {
+  @apply bg-gray-300 text-gray-700 border-gray-700 border-[0.5px];
 }
 
 /* FORMS MATERIAL */
