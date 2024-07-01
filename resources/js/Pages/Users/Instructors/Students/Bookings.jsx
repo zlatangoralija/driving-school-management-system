@@ -3,6 +3,7 @@ import React from "react";
 import {timezoneDate} from "@/Components/Helpers.jsx";
 import DataTableComponent from "@/Components/DataTable.jsx";
 import ActionDropdown from "@/Components/ActionDropdown.jsx";
+import {HiMiniEye} from "react-icons/hi2";
 
 export default function Show(props) {
     const [search, setSearch] = React.useState("");
@@ -12,6 +13,7 @@ export default function Show(props) {
         return [
             {
                 label: "View",
+                icon: <HiMiniEye/>,
                 href: route("instructors.bookings.show", {booking: row.id}),
             },
         ];

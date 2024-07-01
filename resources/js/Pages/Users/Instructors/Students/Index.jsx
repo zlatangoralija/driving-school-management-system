@@ -6,6 +6,7 @@ import Modal from "@/Components/Modal.jsx";
 import FlashNotification from "@/Components/FlashNotification.jsx";
 import {timezoneDate} from "@/Components/Helpers.jsx";
 import ActionDropdown from "@/Components/ActionDropdown.jsx";
+import {HiMiniEye, HiMiniPencilSquare, HiMiniTrash} from "react-icons/hi2";
 
 export default function Index(props) {
     const wrapperRef = React.useRef(null);
@@ -37,14 +38,18 @@ export default function Index(props) {
         return [
             {
                 label: "View",
+                icon: <HiMiniEye/>,
                 href: route("instructors.students.show", {student: row.id}),
             },
             {
                 label: "Edit",
+                icon: <HiMiniPencilSquare />,
                 href: route("instructors.students.edit", {student: row.id}),
             },
             {
                 label: "Delete",
+                icon: <HiMiniTrash />,
+                color: 'text-red',
                 action: () => {
                     setDeleteModal(row.id);
                 },

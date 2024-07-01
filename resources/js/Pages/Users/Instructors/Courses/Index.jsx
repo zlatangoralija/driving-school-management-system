@@ -10,6 +10,7 @@ import {timezoneDate} from "@/Components/Helpers.jsx";
 import SelectDefault from "@/Components/SelectDefault.jsx";
 import DataTableComponent from "@/Components/DataTable.jsx";
 import ActionDropdown from "@/Components/ActionDropdown";
+import {HiMiniEye, HiMiniPaperAirplane, HiMiniPencilSquare, HiMiniTrash} from "react-icons/hi2";
 
 export default function Index(props) {
     const wrapperRef = React.useRef(null);
@@ -132,10 +133,12 @@ export default function Index(props) {
         return [
             {
                 label: "View",
+                icon: <HiMiniEye/>,
                 href: route("instructors.courses.show", {course: row.id}),
             },
             {
                 label: "Assign to client",
+                icon: <HiMiniPaperAirplane/>,
                 action: () => {
                     setAssignCourseModal({
                         invitation_url: row.invitation_url,
@@ -147,6 +150,7 @@ export default function Index(props) {
                 ? [
                     {
                         label: "Edit",
+                        icon: <HiMiniPencilSquare />,
                         href: route("instructors.courses.edit", {course: row.id}),
                     },
                 ]
@@ -155,6 +159,8 @@ export default function Index(props) {
                 ? [
                     {
                         label: "Delete",
+                        icon: <HiMiniTrash />,
+                        color: 'text-red',
                         action: () => {
                             setDeleteModal(row.id);
                         },

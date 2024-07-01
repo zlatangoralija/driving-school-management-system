@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 import FlashNotification from "@/Components/FlashNotification.jsx";
 import {timezoneDate} from "@/Components/Helpers.jsx";
 import ActionDropdown from "@/Components/ActionDropdown.jsx";
+import {HiMiniEye} from "react-icons/hi2";
 
 export default function Index(props) {
     const wrapperRef = React.useRef(null)
@@ -35,6 +36,7 @@ export default function Index(props) {
         return [
             {
                 label: "View",
+                icon: <HiMiniEye/>,
                 href: route("school-administrators.bookings.show", {booking: row.id}),
             },
         ];
