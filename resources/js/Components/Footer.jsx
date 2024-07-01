@@ -3,7 +3,7 @@ import moment from "moment";
 export default function Footer(props) {
   return (
     <>
-      <footer className="bg-white border-t pt-8 mt-6">
+      <footer className="bg-white border-t pt-8">
         <div className="container">
           <div className="grid grid-cols-1 md:grid-cols-3 pb-4">
             <div className="flex flex-col items-center md:items-start gap-4 mb-14 md:mb-0">

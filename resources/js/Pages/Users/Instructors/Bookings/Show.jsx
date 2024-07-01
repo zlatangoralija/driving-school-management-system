@@ -51,10 +51,8 @@ export default function Show(props) {
             <span className="data">
               {
                 <div
-                  className={`button-pill button-${
-                    props.booking.status
-                      ? "pill-green-status"
-                      : "pill-blue-status"
+                  className={`button-pill button-pill-${
+                    props.booking.status ? "green-status" : "blue-status"
                   }`}
                 >
                   {props.booking.status_label}
@@ -68,10 +66,8 @@ export default function Show(props) {
             <span className="data">
               {
                 <div
-                  className={`button-pill button-${
-                    props.booking.payment_status
-                      ? "pill-green-status"
-                      : "pill-red-status"
+                  className={`button-pill button-pill-${
+                    props.booking.payment_status ? "green-status" : "red-status"
                   }`}
                 >
                   {props.booking.payment_status ? "Paid" : "Not paid"}

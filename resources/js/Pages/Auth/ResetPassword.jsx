@@ -52,14 +52,14 @@ export default function ResetPassword({ token, email }) {
     <>
       <Head title="Reset Password" />
 
-      <div className="min-h-screen min-w-full flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
+      <div className="h-full flex flex-col sm:justify-center items-center bg-gray-100 py-6">
         <div ref={wrapperRef}>
           <Link href="/">
-            <img src={Logo} className="h-20 mr-3 sm:h-40" alt="Landwind Logo" />
+            <img src={Logo} className="h-20 mr-3 sm:h-32" alt="Landwind Logo" />
           </Link>
         </div>
 
-        <p className="mt-10 mb-10">Reset your account password</p>
+        <p className="mt-5 mb-1 text-center">Reset your account password</p>
 
         {successNotice && flash.success && (
           <FlashNotification type="success" title={flash.success} />

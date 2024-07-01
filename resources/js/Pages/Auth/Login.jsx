@@ -56,19 +56,19 @@ export default function Login({ status, canResetPassword }) {
     <>
       <Head title="Log in" />
 
-      <div className="min-h-screen min-w-full flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
+      <div className="h-full flex flex-col sm:justify-center items-center bg-gray-100 py-6">
         <div>
           <Link href="/">
-            <img src={Logo} className="h-20 mr-3 sm:h-40" alt="Landwind Logo" />
+            <img src={Logo} className="h-20 mr-3 sm:h-32" alt="Landwind Logo" />
           </Link>
         </div>
 
-        <div className="mt-5 mb-5">
-            {status && <FlashNotification type="success" title={status} />}
+        <div className="my-5">
+          {status && <FlashNotification type="success" title={status} />}
 
-            {successNotice && flash.success && (
-                <FlashNotification type="success" title={flash.success} />
-            )}
+          {successNotice && flash.success && (
+            <FlashNotification type="success" title={flash.success} />
+          )}
         </div>
 
         {errorNotice && flash && (

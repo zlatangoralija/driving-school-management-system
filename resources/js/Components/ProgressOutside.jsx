@@ -3,12 +3,12 @@ import React from "react";
 const ProgressBarOutside = ({ label, percentage, text, title, info }) => {
   let colorClass = "";
 
-  if (percentage < 45) {
-    colorClass = "bg-red-600";
-  } else if (percentage >= 45 && percentage <= 70) {
-    colorClass = "bg-orange-600";
+  if (percentage < 30) {
+    colorClass = "bg-gray-400";
+  } else if (percentage >= 30 && percentage <= 65) {
+    colorClass = "bg-purple";
   } else {
-    colorClass = "bg-green";
+    colorClass = "bg-blue";
   }
 
   return (
@@ -28,7 +28,7 @@ const ProgressBarOutside = ({ label, percentage, text, title, info }) => {
             {percentage}% {text}
           </span>
         </div>
-        <div className="w-full bg-gray-300 rounded-full h-2.5">
+        <div className="w-full bg-gray-100 rounded-full h-2.5">
           <div
             className={`${colorClass} h-2.5 rounded-full`}
             style={{ width: `${percentage}%` }}

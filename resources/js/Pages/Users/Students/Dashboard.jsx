@@ -3,6 +3,8 @@ import React from "react";
 import { Form } from "@unform/web";
 import * as Yup from "yup";
 import DatePicker from "react-datepicker";
+import { ResponsivePie } from "@nivo/pie";
+import { ResponsiveBar } from "@nivo/bar";
 import {
   addHours,
   setHours,
@@ -88,6 +90,147 @@ export default function Dashboard(props) {
     }
   };
 
+  const pieData = [
+    {
+      id: "make",
+      label: "make",
+      value: 387,
+      color: "#2256AD",
+    },
+    {
+      id: "elixir",
+      label: "elixir",
+      value: 222,
+      color: "#C36FD8",
+    },
+    {
+      id: "rust",
+      label: "rust",
+      value: 80,
+      color: "#B754D0",
+    },
+    {
+      id: "stylus",
+      label: "stylus",
+      value: 434,
+      color: "#DADBDD",
+    },
+    {
+      id: "haskel",
+      label: "haskelll",
+      value: 265,
+      color: "#B4B7BC",
+    },
+  ];
+
+  const barData = [
+    {
+      country: "AD",
+      "hot dog": 124,
+      "hot dogColor": "#2256AD",
+      burger: 85,
+      burgerColor: "#4E78BD",
+      sandwich: 100,
+      sandwichColor: "#2256AD",
+      kebab: 176,
+      kebabColor: "#B754D0",
+      fries: 40,
+      friesColor: "#C36FD8",
+      donut: 55,
+      donutColor: "#EEEEEE",
+    },
+    {
+      country: "AE",
+      "hot dog": 123,
+      "hot dogColor": "#2256AD",
+      burger: 80,
+      burgerColor: "#4E78BD",
+      sandwich: 158,
+      sandwichColor: "#2256AD",
+      kebab: 166,
+      kebabColor: "#B754D0",
+      fries: 175,
+      friesColor: "#C36FD8",
+      donut: 98,
+      donutColor: "#EEEEEE",
+    },
+    {
+      country: "AF",
+      "hot dog": 190,
+      "hot dogColor": "#2256AD",
+      burger: 34,
+      burgerColor: "#4E78BD",
+      sandwich: 106,
+      sandwichColor: "#2256AD",
+      kebab: 0,
+      kebabColor: "#B754D0",
+      fries: 161,
+      friesColor: "#C36FD8",
+      donut: 24,
+      donutColor: "#EEEEEE",
+    },
+    {
+      country: "AG",
+      "hot dog": 72,
+      "hot dogColor": "#2256AD",
+      burger: 199,
+      burgerColor: "#4E78BD",
+      sandwich: 187,
+      sandwichColor: "#2256AD",
+      kebab: 29,
+      kebabColor: "#B754D0",
+      fries: 111,
+      friesColor: "#C36FD8",
+      donut: 95,
+      donutColor: "#EEEEEE",
+    },
+    {
+      country: "AI",
+      "hot dog": 60,
+      "hot dogColor": "#2256AD",
+      burger: 134,
+      burgerColor: "#4E78BD",
+      sandwich: 141,
+      sandwichColor: "#2256AD",
+      kebab: 161,
+      kebabColor: "#B754D0",
+      fries: 145,
+      friesColor: "#C36FD8",
+      donut: 148,
+      donutColor: "#EEEEEE",
+    },
+    {
+      country: "AL",
+      "hot dog": 5,
+      "hot dogColor": "#2256AD",
+      burger: 0,
+      burgerColor: "#4E78BD",
+      sandwich: 50,
+      sandwichColor: "#2256AD",
+      kebab: 175,
+      kebabColor: "#B754D0",
+      fries: 28,
+      friesColor: "#C36FD8",
+      donut: 161,
+      donutColor: "#EEEEEE",
+    },
+    {
+      country: "AM",
+      "hot dog": 89,
+      "hot dogColor": "#2256AD",
+      burger: 190,
+      burgerColor: "#4E78BD",
+      sandwich: 53,
+      sandwichColor: "#2256AD",
+      kebab: 130,
+      kebabColor: "#B754D0",
+      fries: 174,
+      friesColor: "#C36FD8",
+      donut: 183,
+      donutColor: "#EEEEEE",
+    },
+  ];
+
   return (
     <>
       <Head title="Dashboard" />
@@ -100,7 +243,7 @@ export default function Dashboard(props) {
 
       <div className="mb-8">
         <dl className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
-          <div className="card card-blue-light">
+          <div className="card card-purple-light">
             <dt className="truncate text-sm font-medium">Courses</dt>
             <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
               {props.courses_count}
@@ -177,6 +320,233 @@ export default function Dashboard(props) {
       ) : (
         ""
       )}
+
+      <div className="h-[500px]">
+        <ResponsivePie
+          data={pieData}
+          margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
+          innerRadius={0.5}
+          padAngle={0.7}
+          cornerRadius={3}
+          activeOuterRadiusOffset={8}
+          borderWidth={1}
+          borderColor={{
+            from: "color",
+            modifiers: [["darker", 0.2]],
+          }}
+          arcLinkLabelsSkipAngle={10}
+          arcLinkLabelsTextColor="#333333"
+          arcLinkLabelsThickness={2}
+          arcLinkLabelsColor={{ from: "color" }}
+          arcLabelsSkipAngle={10}
+          arcLabelsTextColor={{
+            from: "color",
+            modifiers: [["darker", 2]],
+          }}
+          defs={[
+            {
+              id: "dots",
+              type: "patternDots",
+              background: "inherit",
+              color: "#EEEEEE",
+              size: 4,
+              padding: 1,
+              stagger: true,
+            },
+            {
+              id: "lines",
+              type: "patternLines",
+              background: "inherit",
+              color: "#B754D0",
+              rotation: -45,
+              lineWidth: 4,
+              spacing: 10,
+            },
+          ]}
+          fill={[
+            {
+              match: {
+                id: "python",
+              },
+              id: "dots",
+            },
+            {
+              match: {
+                id: "stylus",
+              },
+              id: "dots",
+            },
+            {
+              match: {
+                id: "elixir",
+              },
+              id: "lines",
+            },
+          ]}
+          colors={{ datum: "data.color" }}
+          theme={{
+            labels: {
+              text: {
+                fontSize: 16,
+                fontWeight: 700,
+              },
+            },
+            // legends: {
+            //   text: {
+            //     fontSize: 12,
+            //     fontWeight: 700,
+            //   },
+            // },
+          }}
+          legends={[
+            {
+              anchor: "bottom",
+              direction: "row",
+              justify: false,
+              translateX: 0,
+              translateY: 56,
+              itemsSpacing: 0,
+              itemWidth: 100,
+              itemHeight: 18,
+              itemTextColor: "#999",
+              itemDirection: "left-to-right",
+              itemOpacity: 1,
+              symbolSize: 18,
+              symbolShape: "circle",
+              effects: [
+                {
+                  on: "hover",
+                  style: {
+                    itemTextColor: "#000",
+                    itemTextWidth: "700",
+                  },
+                },
+              ],
+            },
+          ]}
+        />
+      </div>
+
+      <div className="h-[500px]">
+        <ResponsiveBar
+          data={barData}
+          keys={["hot dog", "burger", "sandwich", "kebab", "fries", "donut"]}
+          indexBy="country"
+          margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
+          padding={0.3}
+          valueScale={{ type: "linear" }}
+          indexScale={{ type: "band", round: true }}
+          //   colors={{ scheme: "nivo" }}
+          colors={({ id, data }) => data[`${id}Color`]}
+          theme={{
+            labels: {
+              text: {
+                fontSize: 14,
+                fontWeight: 700,
+              },
+            },
+            // legends: {
+            //   text: {
+            //     fontSize: 12,
+            //     fontWeight: 700,
+            //   },
+            // },
+          }}
+          defs={[
+            {
+              id: "dots",
+              type: "patternDots",
+              background: "inherit",
+              color: "#B754D0",
+              size: 4,
+              padding: 1,
+              stagger: true,
+            },
+            {
+              id: "lines",
+              type: "patternLines",
+              background: "inherit",
+              color: "#4E78BD",
+              rotation: -45,
+              lineWidth: 6,
+              spacing: 10,
+            },
+          ]}
+          fill={[
+            {
+              match: {
+                id: "fries",
+              },
+              id: "dots",
+            },
+            {
+              match: {
+                id: "sandwich",
+              },
+              id: "lines",
+            },
+          ]}
+          borderColor={{
+            from: "color",
+            modifiers: [["darker", 1.6]],
+          }}
+          axisTop={null}
+          axisRight={null}
+          axisBottom={{
+            tickSize: 5,
+            tickPadding: 5,
+            tickRotation: 0,
+            legend: "country",
+            legendPosition: "middle",
+            legendOffset: 32,
+            truncateTickAt: 0,
+          }}
+          axisLeft={{
+            tickSize: 5,
+            tickPadding: 5,
+            tickRotation: 0,
+            legend: "food",
+            legendPosition: "middle",
+            legendOffset: -40,
+            truncateTickAt: 0,
+          }}
+          labelSkipWidth={12}
+          labelSkipHeight={12}
+          labelTextColor={{
+            from: "color",
+            modifiers: [["darker", 1.6]],
+          }}
+          legends={[
+            {
+              dataFrom: "keys",
+              anchor: "bottom-right",
+              direction: "column",
+              justify: false,
+              translateX: 120,
+              translateY: 0,
+              itemsSpacing: 2,
+              itemWidth: 100,
+              itemHeight: 20,
+              itemDirection: "left-to-right",
+              itemOpacity: 0.85,
+              symbolSize: 20,
+              effects: [
+                {
+                  on: "hover",
+                  style: {
+                    itemOpacity: 1,
+                  },
+                },
+              ],
+            },
+          ]}
+          role="application"
+          ariaLabel="Nivo bar chart demo"
+          barAriaLabel={(e) =>
+            e.id + ": " + e.formattedValue + " in country: " + e.indexValue
+          }
+        />
+      </div>
 
       {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="card mb-8">
@@ -374,11 +744,11 @@ export default function Dashboard(props) {
       {/*    </div>*/}
       {/*</div>*/}
 
-      {/*<div className="flex gap-5 mb-8">*/}
-      {/*    <ProgressBarInside percentage={20}/>*/}
-      {/*    <ProgressBarInside percentage={70}/>*/}
-      {/*    <ProgressBarInside percentage={90}/>*/}
-      {/*</div>*/}
+      {/* <div className="flex gap-5 mb-8">
+        <ProgressBarInside percentage={20} />
+        <ProgressBarInside percentage={60} />
+        <ProgressBarInside percentage={90} />
+      </div> */}
 
       {/*<div className="bg-white shadow sm:rounded-lg mb-3">*/}
       {/*    <div className="px-4 py-5 sm:p-6">*/}

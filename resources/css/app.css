@@ -36,8 +36,14 @@ body > .main {
 /* body > .main > #app {
   @apply min-h-full max-w-full;
 } */
+.layout {
+  @apply h-full;
+}
+.layout .mainContent {
+  @apply h-full;
+}
 .mainWrapper {
-  @apply w-full flex flex-1 flex-col max-w-full;
+  @apply w-full flex flex-1 flex-col max-w-full mb-7;
 }
 .mainWrapper .layout {
   @apply mx-auto max-w-full md:max-w-7xl w-full flex flex-1 relative z-[996];
@@ -199,8 +205,8 @@ body > .main {
 .card-blue {
   @apply bg-blue !important;
 }
-.card-blue-light {
-  @apply bg-blue-light !important;
+.card-purple-light {
+  @apply bg-purple-light !important;
 }
 .card-green {
   @apply bg-green !important;

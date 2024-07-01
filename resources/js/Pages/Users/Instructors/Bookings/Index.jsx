@@ -73,8 +73,8 @@ export default function Index(props) {
       selector: (row) => (
         <>
           <div
-            className={`button-pill button-${
-              row.payment_status ? "pill-green-status" : "pill-red-status"
+            className={`button-pill button-pill-${
+              row.payment_status ? "green-status" : "red-status"
             }`}
           >
             {row.payment_status ? "Paid" : "Not paid"}

@@ -16,7 +16,8 @@ export default {
         sans: ["Figtree", ...defaultTheme.fontFamily.sans],
       },
       backgroundImage: {
-        "purple-gradient": "linear-gradient(180deg, #2256AD 0%, #B754D0 100%)",
+        "purple-gradient":
+          "linear-gradient(192deg, rgba(156,84,202,1) 0%, rgba(34,86,173,1) 100%)",
         "blue-gradient": "linear-gradient(#2256AD 0%, #2256AD 0%)",
       },
       colors: {
@@ -33,7 +34,7 @@ export default {
         },
         purple: {
           DEFAULT: "#B754D0",
-          light: "#CBE0FD",
+          light: "#F1DDF6",
         },
         green: {
           DEFAULT: "#8BC24A",
@@ -47,11 +48,15 @@ export default {
           400: "#DADBDD",
           300: "#EEEEEE",
           200: "#E9ECEF",
-          100: "#FBFBFB",
+          100: "#F6F6F6",
         },
         red: {
           DEFAULT: "#DC2626",
           light: "#FADEDE",
+        },
+        orange: {
+          DEFAULT: "#ea580c",
+          light: "#FCE6DB",
         },
       },
       boxShadow: {

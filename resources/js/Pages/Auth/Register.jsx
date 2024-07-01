@@ -66,10 +66,14 @@ export default function Register(props) {
     <>
       <Head title="Register" />
 
-      <div className="min-h-screen min-w-full flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
+      <div className="h-full flex flex-col sm:justify-center items-center bg-gray-100 py-6">
         <div ref={wrapperRef}>
           <Link href="/">
-            <img src={Logo} className="h-20 mr-3 sm:h-40" alt="Landwind Logo" />
+            <img
+              src={Logo}
+              className="h-20 mr-3 sm:h-32 mb-3"
+              alt="Landwind Logo"
+            />
           </Link>
         </div>
 

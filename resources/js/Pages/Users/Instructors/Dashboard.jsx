@@ -17,7 +17,7 @@ export default function Dashboard(props) {
 
       <div className="mb-8">
         <dl className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
-          <div className="card card-blue-light">
+          <div className="card card-purple-light">
             <dt className="truncate text-sm font-medium">Students</dt>
             <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
               {props.students_count}
