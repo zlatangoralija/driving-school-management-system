@@ -21,6 +21,7 @@ class DashboardController extends Controller
     public function index(){
         Inertia::share('layout.active_page', ['Dashboard']);
 
+        //TODO: Fix these analytics!!
         $data['admins_count'] = User::where('type', UserType::SchoolAdmin)->count();
         $data['students_count'] = User::where('type', UserType::Student)->count();
         $data['instructors_count'] = User::where('type', UserType::Instructor)->count();

@@ -122,11 +122,11 @@ export default function Calendar(props) {
                         </div>
                     }
                     footer={
-                        <div className="w-full flex justify-between items-center">
+                        <div className="footer-modal">
                             <button
                                 type="button"
                                 onClick={() => setEventModal(null)}
-                                className="_button white w-full md:w-auto min-w-[150px]"
+                                className="button button-blue-outline w-full"
                             >
                                 Cancel
                             </button>

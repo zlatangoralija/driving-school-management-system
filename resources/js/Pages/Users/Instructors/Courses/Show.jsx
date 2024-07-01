@@ -217,18 +217,18 @@ export default function Show(props) {
                     </div>
                 }
                 footer={
-                    <div className="flex flex-col md:flex-row !justify-between items-center gap-2 w-full">
+                    <div className="footer-modal">
                         <button
                             type="button"
                             onClick={() => setBookingInviteModal(false)}
-                            className="_button white w-full md:w-auto min-w-[150px]"
+                            className="button button-blue-outline w-full"
                         >
                             Cancel
                         </button>
                         <button
                             type="button"
                             onClick={() => bookingInviteForm.current.submitForm()}
-                            className="_button white w-full md:w-auto min-w-[150px]"
+                            className="button button-blue w-full"
                         >
                             Invite to book
                         </button>
@@ -266,11 +266,11 @@ export default function Show(props) {
                     </div>
                 }
                 footer={
-                    <div className="flex flex-col md:flex-row !justify-between items-center gap-2 w-full">
+                    <div className="footer-modal">
                         <button
                             type="button"
                             onClick={() => setStudentBookingModal(false)}
-                            className="_button white w-full md:w-auto min-w-[150px]"
+                            className="button button-blue-outline w-full"
                         >
                             Cancel
                         </button>
@@ -279,7 +279,8 @@ export default function Show(props) {
                                 course_id: props.course.id,
                                 student_id: studentID,
                             })}
-                            className="_button white w-full md:w-auto min-w-[150px]"
+                            onClick={()=> book(startDate)}
+                            className="button button-blue w-full"
                         >
                             Go to booking
                         </a>
