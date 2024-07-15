@@ -194,6 +194,9 @@ body > .main {
 .sc-dhKdPU.eYzbsH.rdt_TableRow {
   @apply h-[60px];
 }
+.gdBOih {
+  min-width: unset !important;
+}
 /* .sc-feUYzb.Nfhbm {
   @apply min-h-[180px];
 } */

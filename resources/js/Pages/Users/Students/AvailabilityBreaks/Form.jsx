@@ -200,7 +200,7 @@ export default function CreateForm(props) {
                 selected={startDate}
                 onChange={(date) => setStartDate(date)}
                 showTimeSelect
-                todayButton="Today"
+                // todayButton="Today"
                 filterTime={filterPassedTime}
                 dateFormat="MMMM d, yyyy h:mm aa"
                 form="external-form"
@@ -214,7 +214,7 @@ export default function CreateForm(props) {
                 selected={endDate}
                 onChange={(date) => setEndDate(date)}
                 showTimeSelect
-                todayButton="Today"
+                // todayButton="Today"
                 filterTime={filterPassedTime}
                 dateFormat="MMMM d, yyyy h:mm aa"
                 form="external-form"
